@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaSearch, FaFilter, FaSortAmountDown } from 'react-icons/fa';
 import ResumeEditor from './ResumeEditor';
-import { useGetAllEditors } from '../../hooks/useResumeEditor';
+import { useGetAllEditors } from '../../../hooks/useResumeEditor';
 import { useResumeEditorListLogic } from '../../../hooks/useResumeEditorListLogic';
 import ResumeEditorFilters from './ResumeEditorFilters';
 
