@@ -1,0 +1,15 @@
+﻿
+C:\Users\jeena\OneDrive\Videos\jeenora-hire\src\View\hire\JobDetails.jsx
+  6:8  error  'useAuthStore' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+C:\Users\jeena\OneDrive\Videos\jeenora-hire\src\hooks\useNotifications.js
+  22:21  error  'data' is defined but never used  no-unused-vars
+
+C:\Users\jeena\OneDrive\Videos\jeenora-hire\src\hooks\useProfile.js
+  217:21  error  'data' is defined but never used  no-unused-vars
+
+C:\Users\jeena\OneDrive\Videos\jeenora-hire\src\hooks\useResumes.js
+  24:21  error  'newResume' is defined but never used  no-unused-vars
+
+Γ£û 4 problems (4 errors, 0 warnings)
+
