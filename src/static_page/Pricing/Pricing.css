@@ -1,0 +1,144 @@
+.pricing-header {
+    padding: 6rem 0 4rem;
+    background: #064e3b;
+    color: var(--white);
+    text-align: center;
+}
+
+.pricing-header h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+}
+
+.pricing-header h1 span {
+    color: var(--secondary-color);
+}
+
+.pricing-header p {
+    font-size: 1.25rem;
+    opacity: 0.9;
+}
+
+.pricing-content {
+    padding: 6rem 0;
+    background: var(--white);
+}
+
+.credit-info {
+    margin-bottom: 6rem;
+    text-align: center;
+}
+
+.credit-info h2 {
+    font-size: 2rem;
+    margin-bottom: 3rem;
+    color: var(--text-dark);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.info-card {
+    padding: 2.5rem;
+    background: #f8fafc;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.info-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.info-card p {
+    font-weight: 700;
+    color: var(--text-dark);
+    font-size: 1.1rem;
+}
+
+.pricing-card-main {
+    max-width: 500px;
+    margin: 0 auto;
+    background: var(--white);
+    border: 2px solid var(--primary-color);
+    border-radius: 30px;
+    padding: 3rem;
+    text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+}
+
+.card-top {
+    margin-bottom: 2.5rem;
+}
+
+.popular-badge {
+    background: var(--accent);
+    color: var(--text-dark);
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.price {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-top: 1rem;
+    color: var(--text-dark);
+}
+
+.price span {
+    font-size: 1.25rem;
+    color: var(--text-light);
+    font-weight: 400;
+}
+
+.features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 3rem 0;
+    text-align: left;
+}
+
+.features li {
+    padding: 0.8rem 0;
+    color: var(--text-light);
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.features li::before {
+    content: '✓';
+    color: var(--secondary-color);
+    font-weight: 800;
+}
+
+.btn-buy {
+    width: 100%;
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 1.2rem;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-buy:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px -5px rgba(6, 78, 59, 0.3);
+}
+
+@media (max-width: 768px) {
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+}

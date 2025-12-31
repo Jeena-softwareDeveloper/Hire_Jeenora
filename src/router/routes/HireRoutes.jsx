@@ -24,8 +24,54 @@ const ForgotPassword = lazy(() => import("../../Pages/ForgotPassword"));
 const ResetPassword = lazy(() => import("../../Pages/ResetPassword"));
 
 
+const Home = lazy(() => import("../../static_page/Home/Home"));
+const HowItWorks = lazy(() => import("../../static_page/HowItWorks/HowItWorks"));
+const JobsPreview = lazy(() => import("../../static_page/Jobs/Jobs"));
+const Pricing = lazy(() => import("../../static_page/Pricing/Pricing"));
+const About = lazy(() => import("../../static_page/About/About"));
+const FAQ = lazy(() => import("../../static_page/FAQ/FAQ"));
+const Contact = lazy(() => import("../../static_page/Contact/Contact"));
+const StaticLayout = lazy(() => import("../../static_page/StaticLayout/StaticLayout"));
+
+
 export const HireRoutes = [
-  // Public Routes
+  // --- STATIC / PUBLIC PAGES ---
+  {
+    path: "/",
+    element: <StaticLayout />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: "how-it-works",
+        element: <HowItWorks />,
+      },
+      {
+        path: "jobs-preview",
+        element: <JobsPreview />,
+      },
+      {
+        path: "pricing",
+        element: <Pricing />,
+      },
+      {
+        path: "about",
+        element: <About />,
+      },
+      {
+        path: "faq",
+        element: <FAQ />,
+      },
+      {
+        path: "contact",
+        element: <Contact />,
+      },
+    ],
+  },
+
+  // --- AUTH ROUTES ---
   {
     path: "/hire/login",
     element: <HireLogin />,
@@ -141,13 +187,9 @@ export const HireRoutes = [
     ],
   },
 
-  {
-    path: "/",
-    element: <Navigate to="/hire/login" replace />,
-  },
-  // Catch all route
+  // Catch all route - Redirect to Home
   {
     path: "*",
-    element: <Navigate to="/hire/login" replace />,
+    element: <Navigate to="/" replace />,
   },
 ];

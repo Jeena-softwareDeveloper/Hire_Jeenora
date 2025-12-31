@@ -1,0 +1,103 @@
+.jobs-header {
+    padding: 6rem 0 4rem;
+    background: var(--bg-soft);
+    text-align: center;
+}
+
+.jobs-header h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--text-dark);
+}
+
+.jobs-header h1 span {
+    color: var(--secondary-color);
+}
+
+.jobs-header p {
+    color: var(--text-light);
+    font-size: 1.1rem;
+}
+
+.jobs-list {
+    padding: 4rem 0 8rem;
+}
+
+.jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+}
+
+.job-card {
+    background: var(--white);
+    border: 1px solid #f1f5f9;
+    padding: 2rem;
+    border-radius: 20px;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+}
+
+.job-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.05);
+    border-color: var(--secondary-color);
+}
+
+.job-badge {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--secondary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    width: fit-content;
+    margin-bottom: 1.2rem;
+    text-transform: uppercase;
+}
+
+.job-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-dark);
+}
+
+.job-company {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.job-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.btn-apply-static {
+    margin-top: auto;
+    background: var(--bg-soft);
+    color: var(--primary-color);
+    border: 1px solid #e5e7eb;
+    padding: 0.8rem;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-apply-static:hover {
+    background: var(--primary-color);
+    color: var(--white);
+    border-color: var(--primary-color);
+}
+
+@media (max-width: 480px) {
+    .jobs-grid {
+        grid-template-columns: 1fr;
+    }
+}
