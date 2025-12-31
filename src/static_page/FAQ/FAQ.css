@@ -1,86 +1,99 @@
+.faq-page {
+    background: var(--white);
+}
+
 .faq-header {
-    padding: 6rem 0 4rem;
-    text-align: center;
+    padding: 8rem 0 4rem;
     background: var(--bg-soft);
+    text-align: center;
 }
 
 .faq-header h1 {
-    font-size: 3rem;
-    color: var(--text-dark);
+    font-size: 3.5rem;
+    font-weight: 800;
     margin-bottom: 1rem;
 }
 
 .faq-header h1 span {
-    color: var(--secondary-color);
+    color: var(--primary-color);
 }
 
 .faq-header p {
     color: var(--text-light);
-    font-size: 1.1rem;
-}
-
-.faq-list {
-    padding: 6rem 0;
-    background: var(--white);
-}
-
-.faq-wrapper {
-    max-width: 800px;
+    font-size: 1.25rem;
+    max-width: 700px;
     margin: 0 auto;
 }
 
-.faq-item {
+.faq-content-list {
+    padding: 6rem 0;
+}
+
+.faq-accordion-box {
+    max-width: 850px;
+    margin: 0 auto 5rem;
+}
+
+.faq-accordion-item {
     background: var(--white);
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    margin-bottom: 1.5rem;
-    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    margin-bottom: 1.25rem;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.3s ease;
+    overflow: hidden;
 }
 
-.faq-item:hover {
+.faq-accordion-item:hover {
     border-color: var(--secondary-color);
+    box-shadow: 0 10px 15px -10px rgba(0, 0, 0, 0.05);
 }
 
-.faq-question {
+.faq-q-row {
     padding: 1.5rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.faq-question h3 {
+.faq-q-row h3 {
     font-size: 1.15rem;
     color: var(--text-dark);
-    font-weight: 600;
+    font-weight: 700;
 }
 
-.faq-toggle {
+.faq-plus {
     font-size: 1.5rem;
     color: var(--primary-color);
     font-weight: 800;
 }
 
-.faq-answer {
+.faq-a-row {
     max-height: 0;
-    overflow: hidden;
     transition: all 0.5s cubic-bezier(0, 1, 0, 1);
     background: #f8fafc;
 }
 
-.faq-item.active .faq-answer {
+.faq-accordion-item.open .faq-a-row {
     max-height: 1000px;
     transition: all 0.5s cubic-bezier(1, 0, 1, 0);
 }
 
-.faq-answer p {
+.faq-a-row p {
     padding: 1.5rem 2rem;
     color: var(--text-light);
-    line-height: 1.6;
+    line-height: 1.7;
     border-top: 1px solid #f1f5f9;
 }
 
-.faq-item.active {
-    box-shadow: 0 10px 15px -10px rgba(0, 0, 0, 0.1);
+.faq-help-cta {
+    text-align: center;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 4rem;
+}
+
+.faq-help-cta p {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
 }

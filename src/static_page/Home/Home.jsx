@@ -1,9 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
+import '../Animations.css';
 
 const Home = () => {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        return () => observer.disconnect();
+    }, []);
 
     return (
         <div className="home-page">
@@ -12,24 +26,21 @@ const Home = () => {
                 <div className="static-container">
                     <div className="hero-wrapper">
                         <div className="hero-text">
-                            <span className="hero-badge">Next Generation Hiring</span>
-                            <h1>Find Your Dream Job with <span>Expert Support</span></h1>
-                            <p>Jeenora Hire simplifies your job search. Apply to top opportunities, track your progress, and get professional resume editing to stand out.</p>
-                            <div className="hero-cta">
-                                <button onClick={() => navigate('/jobs-preview')} className="btn-primary">Explore Jobs</button>
-                                <button onClick={() => navigate('/how-it-works')} className="btn-secondary">Learn More</button>
+                            <span className="hero-badge reveal stagger-1">Next Generation Hiring</span>
+                            <h1 className="reveal stagger-2">Your Career Journey, <span>Simplified</span></h1>
+                            <p className="reveal stagger-3">Jeenora Hire bridges the gap between talented professionals and their dream opportunities. Our intelligent platform streamlines applications, provides real-time tracking, and connects you directly with hiring teams.</p>
+                            <div className="hero-cta reveal stagger-4">
+                                <button onClick={() => navigate('/jobs-preview')} className="btn-primary scale-hover">Explore Available Jobs</button>
+                                <button onClick={() => navigate('/hire/register')} className="btn-secondary scale-hover">Start Free Account</button>
                             </div>
                         </div>
-                        <div className="hero-image">
-                            <div className="image-card card-1">
-                                <div className="card-dot"></div>
-                                <p>Application Tracked</p>
-                            </div>
-                            <div className="image-card card-2">
-                                <p>Top Job Match</p>
-                            </div>
-                            <div className="main-image-placeholder">
+                        <div className="hero-image reveal stagger-3">
+                            <div className="main-image-placeholder glow-card">
                                 <div className="blob"></div>
+                                <div className="floating-elements">
+                                    <div className="float-card c1">100+ Jobs Found</div>
+                                    <div className="float-card c2">Resume ATS Score: 95%</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -39,39 +50,71 @@ const Home = () => {
             {/* Value Proposition */}
             <section className="value-prop">
                 <div className="static-container">
-                    <div className="section-header">
-                        <h2>Why Choose Jeenora Hire?</h2>
-                        <p>We provide the tools and support you need to succeed in today's competitive job market.</p>
+                    <div className="section-header reveal">
+                        <h2>Experience the Future of Hiring</h2>
+                        <p>We've built the tools to make your job search faster, smarter, and more effective.</p>
                     </div>
                     <div className="prop-grid">
-                        <div className="prop-card">
-                            <div className="prop-icon">🔍</div>
-                            <h3>Apply Seamlessly</h3>
-                            <p>One-click applications to verified jobs across multiple industries and locations.</p>
+                        <div className="prop-card reveal stagger-1">
+                            <div className="prop-icon">🚀</div>
+                            <h3>Apply Smart</h3>
+                            <p>Submit applications with one click using our optimized profile system. No more repetitive forms.</p>
                         </div>
-                        <div className="prop-card">
+                        <div className="prop-card reveal stagger-2">
                             <div className="prop-icon">📊</div>
                             <h3>Track Progress</h3>
-                            <p>Real-time status updates on every application you make. No more guessing.</p>
+                            <p>Real-time dashboard showing application status and employer feedback. Stay informed at every step.</p>
                         </div>
-                        <div className="prop-card">
+                        <div className="prop-card reveal stagger-3">
                             <div className="prop-icon">🎯</div>
                             <h3>Get Hired Faster</h3>
-                            <p>Expert administrative support and resume optimization to boost your chances by 3x.</p>
+                            <p>Direct communication channels with hiring managers and automated follow-ups to keep things moving.</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Trust Banner */}
-            <section className="trust-banner">
+            {/* Features Section */}
+            <section className="features-section">
                 <div className="static-container">
-                    <p>Trusted by thousands of job seekers worldwide</p>
-                    <div className="trust-logos">
-                        <span>FastTrack</span>
-                        <span>CareerPro</span>
-                        <span>HireUp</span>
-                        <span>LinkDev</span>
+                    <div className="features-wrapper">
+                        <div className="features-content">
+                            <h2 className="reveal">Intelligent Features for <span>Modern Professionals</span></h2>
+                            <ul className="features-list">
+                                <li className="reveal stagger-1"><strong>Smart Job Matching:</strong> AI-powered recommendations based on your profile.</li>
+                                <li className="reveal stagger-2"><strong>Application Analytics:</strong> Track response rates and improve your approach.</li>
+                                <li className="reveal stagger-3"><strong>Resume Builder:</strong> Professional templates optimized for ATS systems.</li>
+                                <li className="reveal stagger-4"><strong>Interview Scheduler:</strong> Coordinate interviews without endless emails.</li>
+                                <li className="reveal stagger-5"><strong>Salary Insights:</strong> Market data for informed negotiation.</li>
+                            </ul>
+                        </div>
+                        <div className="features-stats-grid">
+                            <div className="stat-box reveal stagger-1">
+                                <h3 className="counter-text">50,000+</h3>
+                                <p>Professionals</p>
+                            </div>
+                            <div className="stat-box reveal stagger-2">
+                                <h3 className="counter-text">40%</h3>
+                                <p>Faster Search</p>
+                            </div>
+                            <div className="stat-box reveal stagger-3">
+                                <h3 className="counter-text">4.8/5</h3>
+                                <p>User Rating</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Trust Indicators */}
+            <section className="trust-indicator-bar">
+                <div className="static-container">
+                    <p className="reveal">Featured In</p>
+                    <div className="trust-logos-scroller reveal stagger-2">
+                        <span>TechHire</span>
+                        <span>CareerBuilder</span>
+                        <span>JobSearch Magazine</span>
+                        <span>TalentTimes</span>
                     </div>
                 </div>
             </section>

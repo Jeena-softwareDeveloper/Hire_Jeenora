@@ -1,12 +1,17 @@
+.pricing-page {
+    background: var(--white);
+}
+
 .pricing-header {
-    padding: 6rem 0 4rem;
-    background: #064e3b;
+    padding: 8rem 0 6rem;
+    background: #0f172a;
     color: var(--white);
     text-align: center;
 }
 
 .pricing-header h1 {
     font-size: 3.5rem;
+    font-weight: 800;
     margin-bottom: 1rem;
 }
 
@@ -16,129 +21,178 @@
 
 .pricing-header p {
     font-size: 1.25rem;
-    opacity: 0.9;
+    opacity: 0.8;
 }
 
-.pricing-content {
-    padding: 6rem 0;
-    background: var(--white);
+/* Tier Grid */
+.pricing-cards {
+    padding: 8rem 0 4rem;
+    margin-top: -4rem;
 }
 
-.credit-info {
-    margin-bottom: 6rem;
-    text-align: center;
-}
-
-.credit-info h2 {
-    font-size: 2rem;
-    margin-bottom: 3rem;
-    color: var(--text-dark);
-}
-
-.info-grid {
+.tier-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
 }
 
-.info-card {
-    padding: 2.5rem;
-    background: #f8fafc;
-    border-radius: 20px;
-    border: 1px solid #e2e8f0;
-}
-
-.info-card h3 {
-    color: var(--primary-color);
-    margin-bottom: 0.5rem;
-}
-
-.info-card p {
-    font-weight: 700;
-    color: var(--text-dark);
-    font-size: 1.1rem;
-}
-
-.pricing-card-main {
-    max-width: 500px;
-    margin: 0 auto;
+.tier-card {
     background: var(--white);
-    border: 2px solid var(--primary-color);
+    padding: 3.5rem 2.5rem;
     border-radius: 30px;
-    padding: 3rem;
+    border: 1px solid #e2e8f0;
     text-align: center;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
-.card-top {
+.tier-card.popular {
+    border-color: var(--primary-color);
+    box-shadow: 0 25px 50px -12px rgba(30, 64, 175, 0.1);
+    transform: scale(1.05);
+}
+
+.most-popular {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-color);
+    color: var(--white);
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.tier-header h3 {
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+}
+
+.price-box {
     margin-bottom: 2.5rem;
 }
 
-.popular-badge {
-    background: var(--accent);
-    color: var(--text-dark);
-    padding: 0.4rem 1rem;
-    border-radius: 50px;
+.price-box .amount {
+    font-size: 3.5rem;
     font-weight: 800;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-}
-
-.price {
-    font-size: 3rem;
-    font-weight: 800;
-    margin-top: 1rem;
     color: var(--text-dark);
 }
 
-.price span {
-    font-size: 1.25rem;
+.price-box .period {
     color: var(--text-light);
-    font-weight: 400;
+    font-size: 1.1rem;
 }
 
-.features {
+.tier-features {
     list-style: none;
     padding: 0;
-    margin: 0 0 3rem 0;
+    margin-bottom: 3rem;
     text-align: left;
 }
 
-.features li {
-    padding: 0.8rem 0;
+.tier-features li {
+    margin-bottom: 0.8rem;
     color: var(--text-light);
-    border-bottom: 1px solid #f1f5f9;
     display: flex;
-    align-items: center;
     gap: 10px;
 }
 
-.features li::before {
+.tier-features li::before {
     content: '✓';
     color: var(--secondary-color);
     font-weight: 800;
 }
 
-.btn-buy {
+.btn-tier {
     width: 100%;
-    background: var(--primary-color);
-    color: var(--white);
-    border: none;
-    padding: 1.2rem;
-    border-radius: 15px;
-    font-size: 1.1rem;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    background: var(--bg-soft);
+    color: var(--text-dark);
     font-weight: 700;
     cursor: pointer;
-    transition: var(--transition);
+    margin-top: auto;
+    transition: all 0.3s ease;
 }
 
-.btn-buy:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px -5px rgba(6, 78, 59, 0.3);
+.btn-tier.primary {
+    background: var(--primary-color);
+    color: var(--white);
+    border-color: var(--primary-color);
+}
+
+.btn-tier:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Credit Breakdown */
+.credit-breakdown-section {
+    padding: 8rem 0;
+    background: var(--bg-soft);
+    text-align: center;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    margin-bottom: 4rem;
+    font-weight: 800;
+}
+
+.credit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 5rem;
+}
+
+.credit-item {
+    background: var(--white);
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.cr-count {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.credit-item p {
+    color: var(--text-light);
+    font-weight: 600;
+}
+
+.pricing-guarantee {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 3rem;
+}
+
+.guarantee-grid {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    color: var(--text-light);
+    font-weight: 700;
 }
 
 @media (max-width: 768px) {
-    .info-grid {
-        grid-template-columns: 1fr;
+    .tier-card.popular {
+        transform: none;
+    }
+
+    .guarantee-grid {
+        flex-direction: column;
+        gap: 1rem;
     }
 }

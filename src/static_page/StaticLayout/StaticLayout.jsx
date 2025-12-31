@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import './StaticLayout.css';
 
 const StaticLayout = () => {
     const navigate = useNavigate();
+    const location = useLocation();
 
     return (
         <div className="static-layout">
@@ -16,11 +17,11 @@ const StaticLayout = () => {
                         </Link>
 
                         <nav className="static-nav">
-                            <Link to="/" className="nav-link">Home</Link>
-                            <Link to="/how-it-works" className="nav-link">How It Works</Link>
-                            <Link to="/jobs-preview" className="nav-link">Jobs</Link>
-                            <Link to="/pricing" className="nav-link">Pricing</Link>
-                            <Link to="/about" className="nav-link">About</Link>
+                            <Link to="/" className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}>Home</Link>
+                            <Link to="/how-it-works" className={`nav-link ${location.pathname === '/how-it-works' ? 'active' : ''}`}>How It Works</Link>
+                            <Link to="/jobs-preview" className={`nav-link ${location.pathname === '/jobs-preview' ? 'active' : ''}`}>Jobs</Link>
+                            <Link to="/pricing" className={`nav-link ${location.pathname === '/pricing' ? 'active' : ''}`}>Pricing</Link>
+                            <Link to="/about" className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`}>About</Link>
                         </nav>
 
                         <div className="static-auth-buttons">
@@ -31,7 +32,7 @@ const StaticLayout = () => {
                 </div>
             </header>
 
-            <main className="static-content">
+            <main className="static-content page-fade" key={location.pathname}>
                 <Outlet />
             </main>
 
