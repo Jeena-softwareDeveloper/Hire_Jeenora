@@ -6,4 +6,9 @@ export const overrideStyle = {
     justifyContent: 'center',
     alignItems: 'center'
 }
-export const socket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000/')
+export const socket = io(import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000/', {
+    transports: ['websocket'],
+    reconnection: true,
+    reconnectionAttempts: 5,
+    reconnectionDelay: 1000
+})
