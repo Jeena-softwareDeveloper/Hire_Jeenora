@@ -3,6 +3,8 @@ import { BrowserRouter } from "react-router-dom";
 import useAuthStore from "./store/useAuthStore";
 import api from "./api/api";
 import AppRoutes from "./router/AppRoutes.jsx";
+import ScrollToTop from "./components/common/ScrollToTop";
+
 
 const AppContent = () => {
   const token = useAuthStore((state) => state.token);
@@ -28,6 +30,7 @@ const AppContent = () => {
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <AppContent />
     </BrowserRouter>
   );

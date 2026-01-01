@@ -1,17 +1,158 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FaEnvelope, FaPaperPlane, FaShieldAlt, FaRocket, FaClock, FaTimes } from 'react-icons/fa';
+import api from '../../api/api';
 
 const Home = () => {
     const navigate = useNavigate();
-    const [stats, setStats] = useState({ 
-        applications: 12459, 
-        users: 4892, 
-        hires: 327, 
-        responseRate: 78 
+    const [pageContent, setPageContent] = useState({
+        hero: {
+            title: "End-to-End Career Support",
+            subtitle: "Transform your job search with expert manual support, live tracking, and dedicated end-to-end guidance."
+        },
+        stats: {
+            applications: 12459,
+            users: 4892,
+            hires: 327,
+            responseRate: 78
+        },
+        testimonials: [
+            {
+                name: "Alex Johnson",
+                role: "Senior Frontend Developer",
+                company: "TechCorp",
+                content: "Jeenora helped me land my dream job in just 2 weeks! The personalized support was incredible.",
+                avatar: "AJ",
+                rating: 5
+            },
+            {
+                name: "Sarah Chen",
+                role: "Product Manager",
+                company: "StartupXYZ",
+                content: "The transparency in application tracking gave me peace of mind during my job search.",
+                avatar: "SC",
+                rating: 5
+            },
+            {
+                name: "Marcus Rodriguez",
+                role: "DevOps Engineer",
+                company: "CloudSystems",
+                content: "I saved 40+ hours per month on applications. The expert support is worth every credit!",
+                avatar: "MR",
+                rating: 5
+            },
+            {
+                name: "Priya Patel",
+                role: "UX Designer",
+                company: "DesignHub",
+                content: "From resume to negotiation - complete end-to-end support. Highly recommended!",
+                avatar: "PP",
+                rating: 5
+            }
+        ],
+        features: [
+            {
+                icon: "🎯",
+                title: "Smart Job Matching",
+                description: "AI-powered job matching with 95% accuracy",
+                details: "Our algorithm analyzes your skills, experience, and preferences to match you with the perfect roles.",
+                longDetails: [
+                    "Advanced Skill Extraction: Our AI reads between the lines of your resume to find hidden strengths.",
+                    "Cultural Alignment: We match you with companies that share your work values and environment preferences.",
+                    "Probability Scoring: Every match comes with a success probability score to help you prioritize.",
+                    "Growth Mapping: We don't just find a job; we find roles that align with your long-term career goals."
+                ]
+            },
+            {
+                icon: "🤝",
+                title: "Dedicated Support",
+                description: "1-on-1 expert guidance throughout your journey",
+                details: "Get assigned a career expert who supports you from application to offer letter.",
+                longDetails: [
+                    "Personal Career Coach: Access to a dedicated expert for all your career queries.",
+                    "Offer Negotiation: Professional guidance to help you secure the best possible compensation.",
+                    "Strategic Planning: Weekly check-ins to review progress and adjust your search strategy.",
+                    "Direct Line: Messaging access to your coach for instant support when you need it."
+                ]
+            },
+            {
+                icon: "📊",
+                title: "Live Tracking",
+                description: "Real-time application status updates",
+                details: "Track every application with detailed insights and predictive analytics.",
+                longDetails: [
+                    "Transparency Portal: See exactly where your application is in the hiring funnel.",
+                    "Bottleneck Alerts: Get notified if an application is stuck and what steps to take.",
+                    "Company Insights: View response rates and average hiring times for specific employers.",
+                    "Milestone Tracking: Celebrate every step from 'Applied' to 'Selected'."
+                ]
+            },
+            {
+                icon: "💼",
+                title: "Interview Prep",
+                description: "Mock interviews & negotiation coaching",
+                details: "Practice with experts and learn salary negotiation strategies.",
+                longDetails: [
+                    "Role-Specific Prep: Practice for specific job requirements with industry veterans.",
+                    "Live Mock Interviews: Realistic simulations with detailed feedback on performance.",
+                    "Communication Coaching: Refine your storytelling and technical explanation skills.",
+                    "Post-Interview Analysis: Review what went well and where to improve for the next round."
+                ]
+            },
+            {
+                icon: "🔄",
+                title: "Continuous Feedback",
+                description: "Detailed feedback on every application",
+                details: "Learn from each application with comprehensive feedback reports.",
+                longDetails: [
+                    "Expert Reviews: Manual feedback from career advisors on why an application succeeded or failed.",
+                    "Skill Gap Identification: Understand what certificates or skills could boost your profile.",
+                    "Iterative Improvement: Constant refinement of your profile based on real employer interactions.",
+                    "Monthly Performance Stats: Track your improvement across different search metrics."
+                ]
+            },
+            {
+                icon: "🔒",
+                title: "Secure & Private",
+                description: "Enterprise-grade security & privacy",
+                details: "Your data is encrypted and never shared without consent.",
+                longDetails: [
+                    "Data Sovereignty: You have complete control over who sees your profile and when.",
+                    "Stealth Mode: Search for jobs without alerting your current employer or network.",
+                    "End-to-End Encryption: All communications and documents are protected by the latest standards.",
+                    "Privacy-First Design: We never sell your data; our revenue comes from helping you succeed."
+                ]
+            }
+        ],
+        faqs: [
+            {
+                question: "How does the credit system work?",
+                answer: "Our credit-based system lets you pay only for what you use. Each application or service uses credits, and unused credits roll over month-to-month."
+            },
+            {
+                question: "Is there a subscription fee?",
+                answer: "No! We don't believe in locking you into subscriptions. Pay-per-use with our credit system saves you money and gives you flexibility."
+            },
+            {
+                question: "How quickly can I get support?",
+                answer: "Our experts typically respond within 2 hours during business hours. We provide 24/7 email support and live chat during working hours."
+            },
+            {
+                question: "What makes Jeenora different from other platforms?",
+                answer: "We provide end-to-end manual support, real-time application tracking, and direct communication channels with hiring teams - something no other platform offers."
+            },
+            {
+                question: "Can I track multiple applications at once?",
+                answer: "Yes! Our dashboard lets you track unlimited applications with detailed status updates, interview scheduling, and communication logs."
+            }
+        ]
     });
+
+    const [stats, setStats] = useState(pageContent.stats);
     const [activeTab, setActiveTab] = useState(0);
     const [testimonialIndex, setTestimonialIndex] = useState(0);
+    const [selectedFeature, setSelectedFeature] = useState(null);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
     const heroRef = useRef(null);
     const pillarsRef = useRef(null);
@@ -28,81 +169,21 @@ const Home = () => {
         gradient: 'linear-gradient(135deg, #0066CC 0%, #00A86B 100%)'
     };
 
-    // Testimonials data
-    const testimonials = [
-        {
-            name: "Alex Johnson",
-            role: "Senior Frontend Developer",
-            company: "TechCorp",
-            content: "Jeenora helped me land my dream job in just 2 weeks! The personalized support was incredible.",
-            avatar: "AJ",
-            rating: 5
-        },
-        {
-            name: "Sarah Chen",
-            role: "Product Manager",
-            company: "StartupXYZ",
-            content: "The transparency in application tracking gave me peace of mind during my job search.",
-            avatar: "SC",
-            rating: 5
-        },
-        {
-            name: "Marcus Rodriguez",
-            role: "DevOps Engineer",
-            company: "CloudSystems",
-            content: "I saved 40+ hours per month on applications. The expert support is worth every credit!",
-            avatar: "MR",
-            rating: 5
-        },
-        {
-            name: "Priya Patel",
-            role: "UX Designer",
-            company: "DesignHub",
-            content: "From resume to negotiation - complete end-to-end support. Highly recommended!",
-            avatar: "PP",
-            rating: 5
-        }
-    ];
+    useEffect(() => {
+        const fetchPageContent = async () => {
+            try {
+                const { data } = await api.get('/hire/static/home');
+                if (data && data.content) {
+                    setPageContent(prev => ({ ...prev, ...data.content }));
+                    if (data.content.stats) setStats(data.content.stats);
+                }
+            } catch (err) {
+                console.error('Failed to fetch home content:', err);
+            }
+        };
+        fetchPageContent();
+    }, []);
 
-    // Features data
-    const features = [
-        {
-            icon: "🎯",
-            title: "Smart Job Matching",
-            description: "AI-powered job matching with 95% accuracy",
-            details: "Our algorithm analyzes your skills, experience, and preferences to match you with the perfect roles."
-        },
-        {
-            icon: "🤝",
-            title: "Dedicated Support",
-            description: "1-on-1 expert guidance throughout your journey",
-            details: "Get assigned a career expert who supports you from application to offer letter."
-        },
-        {
-            icon: "📊",
-            title: "Live Tracking",
-            description: "Real-time application status updates",
-            details: "Track every application with detailed insights and predictive analytics."
-        },
-        {
-            icon: "💼",
-            title: "Interview Prep",
-            description: "Mock interviews & negotiation coaching",
-            details: "Practice with experts and learn salary negotiation strategies."
-        },
-        {
-            icon: "🔄",
-            title: "Continuous Feedback",
-            description: "Detailed feedback on every application",
-            details: "Learn from each application with comprehensive feedback reports."
-        },
-        {
-            icon: "🔒",
-            title: "Secure & Private",
-            description: "Enterprise-grade security & privacy",
-            details: "Your data is encrypted and never shared without consent."
-        }
-    ];
 
     useEffect(() => {
         // Mouse move effect for interactive elements
@@ -143,7 +224,7 @@ const Home = () => {
 
         // Testimonial carousel
         const testimonialInterval = setInterval(() => {
-            setTestimonialIndex((prev) => (prev + 1) % testimonials.length);
+            setTestimonialIndex((prev) => (prev + 1) % pageContent.testimonials.length);
         }, 5000);
 
         // Floating particles effect
@@ -177,7 +258,7 @@ const Home = () => {
             const particles = document.querySelectorAll('.floating-particle');
             particles.forEach(p => p.remove());
         };
-    }, [colors.primary, colors.secondary, testimonials.length]);
+    }, [colors.primary, colors.secondary, pageContent.testimonials.length]);
 
     const splitText = (text) => {
         return text.split('').map((char, i) => (
@@ -199,7 +280,7 @@ const Home = () => {
             <div className="particles-container absolute inset-0 overflow-hidden pointer-events-none"></div>
 
             {/* Mouse Tracker for Interactive Effects */}
-            <div 
+            <div
                 className="mouse-tracker absolute w-96 h-96 rounded-full pointer-events-none"
                 style={{
                     left: `${mousePosition.x * 100}%`,
@@ -210,8 +291,8 @@ const Home = () => {
                 }}
             />
 
-            {/* Hero Section - Enhanced */}
-            <section ref={heroRef} className="relative pt-20 md:pt-32 pb-20 md:pb-40">
+            {/* Hero Section - Refined Spacing */}
+            <section ref={heroRef} className="relative pt-7 pb-6 md:pt-7 md:pb-6 lg:pt-7 lg:pb-6 overflow-hidden mesh-bg-green-blue flex items-center min-h-[70vh]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Animated Background Elements */}
                     <div className="absolute -top-20 -right-20 w-64 h-64 md:w-96 md:h-96 bg-gradient-to-br from-blue-500/10 to-green-500/10 rounded-full blur-3xl animate-pulse-slow"></div>
@@ -232,16 +313,16 @@ const Home = () => {
                                 style={{ color: colors.primary }}
                             >
                                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                                Next-Gen Career Platform
+                                TN Based Next-Gen Career Platform 🇮🇳
                             </motion.div>
 
                             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-tight md:leading-[1.05] mb-6 md:mb-10 tracking-tight gradient-text">
                                 <span className="bg-gradient-to-r from-blue-600 via-green-500 to-blue-600 bg-clip-text text-transparent">
-                                    {splitText("End-to-End")}
+                                    {splitText(pageContent.hero.title.split(' ')[0])}
                                 </span>
                                 <br />
                                 <span className="text-dark mt-2 block">
-                                    {splitText("Career Support")}
+                                    {splitText(pageContent.hero.title.split(' ').slice(1).join(' '))}
                                 </span>
                             </h1>
 
@@ -251,7 +332,7 @@ const Home = () => {
                                 transition={{ delay: 0.8 }}
                                 className="text-base md:text-xl text-gray-600 leading-relaxed mb-8 md:mb-14 max-w-3xl mx-auto lg:mx-0 fade-up-blur px-4 md:px-0"
                             >
-                                Transform your job search with <span className="font-bold text-primary" style={{ color: colors.primary }}>expert manual support</span>, <span className="font-bold text-secondary" style={{ color: colors.secondary }}>live tracking</span>, and <span className="font-bold text-primary" style={{ color: colors.primary }}>dedicated end-to-end guidance</span>.
+                                {pageContent.hero.subtitle}
                             </motion.p>
 
                             <motion.div
@@ -298,14 +379,14 @@ const Home = () => {
                                 transition={{ delay: 1.2 }}
                                 className="flex flex-wrap gap-4 md:gap-8 mt-10 md:mt-16 justify-center lg:justify-start px-4 md:px-0"
                             >
-                                {[
-                                    { value: '100%', label: 'Support Happiness', color: colors.primary },
-                                    { value: '78%', label: 'Response Rate', color: colors.secondary },
-                                    { value: '40%', label: 'Time Saved', color: colors.primary },
-                                    { value: '24/7', label: 'Expert Support', color: colors.secondary }
-                                ].map((stat, idx) => (
+                                {(pageContent.quickStats || [
+                                    { value: '100%', label: 'Support Happiness' },
+                                    { value: '99%', label: 'Response Rate' },
+                                    { value: '80%', label: 'Time Saved' },
+                                    { value: '24/7', label: 'Expert Support' }
+                                ]).map((stat, idx) => (
                                     <div key={idx} className="text-center px-3 py-2">
-                                        <div className="text-2xl md:text-3xl font-bold" style={{ color: stat.color }}>{stat.value}</div>
+                                        <div className="text-2xl md:text-3xl font-bold" style={{ color: stat.color || colors.primary }}>{stat.value}</div>
                                         <div className="text-xs md:text-sm text-gray-500">{stat.label}</div>
                                     </div>
                                 ))}
@@ -338,7 +419,7 @@ const Home = () => {
                                             </div>
                                         </div>
                                         <div className="bg-gradient-to-r from-blue-500 to-green-500 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full font-bold text-xs md:text-sm bounce-in active shadow-lg">
-                                            🪙 42 Credits
+                                            🪙 {pageContent.dashboardPreview ? pageContent.dashboardPreview.credits : 42} Credits
                                         </div>
                                     </div>
 
@@ -347,9 +428,9 @@ const Home = () => {
                                         <div className="bg-white/50 p-4 md:p-6 rounded-2xl border border-gray-100 shadow-sm">
                                             <div className="flex justify-between items-center mb-2 md:mb-3">
                                                 <label className="block text-xs md:text-sm text-gray-600 font-bold">Active Apps</label>
-                                                <span className="text-xs font-bold text-green-600">+3 Today</span>
+                                                <span className="text-xs font-bold text-green-600">+{pageContent.dashboardPreview ? pageContent.dashboardPreview.dailyApps : 3} Today</span>
                                             </div>
-                                            <div className="text-3xl md:text-4xl font-black text-dark mb-2 md:mb-3">12</div>
+                                            <div className="text-3xl md:text-4xl font-black text-dark mb-2 md:mb-3">{pageContent.dashboardPreview ? pageContent.dashboardPreview.activeApps : 12}</div>
                                             <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                                                 <motion.div
                                                     initial={{ width: 0 }}
@@ -372,7 +453,7 @@ const Home = () => {
                                                         fill="none"
                                                         strokeLinecap="round"
                                                         initial={{ strokeDasharray: "0 251" }}
-                                                        animate={{ strokeDasharray: "176 251" }}
+                                                        animate={{ strokeDasharray: `${(pageContent.dashboardPreview ? pageContent.dashboardPreview.matchScore : 92) * 2.51} 251` }}
                                                         transition={{ duration: 1.5, delay: 0.7 }}
                                                         transform="rotate(-90 50 50)"
                                                     />
@@ -384,7 +465,7 @@ const Home = () => {
                                                     </defs>
                                                 </svg>
                                                 <div className="absolute inset-0 flex items-center justify-center text-xl md:text-2xl font-black" style={{ color: colors.secondary }}>
-                                                    92%
+                                                    {pageContent.dashboardPreview ? pageContent.dashboardPreview.matchScore : 92}%
                                                 </div>
                                             </div>
                                         </div>
@@ -392,33 +473,25 @@ const Home = () => {
 
                                     {/* Live Notifications */}
                                     <div className="space-y-3 md:space-y-4">
-                                        <motion.div
-                                            initial={{ opacity: 0, x: -20 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: 1 }}
-                                            className="flex items-center gap-3 p-3 md:p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-xl border border-blue-100"
-                                        >
-                                            <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-green-500 animate-pulse flex-shrink-0"></div>
-                                            <div className="flex-1 min-w-0">
-                                                <div className="font-bold text-xs md:text-sm truncate">Admin Message</div>
-                                                <div className="text-xs md:text-sm text-gray-600 truncate">"Interview with TechCorp confirmed"</div>
-                                            </div>
-                                            <div className="text-xs text-gray-400 flex-shrink-0">2 min</div>
-                                        </motion.div>
-
-                                        <motion.div
-                                            initial={{ opacity: 0, x: -20 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: 1.2 }}
-                                            className="flex items-center gap-3 p-3 md:p-4 bg-white rounded-xl border border-gray-100"
-                                        >
-                                            <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-blue-500 flex-shrink-0"></div>
-                                            <div className="flex-1 min-w-0">
-                                                <div className="font-bold text-xs md:text-sm truncate">Status Update</div>
-                                                <div className="text-xs md:text-sm text-gray-600 truncate">Application moved to "Technical Review"</div>
-                                            </div>
-                                            <div className="text-xs text-gray-400 flex-shrink-0">1 hr</div>
-                                        </motion.div>
+                                        {(pageContent.dashboardPreview ? pageContent.dashboardPreview.notifications : [
+                                            { title: "Admin Message", message: "Interview with TechCorp confirmed", time: "2 min" },
+                                            { title: "Status Update", message: "Application moved to Technical Review", time: "1 hr" }
+                                        ]).map((notif, i) => (
+                                            <motion.div
+                                                key={i}
+                                                initial={{ opacity: 0, x: -20 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{ delay: 1 + (i * 0.2) }}
+                                                className={`flex items-center gap-3 p-3 md:p-4 rounded-xl border ${i === 0 ? 'bg-gradient-to-r from-blue-50 to-green-50 border-blue-100' : 'bg-white border-gray-100'}`}
+                                            >
+                                                <div className={`w-2 h-2 md:w-3 md:h-3 rounded-full ${i === 0 ? 'bg-green-500 animate-pulse' : 'bg-blue-500'} flex-shrink-0`}></div>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="font-bold text-xs md:text-sm truncate">{notif.title}</div>
+                                                    <div className="text-xs md:text-sm text-gray-600 truncate">"{notif.message}"</div>
+                                                </div>
+                                                <div className="text-xs text-gray-400 flex-shrink-0">{notif.time}</div>
+                                            </motion.div>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
@@ -427,8 +500,26 @@ const Home = () => {
                 </div>
             </section>
 
+            {/* Trusted By Section - New */}
+            <section className="py-8 md:py-12 bg-white/50 backdrop-blur-sm border-y border-gray-100/50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+                        <div className="text-gray-500 font-bold text-sm uppercase tracking-widest text-center md:text-left">
+                            Trusted by candidates at
+                        </div>
+                        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 lg:gap-16 opacity-40 grayscale group hover:grayscale-0 transition-all duration-500">
+                            {['Zoho', 'Freshworks', 'TVS', 'Ashok Leyland', 'Titan', 'HCL Chennai'].map((company) => (
+                                <span key={company} className="text-xl md:text-2xl font-black text-slate-800 tracking-tighter hover:scale-110 transition-transform cursor-pointer">
+                                    {company}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Features Grid Section */}
-            <section className="py-16 md:py-24 bg-white">
+            <section className="py-12 md:py-12 bg-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -447,7 +538,7 @@ const Home = () => {
                     </motion.div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                        {features.map((feature, index) => (
+                        {pageContent.features.map((feature, index) => (
                             <motion.div
                                 key={index}
                                 initial={{ opacity: 0, y: 50 }}
@@ -458,19 +549,22 @@ const Home = () => {
                                 className="group relative p-6 md:p-8 rounded-2xl bg-gradient-to-br from-white to-gray-50 border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-300"
                             >
                                 <div className="absolute top-4 right-4 w-16 h-16 bg-gradient-to-br from-blue-500/5 to-green-500/5 rounded-full group-hover:scale-125 transition-transform duration-300"></div>
-                                
+
                                 <div className="relative z-10">
                                     <div className="w-14 h-14 md:w-16 md:h-16 mb-6 rounded-xl bg-gradient-to-br from-blue-500 to-green-500 flex items-center justify-center text-white text-2xl md:text-3xl shadow-lg">
                                         {feature.icon}
                                     </div>
-                                    
+
                                     <h3 className="text-xl md:text-2xl font-bold mb-3 text-dark">{feature.title}</h3>
                                     <p className="text-sm md:text-base text-gray-600 mb-4">{feature.description}</p>
                                     <p className="text-xs md:text-sm text-gray-500 leading-relaxed">{feature.details}</p>
-                                    
-                                    <div className="mt-6 pt-4 border-t border-gray-100">
+
+                                    <div
+                                        onClick={() => setSelectedFeature(feature)}
+                                        className="mt-6 pt-4 border-t border-gray-100 cursor-pointer group/link hover:bg-gray-50/50 -mx-2 px-2 rounded-lg transition-colors"
+                                    >
                                         <div className="flex items-center justify-between">
-                                            <span className="text-xs md:text-sm text-gray-500">Learn More</span>
+                                            <span className="text-xs md:text-sm font-bold text-primary group-hover/link:translate-x-1 transition-transform duration-300">Learn More</span>
                                             <motion.span
                                                 animate={{ x: [0, 5, 0] }}
                                                 transition={{ repeat: Infinity, duration: 2 }}
@@ -488,7 +582,7 @@ const Home = () => {
             </section>
 
             {/* Advanced Value Pillars - Enhanced & Responsive */}
-            <section ref={pillarsRef} className="py-16 md:py-32 bg-gradient-to-b from-white to-blue-50/30">
+            <section ref={pillarsRef} className="py-12 md:py-12 bg-gradient-to-b from-white to-blue-50/30">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -507,7 +601,7 @@ const Home = () => {
                     </motion.div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-10">
-                        {[
+                        {(pageContent.valuePillars || [
                             {
                                 icon: "🤝",
                                 title: "Personalized Application Support",
@@ -526,13 +620,13 @@ const Home = () => {
                             },
                             {
                                 icon: "💳",
-                                title: "Credit-Smart System",
-                                description: "No subscription lock-in. Pay only for what you use with rollover credits.",
-                                features: ["No Monthly Subs", "Rollover Credits", "Expert Resume Editing"],
-                                savings: "$840/Year",
+                                title: "Full-Support Credit System",
+                                description: "Pay once for credits and receive expert manual support until you secure your dream job. No recurring fees or hidden charges.",
+                                features: ["Support Until Selection", "No Hidden Extra Fees", "Credit-Based Flexibility"],
+                                savings: "Full Support",
                                 color: "blue"
                             }
-                        ].map((pillar, index) => (
+                        ]).map((pillar, index) => (
                             <motion.div
                                 key={index}
                                 initial={{ opacity: 0, y: 50 }}
@@ -600,7 +694,7 @@ const Home = () => {
             </section>
 
             {/* Testimonials Carousel */}
-            <section ref={testimonialsRef} className="py-16 md:py-24 bg-gradient-to-b from-gray-50 to-white">
+            <section ref={testimonialsRef} className="py-7 md:py-7 bg-gradient-to-b from-gray-50 to-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -631,7 +725,7 @@ const Home = () => {
                                 <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
                                     <div className="flex-shrink-0">
                                         <div className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-blue-500 to-green-500 rounded-full flex items-center justify-center text-white text-2xl md:text-3xl font-bold">
-                                            {testimonials[testimonialIndex].avatar}
+                                            {pageContent.testimonials[testimonialIndex].avatar}
                                         </div>
                                     </div>
                                     <div className="flex-1 text-center md:text-left">
@@ -641,14 +735,14 @@ const Home = () => {
                                             ))}
                                         </div>
                                         <p className="text-lg md:text-xl italic text-gray-700 mb-6">
-                                            "{testimonials[testimonialIndex].content}"
+                                            "{pageContent.testimonials[testimonialIndex].content}"
                                         </p>
                                         <div>
                                             <div className="font-bold text-lg md:text-xl">
-                                                {testimonials[testimonialIndex].name}
+                                                {pageContent.testimonials[testimonialIndex].name}
                                             </div>
                                             <div className="text-gray-600">
-                                                {testimonials[testimonialIndex].role} • {testimonials[testimonialIndex].company}
+                                                {pageContent.testimonials[testimonialIndex].role} • {pageContent.testimonials[testimonialIndex].company}
                                             </div>
                                         </div>
                                     </div>
@@ -658,15 +752,14 @@ const Home = () => {
 
                         {/* Testimonial Navigation */}
                         <div className="flex justify-center items-center gap-4 mt-8">
-                            {testimonials.map((_, idx) => (
+                            {pageContent.testimonials.map((_, idx) => (
                                 <button
                                     key={idx}
                                     onClick={() => setTestimonialIndex(idx)}
-                                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                                        testimonialIndex === idx 
-                                            ? 'bg-gradient-to-r from-blue-500 to-green-500 w-8' 
-                                            : 'bg-gray-300'
-                                    }`}
+                                    className={`w-3 h-3 rounded-full transition-all duration-300 ${testimonialIndex === idx
+                                        ? 'bg-gradient-to-r from-blue-500 to-green-500 w-8'
+                                        : 'bg-gray-300'
+                                        }`}
                                 />
                             ))}
                         </div>
@@ -675,7 +768,7 @@ const Home = () => {
             </section>
 
             {/* Platform Simulator - Enhanced & Responsive */}
-            <section ref={simulatorRef} className="py-16 md:py-32 bg-gradient-to-b from-white to-gray-50">
+            <section ref={simulatorRef} className="py-12 md:py-20 bg-gradient-to-b from-white to-gray-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -699,7 +792,7 @@ const Home = () => {
                         <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-green-500 to-blue-500 transform -translate-y-1/2 z-0"></div>
 
                         <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-                            {[
+                            {(pageContent.platformSteps || [
                                 {
                                     step: 1,
                                     title: "Profile Optimization",
@@ -728,9 +821,9 @@ const Home = () => {
                                     color: "green",
                                     features: ["Offer Negotiation", "Career Pathing", "Skill Development"]
                                 }
-                            ].map((item, index) => (
+                            ]).map((item, index) => (
                                 <motion.div
-                                    key={item.step}
+                                    key={item.step || index} // step might be undefined if edited, default to index
                                     initial={{ opacity: 0, y: 50 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
@@ -741,7 +834,7 @@ const Home = () => {
                                     <div className="relative p-6 md:p-8 rounded-2xl md:rounded-3xl bg-white border-2 border-gray-100 shadow-xl hover:shadow-2xl transition-all duration-300">
                                         {/* Step Number */}
                                         <div className="absolute -top-4 -left-4 w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-blue-500 to-green-500 flex items-center justify-center text-white font-bold text-base md:text-lg shadow-lg">
-                                            {item.step}
+                                            {item.step || index + 1}
                                         </div>
 
                                         {/* Icon */}
@@ -786,7 +879,7 @@ const Home = () => {
             </section>
 
             {/* Live Stats Section - Enhanced & Responsive */}
-            <section className="py-16 md:py-24 bg-gradient-to-r from-blue-600 via-blue-700 to-green-600 text-white">
+            <section className="py-12 md:py-16 bg-gradient-to-r from-blue-600 via-blue-700 to-green-600 text-white">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -856,7 +949,7 @@ const Home = () => {
             </section>
 
             {/* FAQ Section */}
-            <section className="py-16 md:py-24 bg-white">
+            <section className="py-12 md:py-12 bg-white">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -875,28 +968,7 @@ const Home = () => {
                     </motion.div>
 
                     <div className="space-y-4">
-                        {[
-                            {
-                                question: "How does the credit system work?",
-                                answer: "Our credit-based system lets you pay only for what you use. Each application or service uses credits, and unused credits roll over month-to-month."
-                            },
-                            {
-                                question: "Is there a subscription fee?",
-                                answer: "No! We don't believe in locking you into subscriptions. Pay-per-use with our credit system saves you money and gives you flexibility."
-                            },
-                            {
-                                question: "How quickly can I get support?",
-                                answer: "Our experts typically respond within 2 hours during business hours. We provide 24/7 email support and live chat during working hours."
-                            },
-                            {
-                                question: "What makes Jeenora different from other platforms?",
-                                answer: "We provide end-to-end manual support, real-time application tracking, and direct communication channels with hiring teams - something no other platform offers."
-                            },
-                            {
-                                question: "Can I track multiple applications at once?",
-                                answer: "Yes! Our dashboard lets you track unlimited applications with detailed status updates, interview scheduling, and communication logs."
-                            }
-                        ].map((faq, index) => (
+                        {pageContent.faqs && pageContent.faqs.map((faq, index) => (
                             <motion.div
                                 key={index}
                                 initial={{ opacity: 0, y: 20 }}
@@ -921,7 +993,7 @@ const Home = () => {
             </section>
 
             {/* CTA Section - Enhanced & Responsive */}
-            <section className="py-16 md:py-32 relative overflow-hidden">
+            <section className="py-12 md:py-20 relative overflow-hidden">
                 {/* Background Elements */}
                 <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-green-50"></div>
                 <div className="absolute top-0 left-1/4 w-48 h-48 md:w-96 md:h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
@@ -987,49 +1059,70 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Footer */}
-            <footer className="bg-dark text-white py-12">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                        <div>
-                            <div className="text-2xl font-bold mb-4">Jeenora Hire</div>
-                            <p className="text-gray-400 text-sm">
-                                Transforming career journeys with expert support and transparency.
-                            </p>
-                        </div>
-                        <div>
-                            <h4 className="font-bold mb-4">Platform</h4>
-                            <ul className="space-y-2 text-sm text-gray-400">
-                                <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">How It Works</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Case Studies</a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 className="font-bold mb-4">Resources</h4>
-                            <ul className="space-y-2 text-sm text-gray-400">
-                                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Career Tips</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Resume Templates</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 className="font-bold mb-4">Company</h4>
-                            <ul className="space-y-2 text-sm text-gray-400">
-                                <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-                            </ul>
-                        </div>
+
+
+            {/* Feature Details Modal */}
+            <AnimatePresence>
+                {selectedFeature && (
+                    <div className="fixed inset-0 z-[1001] flex items-center justify-center px-4">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() => setSelectedFeature(null)}
+                            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+                        ></motion.div>
+
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                            className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col"
+                        >
+                            <div className="p-6 md:p-10 overflow-y-auto custom-scrollbar">
+                                <button
+                                    onClick={() => setSelectedFeature(null)}
+                                    className="absolute top-4 right-4 md:top-6 md:right-6 p-2 rounded-full hover:bg-gray-100 transition-colors z-20 bg-white/80 backdrop-blur-sm"
+                                >
+                                    <FaTimes className="text-gray-400" />
+                                </button>
+
+                                <div className="w-16 h-16 mb-6 rounded-2xl bg-gradient-to-br from-blue-500 to-green-500 flex items-center justify-center text-white text-3xl shadow-lg">
+                                    {selectedFeature.icon}
+                                </div>
+
+                                <h3 className="text-2xl font-black text-dark mb-4">{selectedFeature.title}</h3>
+                                <p className="text-gray-600 mb-8 leading-relaxed">
+                                    {selectedFeature.details}
+                                </p>
+
+                                <div className="space-y-4">
+                                    <h4 className="text-sm font-bold uppercase tracking-widest text-primary">What you get:</h4>
+                                    <div className="grid gap-4">
+                                        {selectedFeature.longDetails.map((detail, idx) => (
+                                            <div key={idx} className="flex gap-4 p-4 rounded-xl bg-gray-50 border border-gray-100">
+                                                <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                                                    <span className="text-green-600 font-bold text-sm">✓</span>
+                                                </div>
+                                                <p className="text-sm md:text-base text-gray-700 font-medium">
+                                                    {detail}
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <button
+                                    onClick={() => setSelectedFeature(null)}
+                                    className="w-full mt-10 py-4 bg-primary text-white font-bold rounded-2xl hover:shadow-xl transition-all duration-300"
+                                >
+                                    Got it, thanks!
+                                </button>
+                            </div>
+                        </motion.div>
                     </div>
-                    <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-                        © {new Date().getFullYear()} Jeenora Hire. All rights reserved.
-                    </div>
-                </div>
-            </footer>
+                )}
+            </AnimatePresence>
 
             {/* Add CSS for animations */}
             <style>{`
@@ -1263,6 +1356,20 @@ const Home = () => {
                         animation-iteration-count: 1 !important;
                         transition-duration: 0.01ms !important;
                     }
+                }
+
+                .custom-scrollbar::-webkit-scrollbar {
+                    width: 6px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-track {
+                    background: transparent;
+                }
+                .custom-scrollbar::-webkit-scrollbar-thumb {
+                    background: #e2e8f0;
+                    border-radius: 10px;
+                }
+                .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                    background: #cbd5e1;
                 }
             `}</style>
         </div>

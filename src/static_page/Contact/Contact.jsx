@@ -23,8 +23,8 @@ const Contact = () => {
     };
 
     return (
-        <div className="pb-40 mesh-bg">
-            <section className="py-40 text-center reveal-up">
+        <div className="pb-20 mesh-bg">
+            <section className="py-20 text-center reveal-up">
                 <div className="max-w-[1200px] mx-auto px-8 w-full">
                     <span className="inline-flex items-center gap-2 bg-blue-900/10 text-primary px-5 py-2 rounded-full font-extrabold text-[0.85rem] uppercase tracking-widest mb-8 border border-blue-900/20 shadow-sm">
                         Connect with jeenora
@@ -37,7 +37,7 @@ const Contact = () => {
             </section>
 
             {/* Support Cards */}
-            <section className="pb-32">
+            <section className="pb-16">
                 <div className="max-w-[1200px] mx-auto px-8 w-full">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
                         <div className="group p-12 bg-white rounded-[2.5rem] text-center border border-slate-100 transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:border-primary reveal-up stagger-1 shadow-sm">

@@ -1,9 +1,35 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import api from '../../api/api';
 
 const HowItWorks = () => {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
+    const [pageContent, setPageContent] = useState({
+        phases: [],
+        timelineSteps: [],
+        sections: {
+            hero: {
+                subtitle: 'Platform Workflow & Process',
+                title: 'The Complete Hiring',
+                highlight: 'Success System',
+                description: 'Experience a structured, data-driven journey from discovery to offer. No black holes, just clear progress and expert support.'
+            },
+            lifecycle: {
+                title: 'Complete Application Lifecycle',
+                subtitle: 'Track your progress through every stage with real-time updates and actionable insights.'
+            },
+            comparison: {
+                title: 'Why Professionals Choose',
+                highlight: 'Jeenora',
+                subtitle: 'See how we compare to traditional job search methods'
+            }
+        },
+        successMetrics: [],
+        tabContent: {}
+    });
+
     const [expandedStep, setExpandedStep] = useState(0);
     const [activePhase, setActivePhase] = useState(0);
     const [progress, setProgress] = useState(0);
@@ -23,8 +49,8 @@ const HowItWorks = () => {
         gradient: 'linear-gradient(135deg, #0066CC 0%, #00A86B 100%)'
     };
 
-    // Enhanced phases data with more details
-    const phases = [
+    // Default data for initial render
+    const defaultPhases = [
         {
             num: '01',
             title: 'Expert Discovery & Matching',
@@ -139,91 +165,179 @@ const HowItWorks = () => {
         }
     ];
 
-    // Timeline steps with more details
-    const timelineSteps = [
-        { 
-            step: 1, 
-            title: 'Profile Setup & Analysis', 
-            duration: '5-10 min', 
-            status: 'completed', 
+    const defaultTimelineSteps = [
+        {
+            step: 1,
+            title: 'Profile Setup & Analysis',
+            duration: '5-10 min',
+            status: 'completed',
             description: 'Complete your professional profile with skills, experience, and career goals. Our AI analyzes your profile to identify strengths and improvement areas.',
             tasks: ['Profile completion', 'Skill assessment', 'Career goal setting'],
             icon: '👤'
         },
-        { 
-            step: 2, 
-            title: 'Job Discovery & Matching', 
-            duration: '10-15 min', 
-            status: 'completed', 
+        {
+            step: 2,
+            title: 'Job Discovery & Matching',
+            duration: '10-15 min',
+            status: 'completed',
             description: 'Browse through curated job opportunities with personalized match scores. Use advanced filters to find perfect role matches.',
             tasks: ['Job browsing', 'Match analysis', 'Opportunity shortlisting'],
             icon: '🔍'
         },
-        { 
-            step: 3, 
-            title: 'Expert Application Optimization', 
-            duration: '2-4 hours', 
-            status: 'completed', 
+        {
+            step: 3,
+            title: 'Expert Application Optimization',
+            duration: '2-4 hours',
+            status: 'completed',
             description: 'Our team manually tailors your application for maximum impact. We enhance resumes, optimize cover letters, and ensure ATS compatibility.',
             tasks: ['Resume enhancement', 'Cover letter creation', 'ATS optimization'],
             icon: '✏️'
         },
-        { 
-            step: 4, 
-            title: 'Application Submission', 
-            duration: '1 min', 
-            status: 'active', 
+        {
+            step: 4,
+            title: 'Application Submission',
+            duration: '1 min',
+            status: 'active',
             description: 'Submit optimized applications with one click. Our system tracks every submission and provides instant confirmation.',
             tasks: ['One-click submission', 'Confirmation receipt', 'Tracking setup'],
             icon: '🚀'
         },
-        { 
-            step: 5, 
-            title: 'Real-time Status Tracking', 
-            duration: 'Ongoing', 
-            status: 'pending', 
+        {
+            step: 5,
+            title: 'Real-time Status Tracking',
+            duration: 'Ongoing',
+            status: 'pending',
             description: 'Monitor real-time updates, receive notifications, and track progress through hiring pipeline with detailed analytics.',
             tasks: ['Status monitoring', 'Notification setup', 'Analytics review'],
             icon: '📊'
         },
-        { 
-            step: 6, 
-            title: 'Interview Coordination', 
-            duration: 'Varies', 
-            status: 'pending', 
+        {
+            step: 6,
+            title: 'Interview Coordination',
+            duration: 'Varies',
+            status: 'pending',
             description: 'Schedule and prepare for interviews directly on platform. Get expert coaching and mock interview sessions.',
             tasks: ['Interview scheduling', 'Preparation coaching', 'Mock interviews'],
             icon: '🎯'
         },
-        { 
-            step: 7, 
-            title: 'Offer & Negotiation Support', 
-            duration: '3-7 days', 
-            status: 'pending', 
+        {
+            step: 7,
+            title: 'Offer & Negotiation Support',
+            duration: '3-7 days',
+            status: 'pending',
             description: 'Evaluate offers with our comparison tools. Get expert negotiation guidance and contract review support.',
             tasks: ['Offer comparison', 'Negotiation strategy', 'Contract review'],
             icon: '💼'
         },
-        { 
-            step: 8, 
-            title: 'Onboarding & Transition', 
-            duration: '2-4 weeks', 
-            status: 'pending', 
+        {
+            step: 8,
+            title: 'Onboarding & Transition',
+            duration: '2-4 weeks',
+            status: 'pending',
             description: 'Smooth transition into your new role with structured onboarding plan and ongoing career support.',
             tasks: ['Onboarding planning', 'Team introduction', 'Success tracking'],
             icon: '✨'
         }
     ];
 
-    // Success metrics
-    const successMetrics = [
+    const defaultSuccessMetrics = [
         { metric: 'Applications Processed', value: '25,000+', change: '+15%', trend: 'up' },
         { metric: 'Average Response Time', value: '2.3 days', change: '-40%', trend: 'down' },
-        { metric: 'Interview Rate', value: '78%', change: '+28%', trend: 'up' },
-        { metric: 'Offer Acceptance', value: '92%', change: '+22%', trend: 'up' },
-        { metric: 'User Satisfaction', value: '4.8/5', change: '+0.3', trend: 'up' },
-        { metric: 'Time Saved', value: '40+ hrs', change: 'per user', trend: 'static' }
+        { metric: 'Interview Rate', value: '99%', change: '+28%', trend: 'up' },
+        { metric: 'Offer Acceptance', value: '99%', change: '+22%', trend: 'up' },
+        { metric: 'User Satisfaction', value: '4.9/5', change: '+0.3', trend: 'up' },
+        { metric: 'Time Saved', value: '80+ hrs', change: 'per user', trend: 'static' }
     ];
+
+    const defaultTabContent = {
+        overview: {
+            title: "Complete Workflow Overview",
+            description: "End-to-end process from discovery to onboarding",
+            steps: [
+                { title: "Profile Analysis", icon: "📋", desc: "Comprehensive profile assessment and optimization" },
+                { title: "Job Matching", icon: "🎯", desc: "AI-powered matching with expert verification" },
+                { title: "Application", icon: "✏️", desc: "Manual enhancement and optimization" },
+                { title: "Tracking", icon: "📱", desc: "Real-time status updates and communication" },
+                { title: "Interview", icon: "🎙️", desc: "Preparation and coordination support" },
+                { title: "Offer", icon: "💼", desc: "Evaluation and negotiation guidance" }
+            ]
+        },
+        features: {
+            title: "Key Platform Features",
+            description: "Everything you need for a successful job search",
+            steps: [
+                { title: "Expert Support", icon: "👥", desc: "Dedicated career experts for guidance" },
+                { title: "Real-time Tracking", icon: "📍", desc: "Live application status updates" },
+                { title: "Direct Communication", icon: "💬", desc: "Chat with hiring teams directly" },
+                { title: "Analytics Dashboard", icon: "📊", desc: "Comprehensive performance insights" },
+                { title: "Resource Library", icon: "📚", desc: "Templates, guides, and tools" },
+                { title: "Mobile App", icon: "📱", desc: "On-the-go access and notifications" }
+            ]
+        },
+        benefits: {
+            title: "User Benefits",
+            description: "How Jeenora transforms your job search",
+            steps: [
+                { title: "Time Savings", icon: "⏰", desc: "Save 40+ hours per month" },
+                { title: "Higher Success", icon: "📈", desc: "3x more interview calls" },
+                { title: "Better Offers", icon: "💰", desc: "15-25% higher compensation" },
+                { title: "Stress Reduction", icon: "😌", desc: "Eliminate application anxiety" },
+                { title: "Career Growth", icon: "🚀", desc: "Long-term career planning" },
+                { title: "Community", icon: "🤝", desc: "Network with professionals" }
+            ]
+        }
+    };
+
+    useEffect(() => {
+        const fetchContent = async () => {
+            try {
+                const { data } = await api.get('/hire/static/how-it-works');
+                if (data && data.content) {
+                    setPageContent(prev => ({
+                        ...prev,
+                        ...data.content,
+                        phases: data.content.phases || defaultPhases,
+                        timelineSteps: data.content.timelineSteps || defaultTimelineSteps,
+                        successMetrics: data.content.successMetrics || defaultSuccessMetrics,
+                        tabContent: data.content.tabContent || defaultTabContent
+                    }));
+                } else {
+                    setPageContent(prev => ({
+                        ...prev,
+                        phases: defaultPhases,
+                        timelineSteps: defaultTimelineSteps,
+                        successMetrics: defaultSuccessMetrics,
+                        tabContent: defaultTabContent
+                    }));
+                }
+            } catch (err) {
+                console.error('Failed to fetch how-it-works content:', err);
+                setPageContent(prev => ({
+                    ...prev,
+                    phases: defaultPhases,
+                    timelineSteps: defaultTimelineSteps,
+                    successMetrics: defaultSuccessMetrics,
+                    tabContent: defaultTabContent
+                }));
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchContent();
+    }, []);
+
+    const phases = pageContent.phases && pageContent.phases.length > 0 ? pageContent.phases : defaultPhases;
+    const timelineSteps = pageContent.timelineSteps && pageContent.timelineSteps.length > 0 ? pageContent.timelineSteps : defaultTimelineSteps;
+    const successMetrics = pageContent.successMetrics && pageContent.successMetrics.length > 0 ? pageContent.successMetrics : defaultSuccessMetrics;
+    const tabContent = pageContent.tabContent && Object.keys(pageContent.tabContent).length > 0 ? pageContent.tabContent : defaultTabContent;
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-white">
+                <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+            </div>
+        );
+    }
 
     useEffect(() => {
         // Intersection Observer for animations
@@ -236,9 +350,9 @@ const HowItWorks = () => {
                     }
                 }
             });
-        }, { 
-            threshold: 0.1, 
-            rootMargin: '-50px' 
+        }, {
+            threshold: 0.1,
+            rootMargin: '-50px'
         });
 
         document.querySelectorAll('.reveal-up, .bounce-in, .slide-in-left, .slide-in-right, .float-animation, .fade-in').forEach(el => observer.observe(el));
@@ -287,50 +401,12 @@ const HowItWorks = () => {
         }, 30);
     };
 
-    // Enhanced tab content
-    const tabContent = {
-        overview: {
-            title: "Complete Workflow Overview",
-            description: "End-to-end process from discovery to onboarding",
-            steps: [
-                { title: "Profile Analysis", icon: "📋", desc: "Comprehensive profile assessment and optimization" },
-                { title: "Job Matching", icon: "🎯", desc: "AI-powered matching with expert verification" },
-                { title: "Application", icon: "✏️", desc: "Manual enhancement and optimization" },
-                { title: "Tracking", icon: "📱", desc: "Real-time status updates and communication" },
-                { title: "Interview", icon: "🎙️", desc: "Preparation and coordination support" },
-                { title: "Offer", icon: "💼", desc: "Evaluation and negotiation guidance" }
-            ]
-        },
-        features: {
-            title: "Key Platform Features",
-            description: "Everything you need for a successful job search",
-            steps: [
-                { title: "Expert Support", icon: "👥", desc: "Dedicated career experts for guidance" },
-                { title: "Real-time Tracking", icon: "📍", desc: "Live application status updates" },
-                { title: "Direct Communication", icon: "💬", desc: "Chat with hiring teams directly" },
-                { title: "Analytics Dashboard", icon: "📊", desc: "Comprehensive performance insights" },
-                { title: "Resource Library", icon: "📚", desc: "Templates, guides, and tools" },
-                { title: "Mobile App", icon: "📱", desc: "On-the-go access and notifications" }
-            ]
-        },
-        benefits: {
-            title: "User Benefits",
-            description: "How Jeenora transforms your job search",
-            steps: [
-                { title: "Time Savings", icon: "⏰", desc: "Save 40+ hours per month" },
-                { title: "Higher Success", icon: "📈", desc: "3x more interview calls" },
-                { title: "Better Offers", icon: "💰", desc: "15-25% higher compensation" },
-                { title: "Stress Reduction", icon: "😌", desc: "Eliminate application anxiety" },
-                { title: "Career Growth", icon: "🚀", desc: "Long-term career planning" },
-                { title: "Community", icon: "🤝", desc: "Network with professionals" }
-            ]
-        }
-    };
+
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-blue-50/20 via-white to-green-50/20">
             {/* Navigation Progress Bar */}
-            <motion.div 
+            <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 className="fixed top-0 left-0 h-1 bg-gradient-to-r from-blue-500 to-green-500 z-50"
@@ -338,7 +414,7 @@ const HowItWorks = () => {
             />
 
             {/* Hero Section - Enhanced & Responsive */}
-            <section className="relative pt-20 md:pt-32 pb-20 md:pb-40 overflow-hidden">
+            <section className="relative pt-7 pb-12 md:pb-16 overflow-hidden">
                 {/* Animated Background Elements */}
                 <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-green-500 to-blue-500"></div>
                 <div className="absolute -top-20 -right-20 w-64 h-64 md:w-96 md:h-96 bg-blue-500/5 rounded-full blur-3xl animate-pulse-slow"></div>
@@ -359,15 +435,15 @@ const HowItWorks = () => {
                             style={{ color: colors.primary }}
                         >
                             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                            Platform Workflow & Process
+                            {pageContent.sections.hero.subtitle}
                         </motion.div>
 
                         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-6 md:mb-8 tracking-tight gradient-text">
                             <span className="bg-gradient-to-r from-blue-600 via-green-500 to-blue-600 bg-clip-text text-transparent">
-                                The Complete Hiring
+                                {pageContent.sections.hero.title}
                             </span>
                             <br />
-                            <span className="text-dark">Success System</span>
+                            <span className="text-dark">{pageContent.sections.hero.highlight}</span>
                         </h1>
 
                         <motion.p
@@ -376,10 +452,7 @@ const HowItWorks = () => {
                             transition={{ delay: 0.3 }}
                             className="text-base md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-8 md:mb-12 px-4 md:px-0"
                         >
-                            Experience a structured, data-driven journey from discovery to offer.
-                            <span className="font-bold text-primary" style={{ color: colors.primary }}> No black holes</span>,
-                            just <span className="font-bold text-secondary" style={{ color: colors.secondary }}>clear progress</span> and
-                            <span className="font-bold text-primary" style={{ color: colors.primary }}> expert support</span>.
+                            {pageContent.sections.hero.description}
                         </motion.p>
 
                         {/* Interactive Stats Grid */}
@@ -432,7 +505,7 @@ const HowItWorks = () => {
             </section>
 
             {/* Tab Content - Responsive */}
-            <section className="py-12 md:py-20">
+            <section className="py-10 md:py-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <AnimatePresence mode="wait">
                         <motion.div
@@ -493,7 +566,7 @@ const HowItWorks = () => {
             </section>
 
             {/* Interactive Phases - Enhanced & Responsive */}
-            <section ref={processRef} className="py-16 md:py-32">
+            <section ref={processRef} className="py-10 md:py-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -657,7 +730,7 @@ const HowItWorks = () => {
             </section>
 
             {/* Interactive Timeline - Enhanced & Responsive */}
-            <section ref={timelineRef} className="py-16 md:py-32 bg-gradient-to-b from-white to-blue-50/30">
+            <section ref={timelineRef} className="py-10 md:py-16 bg-gradient-to-b from-white to-blue-50/30">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -667,11 +740,11 @@ const HowItWorks = () => {
                     >
                         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black mb-4 md:mb-6">
                             <span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
-                                Complete Application Lifecycle
+                                {pageContent.sections.lifecycle.title}
                             </span>
                         </h2>
                         <p className="text-base md:text-xl text-gray-600 max-w-3xl mx-auto px-4">
-                            Track your progress through every stage with real-time updates and actionable insights.
+                            {pageContent.sections.lifecycle.subtitle}
                         </p>
                     </motion.div>
 
@@ -862,7 +935,7 @@ const HowItWorks = () => {
             </section>
 
             {/* Comparison Table Section - Enhanced & Responsive */}
-            <section ref={comparisonRef} className="py-16 md:py-32">
+            <section ref={comparisonRef} className="py-10 md:py-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 50 }}
@@ -1017,7 +1090,7 @@ const HowItWorks = () => {
             </section>
 
             {/* Application Flow Visualization - Enhanced & Responsive */}
-            <section className="py-16 md:py-32 bg-gradient-to-b from-white to-gray-50">
+            <section className="py-10 md:py-16 bg-gradient-to-b from-white to-gray-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -1166,7 +1239,7 @@ const HowItWorks = () => {
             </section>
 
             {/* Success Stories Carousel */}
-            <section className="py-16 md:py-32 bg-gradient-to-b from-white to-blue-50/30">
+            <section className="py-10 md:py-16 bg-gradient-to-b from-white to-blue-50/30">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -1224,7 +1297,7 @@ const HowItWorks = () => {
             </section>
 
             {/* Call to Action - Enhanced & Responsive */}
-            <section className="py-16 md:py-32">
+            <section className="py-10 md:py-16">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -1274,49 +1347,6 @@ const HowItWorks = () => {
                 </div>
             </section>
 
-            {/* Footer */}
-            <footer className="bg-dark text-white py-12">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                        <div>
-                            <div className="text-2xl font-bold mb-4">Jeenora Hire</div>
-                            <p className="text-gray-400 text-sm">
-                                Transforming career journeys with expert support and complete transparency.
-                            </p>
-                        </div>
-                        <div>
-                            <h4 className="font-bold mb-4">How It Works</h4>
-                            <ul className="space-y-2 text-sm text-gray-400">
-                                <li><a href="#" className="hover:text-white transition-colors">Process Overview</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Success Phases</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Timeline Tracking</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Success Stories</a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 className="font-bold mb-4">Resources</h4>
-                            <ul className="space-y-2 text-sm text-gray-400">
-                                <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Video Tutorials</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Case Studies</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 className="font-bold mb-4">Contact</h4>
-                            <ul className="space-y-2 text-sm text-gray-400">
-                                <li><a href="#" className="hover:text-white transition-colors">Support</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Partnerships</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-                                <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
-                        © {new Date().getFullYear()} Jeenora Hire. All rights reserved.
-                    </div>
-                </div>
-            </footer>
 
             {/* CSS Animations */}
             <style>{`

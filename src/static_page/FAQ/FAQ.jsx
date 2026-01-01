@@ -1,23 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import api from '../../api/api';
 
 const FAQ = () => {
     const [activeIndex, setActiveIndex] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const [pageContent, setPageContent] = useState({
+        faqs: [],
+        hero: {},
+        supportPanel: {},
+        systemStatus: {}
+    });
+    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.reveal-up, .fade-up-blur, .bounce-in').forEach(el => observer.observe(el));
-        return () => observer.disconnect();
-    }, [searchTerm]);
-
-    const faqs = [
+    const defaultFaqs = [
         {
             q: "How do credits work exactly?",
             a: "Credits are our platform's focus currency. Each credit allows you to perform one 'Platinum Action'—like sending a professionally-enhanced application, requesting an expert review, or initiating a direct employer chat. They never expire and rollover month-to-month.",
@@ -40,19 +34,96 @@ const FAQ = () => {
         }
     ];
 
+    const defaultHero = {
+        title: "Common Questions",
+        subtitle: "Get answers to common questions about our pricing and plans",
+        badge: "Help Center"
+    };
+
+    const defaultSupportPanel = {
+        title: "Need more clarity?",
+        description: "Our dedicated support team is available 24/7 for instant credit and platform queries.",
+        buttonText: "Chat with Live Support"
+    };
+
+    const defaultSystemStatus = {
+        title: "System Status",
+        status: "All Platforms Operational"
+    };
+
+    useEffect(() => {
+        const fetchContent = async () => {
+            try {
+                const response = await api.get('/hire/static/faq');
+                if (response.data && response.data.content) {
+                    setPageContent({
+                        faqs: response.data.content.faqs || defaultFaqs,
+                        hero: response.data.content.hero || defaultHero,
+                        supportPanel: response.data.content.supportPanel || defaultSupportPanel,
+                        systemStatus: response.data.content.systemStatus || defaultSystemStatus
+                    });
+                } else {
+                    setPageContent({
+                        faqs: defaultFaqs,
+                        hero: defaultHero,
+                        supportPanel: defaultSupportPanel,
+                        systemStatus: defaultSystemStatus
+                    });
+                }
+            } catch (error) {
+                console.error('Failed to fetch FAQ content:', error);
+                setPageContent({
+                    faqs: defaultFaqs,
+                    hero: defaultHero,
+                    supportPanel: defaultSupportPanel,
+                    systemStatus: defaultSystemStatus
+                });
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchContent();
+    }, []);
+
+    const faqs = pageContent.faqs.length > 0 ? pageContent.faqs : defaultFaqs;
+
+    useEffect(() => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal-up, .fade-up-blur, .bounce-in').forEach(el => observer.observe(el));
+        return () => observer.disconnect();
+    }, [searchTerm]);
+
     const filteredFaqs = faqs.filter(f =>
         f.q.toLowerCase().includes(searchTerm.toLowerCase()) ||
         f.cat.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-white">
+                <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
     return (
-        <div className="pb-40 mesh-bg">
-            <section className="py-40 text-center reveal-up">
+        <div className="pb-20 mesh-bg">
+            <section className="py-20 text-center reveal-up">
                 <div className="max-w-[1200px] mx-auto px-8 w-full">
                     <span className="inline-flex items-center gap-2 bg-blue-900/10 text-primary px-5 py-2 rounded-full font-extrabold text-[0.85rem] uppercase tracking-widest mb-8 border border-blue-900/20">
-                        Help Center
+                        {pageContent.hero.badge || "Help Center"}
                     </span>
-                    <h1 className="text-6xl font-black mb-12 tracking-tighter">Common <span>Questions</span></h1>
+                    <h1 className="text-6xl font-black mb-12 tracking-tighter">
+                        {(pageContent.hero.title && pageContent.hero.title.split(' ')[0]) || "Common"}
+                        <span> {(pageContent.hero.title && pageContent.hero.title.split(' ').slice(1).join(' ')) || "Questions"}</span>
+                    </h1>
 
                     <div className="max-w-2xl mx-auto relative group">
                         <input
@@ -67,7 +138,7 @@ const FAQ = () => {
                 </div>
             </section>
 
-            <section className="pb-32">
+            <section className="pb-20">
                 <div className="max-w-[1200px] mx-auto px-8 w-full">
                     <div className="grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-16">
                         <div className="flex flex-col gap-6">
@@ -103,17 +174,17 @@ const FAQ = () => {
 
                         <div className="space-y-8">
                             <div className="p-12 rounded-[2.5rem] text-center glass-panel shadow-2xl border border-white/30 tilt-card bounce-in active">
-                                <h3 className="text-2xl font-black mb-6">Need more clarity?</h3>
-                                <p className="text-text-light font-bold mb-8 leading-relaxed">Our dedicated support team is available 24/7 for instant credit and platform queries.</p>
-                                <button className="w-full py-4 bg-primary text-white rounded-full font-black text-lg hover:shadow-xl hover:bg-blue-700 transition-all btn-press border-none">Chat with Live Support</button>
+                                <h3 className="text-2xl font-black mb-6">{pageContent.supportPanel.title || "Need more clarity?"}</h3>
+                                <p className="text-text-light font-bold mb-8 leading-relaxed">{pageContent.supportPanel.description || "Our dedicated support team is available 24/7 for instant credit and platform queries."}</p>
+                                <button className="w-full py-4 bg-primary text-white rounded-full font-black text-lg hover:shadow-xl hover:bg-blue-700 transition-all btn-press border-none">{pageContent.supportPanel.buttonText || "Chat with Live Support"}</button>
                             </div>
 
                             <div className="p-8 rounded-3xl bg-slate-900 text-white reveal-up stagger-3">
                                 <div className="flex items-center gap-4 mb-4">
                                     <div className="w-3 h-3 bg-secondary rounded-full animate-pulse-soft"></div>
-                                    <span className="font-bold text-sm uppercase tracking-widest text-slate-400">System Status</span>
+                                    <span className="font-bold text-sm uppercase tracking-widest text-slate-400">{pageContent.systemStatus.title || "System Status"}</span>
                                 </div>
-                                <p className="font-black text-xl">All Platforms Operational</p>
+                                <p className="font-black text-xl">{pageContent.systemStatus.status || "All Platforms Operational"}</p>
                             </div>
                         </div>
                     </div>
