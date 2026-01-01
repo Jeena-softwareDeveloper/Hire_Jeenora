@@ -103,12 +103,12 @@ const StaticLayout = () => {
                             transition={{ duration: 0.3, ease: 'easeInOut' }}
                             className="md:hidden overflow-hidden bg-white border-t border-gray-100 absolute top-full left-0 right-0 shadow-2xl"
                         >
-                            <div className="px-6 py-8 flex flex-col gap-6">
+                            <div className="px-6 py-6 flex flex-col gap-2">
                                 {navLinks.map((link) => (
                                     <Link
                                         key={link.path}
                                         to={link.path}
-                                        className={`flex items-center justify-between py-2 text-lg font-bold no-underline transition-all focus:outline-none
+                                        className={`flex items-center justify-between py-2 text-base font-medium no-underline transition-all focus:outline-none
                                             ${location.pathname === link.path ? 'text-primary' : 'text-gray-600 hover:text-primary'}
                                         `}
                                     >
