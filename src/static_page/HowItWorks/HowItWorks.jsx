@@ -331,16 +331,10 @@ const HowItWorks = () => {
     const successMetrics = pageContent.successMetrics && pageContent.successMetrics.length > 0 ? pageContent.successMetrics : defaultSuccessMetrics;
     const tabContent = pageContent.tabContent && Object.keys(pageContent.tabContent).length > 0 ? pageContent.tabContent : defaultTabContent;
 
-    if (loading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-white">
-                <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-            </div>
-        );
-    }
-
     useEffect(() => {
         // Intersection Observer for animations
+        if (loading) return; // Add check inside effect if needed, but mainly we move the declaration up
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -388,7 +382,7 @@ const HowItWorks = () => {
             window.removeEventListener('scroll', handleScroll);
             if (scrollTimeout) clearTimeout(scrollTimeout);
         };
-    }, []);
+    }, [loading, phases.length]); // dependency update
 
     const startTimelineAnimation = () => {
         let progress = 0;
@@ -400,6 +394,14 @@ const HowItWorks = () => {
             }
         }, 30);
     };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-white">
+                <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+            </div>
+        );
+    }
 
 
 
