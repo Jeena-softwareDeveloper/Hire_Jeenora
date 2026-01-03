@@ -6,6 +6,9 @@ import { overrideStyle } from "../utils/utils";
 import api from '../api/api';
 import toast from 'react-hot-toast';
 import loginBg from '@/assets/login_bg_green.png';
+import Loader from '../components/common/Loader';
+import logo from '@/assets/logo.png';
+import Notification from '../utils/Notification';
 
 const ResetPassword = () => {
     const [searchParams] = useSearchParams();
@@ -96,11 +99,7 @@ const ResetPassword = () => {
     if (validating) {
         return (
             <div className='min-w-screen min-h-screen relative overflow-hidden flex justify-center items-center bg-cover bg-center font-["Outfit"]' style={{ backgroundImage: `url(${loginBg})` }}>
-                <div className="absolute inset-0 bg-white/5 backdrop-blur-[6px]" />
-                <div className='relative z-10 text-center bg-white/70 backdrop-blur-3xl p-12 rounded-[32px] shadow-xl border border-white/60'>
-                    <PropagateLoader color='#0ea5e9' size={15} />
-                    <p className='mt-8 text-slate-800 font-bold text-lg'>Verifying secure link...</p>
-                </div>
+                <Loader message="Verifying secure link..." />
             </div>
         );
     }
@@ -131,6 +130,7 @@ const ResetPassword = () => {
             className='min-w-screen min-h-screen relative overflow-hidden flex justify-center items-center py-8 px-4 font-["Outfit"] bg-cover bg-center bg-no-repeat'
             style={{ backgroundImage: `url(${loginBg})` }}
         >
+            {loading && <Loader message="Updating your password..." />}
             <div className="absolute inset-0 bg-white/5 backdrop-blur-[6px]" />
 
             <div className='w-full max-w-[500px] mx-auto relative z-10'>
@@ -227,14 +227,8 @@ const ResetPassword = () => {
                             disabled={loading}
                             className='w-full h-[60px] bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black py-3 rounded-2xl shadow-[0_12px_24px_-8px_rgba(37,99,235,0.4)] transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-3 group'
                         >
-                            {loading ? (
-                                <PropagateLoader color='#fff' cssOverride={overrideStyle} size={10} />
-                            ) : (
-                                <>
-                                    <span className="text-lg tracking-wide">Update Password</span>
-                                    <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-                                </>
-                            )}
+                            <span className="text-lg tracking-wide">Update Password</span>
+                            <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
                         </button>
                     </form>
 

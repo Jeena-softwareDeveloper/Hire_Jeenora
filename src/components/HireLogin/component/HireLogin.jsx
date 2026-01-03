@@ -18,6 +18,7 @@ import logo from '@/assets/logo.png';
 import loginBg from '@/assets/login_bg_green.png';
 import Notification from '../../../utils/Notification';
 import OTPInput from '../../common/OTPInput';
+import Loader from '../../common/Loader';
 import '../css/HireLogin.css';
 
 const HireLogin = () => {
@@ -145,6 +146,9 @@ const HireLogin = () => {
             className='min-w-screen min-h-screen relative overflow-hidden flex justify-center items-center py-4 px-3 sm:px-4 lg:py-8 font-["Outfit"] bg-cover bg-center bg-no-repeat'
             style={{ backgroundImage: `url(${loginBg})` }}
         >
+            {(loader || sendingOTP) && (
+                <Loader message={sendingOTP ? "Sending secure OTP..." : "Authenticating..."} />
+            )}
 
             {/* Optional Overlay to ensure text readability if image is too bright */}
             <div className="absolute inset-0 bg-white/10 backdrop-blur-[2px]" />
@@ -240,20 +244,14 @@ const HireLogin = () => {
 
                             {/* Submit Button */}
                             <button
-                                disabled={sendingOTP}
+                                disabled={sendingOTP || loader}
                                 className="w-full bg-gradient-to-r from-[#2FA8E5] to-[#27CFA6] hover:from-[#2697d0] hover:to-[#22bc96] text-white font-bold py-3 rounded-lg shadow-[0_10px_20px_-10px_rgba(39,207,166,0.5)] transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 group text-sm"
                             >
-                                {sendingOTP ? (
-                                    <PropagateLoader color='#fff' cssOverride={overrideStyle} size={8} />
-                                ) : (
-                                    <>
-                                        <div className="bg-white/20 p-1 rounded-full">
-                                            <FaShieldAlt className="text-white text-xs" />
-                                        </div>
-                                        <span>Secure Login</span>
-                                        <FaArrowRight className="group-hover:translate-x-1 transition-transform w-3 h-3" />
-                                    </>
-                                )}
+                                <div className="bg-white/20 p-1 rounded-full">
+                                    <FaShieldAlt className="text-white text-xs" />
+                                </div>
+                                <span>Secure Login</span>
+                                <FaArrowRight className="group-hover:translate-x-1 transition-transform w-3 h-3" />
                             </button>
 
                             {/* Footer Link 1: Forgot Password */}

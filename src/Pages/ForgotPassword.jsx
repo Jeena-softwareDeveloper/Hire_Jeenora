@@ -11,6 +11,7 @@ import Notification from '../utils/Notification';
 import '../components/HireLogin/css/HireLogin.css';
 
 import OTPInput from '../components/common/OTPInput';
+import Loader from '../components/common/Loader';
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
@@ -79,6 +80,7 @@ const ForgotPassword = () => {
             className='min-w-screen min-h-screen relative overflow-hidden flex justify-center items-center py-6 px-4 font-["Outfit"] bg-cover bg-center bg-no-repeat'
             style={{ backgroundImage: `url(${loginBg})` }}
         >
+            {loading && <Loader message={step === 1 ? "Sending secure OTP..." : "Generating reset link..."} />}
             {/* Glossy Overlay */}
             <div className="absolute inset-0 bg-white/5 backdrop-blur-[6px]" />
 
@@ -156,17 +158,11 @@ const ForgotPassword = () => {
                                     disabled={loading}
                                     className='w-full bg-gradient-to-r from-[#2FA8E5] to-[#27CFA6] hover:from-[#2697d0] hover:to-[#22bc96] text-white font-bold py-3.5 rounded-xl shadow-[0_10px_20px_-10px_rgba(39,207,166,0.5)] transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 group'
                                 >
-                                    {loading ? (
-                                        <PropagateLoader color='#fff' cssOverride={overrideStyle} size={10} />
-                                    ) : (
-                                        <>
-                                            <div className="bg-white/20 p-1 rounded-full">
-                                                <FaShieldAlt className="text-white text-xs" />
-                                            </div>
-                                            <span>Send Reset Code</span>
-                                            <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
-                                        </>
-                                    )}
+                                    <div className="bg-white/20 p-1 rounded-full">
+                                        <FaShieldAlt className="text-white text-xs" />
+                                    </div>
+                                    <span>Send Reset Code</span>
+                                    <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
                                 </button>
                             </form>
                         </>
