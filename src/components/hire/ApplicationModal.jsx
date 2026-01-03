@@ -53,9 +53,9 @@ const ApplicationModal = ({ job, onClose, onSuccess }) => {
     }, [step, userInfo, job]);
 
     return (
-       <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[100] flex items-center justify-center p-6 animate-fadeIn">
-                    <div className="bg-white w-full max-w-xl rounded-[1rem] shadow-2xl border border-slate-100 overflow-hidden animate-slideUp">
-                            {/* Header */}
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[100] flex items-center justify-center p-6 animate-fadeIn">
+            <div className="bg-white w-full max-w-xl rounded-[1rem] shadow-2xl border border-slate-100 overflow-hidden animate-slideUp">
+                {/* Header */}
                 <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
                     <h3 className="font-semibold text-gray-800">
                         {step === 1 && 'Eligibility Check'}
@@ -96,7 +96,7 @@ const ApplicationModal = ({ job, onClose, onSuccess }) => {
                                     Insufficient credits. Please purchase more to apply.
                                 </div>
                             ) : (
-                                <button onClick={() => setStep(2)} className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                                <button onClick={() => setStep(2)} className="btn-premium w-full py-3 shadow-blue-500/20">
                                     Continue to Apply
                                 </button>
                             )}
@@ -165,7 +165,7 @@ const ApplicationModal = ({ job, onClose, onSuccess }) => {
                             <button
                                 onClick={() => setStep(3)}
                                 disabled={!selectedResume && resumes.length === 0}
-                                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:bg-gray-300"
+                                className="btn-premium w-full py-3 shadow-blue-500/20 disabled:from-blue-100 disabled:to-emerald-100 disabled:text-blue-400 disabled:shadow-none disabled:cursor-not-allowed disabled:opacity-70"
                             >
                                 Review Application
                             </button>
@@ -204,7 +204,7 @@ const ApplicationModal = ({ job, onClose, onSuccess }) => {
                                 <button onClick={() => setStep(2)} className="flex-1 border border-gray-300 text-gray-700 py-2.5 rounded-lg hover:bg-gray-50 transition">
                                     Edit
                                 </button>
-                                <button onClick={handleApply} disabled={loading} className="flex-1 bg-green-600 text-white py-2.5 rounded-lg font-semibold hover:bg-green-700 transition flex justify-center items-center">
+                                <button onClick={handleApply} disabled={loading} className="btn-premium flex-1 py-2.5 shadow-blue-500/20 disabled:from-blue-100 disabled:to-emerald-100 disabled:text-blue-400 disabled:shadow-none disabled:cursor-not-allowed disabled:opacity-70">
                                     {loading ? 'Applying...' : 'Confirm & Apply'}
                                 </button>
                             </div>
@@ -220,7 +220,7 @@ const ApplicationModal = ({ job, onClose, onSuccess }) => {
                             <p className="text-gray-500 mb-8 max-w-xs mx-auto">Your application has been sent to {job.company?.name}. Good luck!</p>
 
                             <div className="flex flex-col gap-3">
-                                <button onClick={() => window.location.href = '/hire/job-tracking'} className="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700">
+                                <button onClick={() => window.location.href = '/hire/job-tracking'} className="btn-premium w-full py-3 shadow-blue-500/20">
                                     Track Application
                                 </button>
                                 <button onClick={onClose} className="w-full text-gray-500 py-2 hover:text-gray-800">
@@ -236,3 +236,4 @@ const ApplicationModal = ({ job, onClose, onSuccess }) => {
 };
 
 export default ApplicationModal;
+

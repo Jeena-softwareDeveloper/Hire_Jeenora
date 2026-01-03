@@ -27,3 +27,4 @@ const ResumeSuccess = ({ selectedEditor, deliveryDate, resetOrder }) => {
 };
 
 export default ResumeSuccess;
+

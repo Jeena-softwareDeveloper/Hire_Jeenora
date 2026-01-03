@@ -8,3 +8,4 @@ function HireRegister() {
 }
 
 export default HireRegister;
+

@@ -23,3 +23,4 @@ const EmptyState = ({ icon: Icon, title, description, actionLabel, onAction, cla
 };
 
 export default EmptyState;
+

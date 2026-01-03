@@ -1,7 +1,11 @@
 import React from "react";
 
-function ProfilePersonalInfo({ form, isEditing, handleChange, handleStateChange, locations, districtsData, selectedState, handleUpdate, setIsEditing, loading }) {
+function ProfilePersonalInfo({ form, isEditing, handleChange, handleStateChange, handleDistrictChange, locations, districtsData, selectedState, handleUpdate, setIsEditing, loading }) {
     if (!form) return null;
+
+    const allDistricts = locations.reduce((acc, loc) => {
+        return [...acc, ...(loc.districts || [])];
+    }, []);
 
     return (
         <form onSubmit={handleUpdate} className="space-y-6">
@@ -64,9 +68,16 @@ function ProfilePersonalInfo({ form, isEditing, handleChange, handleStateChange,
                     {!isEditing ? (
                         <div className="px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 text-gray-900">{form.location || "Not provided"}</div>
                     ) : (
-                        <select name="location" value={form.location} onChange={handleChange} disabled={!selectedState} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-800">
-                            <option value="">Select District</option>
-                            {(districtsData || []).map((dist) => <option key={dist._id} value={dist.name}>{dist.name}</option>)}
+                        <select
+                            name="location"
+                            value={form.location}
+                            onChange={handleDistrictChange}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-800"
+                        >
+                            <option value="">{selectedState ? "Select District" : "Select District (State auto-fills)"}</option>
+                            {(selectedState ? districtsData : allDistricts)?.map((dist, idx) => (
+                                <option key={dist._id || idx} value={dist.name}>{dist.name}</option>
+                            ))}
                         </select>
                     )}
                 </div>
@@ -83,8 +94,8 @@ function ProfilePersonalInfo({ form, isEditing, handleChange, handleStateChange,
 
             {isEditing && (
                 <div className="flex gap-3 pt-6 border-t border-gray-200">
-                    <button type="button" onClick={() => setIsEditing(false)} className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 text-sm">Cancel</button>
-                    <button type="submit" disabled={loading} className="px-4 py-2 bg-green-800 text-white rounded-lg hover:bg-green-700 text-sm">{loading ? "Saving..." : "Save Changes"}</button>
+                    <button type="button" onClick={() => setIsEditing(false)} className="btn-premium-outline">Cancel</button>
+                    <button type="submit" disabled={loading} className="btn-premium">{loading ? "Saving..." : "Save Changes"}</button>
                 </div>
             )}
         </form>
@@ -92,3 +103,4 @@ function ProfilePersonalInfo({ form, isEditing, handleChange, handleStateChange,
 }
 
 export default ProfilePersonalInfo;
+

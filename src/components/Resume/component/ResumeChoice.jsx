@@ -33,3 +33,4 @@ const ResumeChoice = ({ handleResumeOptionSelect }) => {
 };
 
 export default ResumeChoice;
+

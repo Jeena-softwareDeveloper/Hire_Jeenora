@@ -19,7 +19,9 @@ const AppContent = () => {
         })
         .catch((err) => {
           console.log("Failed to fetch user info", err);
-          logout();
+          if (err.response?.status === 401) {
+            logout();
+          }
         });
     }
   }, [token, updateUser, logout]);

@@ -38,7 +38,7 @@ const JobDetails = () => {
     if (!job) return null;
 
     return (
-        <div className="bg-slate-50 min-h-screen py-8 px-4">
+        <div className=" min-h-screen py-8 px-4">
             <div className="max-w-5xl mx-auto">
                 <button onClick={() => navigate(-1)} className="flex items-center text-slate-500 hover:text-slate-800 mb-6 transition-colors">
                     <FaChevronLeft className="mr-2" /> Back to Jobs
@@ -72,14 +72,14 @@ const JobDetails = () => {
                             <div className="flex items-center gap-4">
                                 {isApplied ? (
                                     <button
-                                        className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold cursor-default opacity-80"
+                                        className="bg-gradient-to-r from-blue-50/80 to-emerald-50/80 text-emerald-600 border border-emerald-100 px-8 py-3 rounded-xl font-bold cursor-default flex items-center gap-2"
                                     >
-                                        Already Applied
+                                        <FaCheckCircle /> Already Applied
                                     </button>
                                 ) : (
                                     <button
                                         onClick={() => setShowApplyModal(true)}
-                                        className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition shadow-lg shadow-blue-200"
+                                        className="btn-premium px-10 py-3 text-base"
                                     >
                                         Apply Now
                                     </button>
@@ -178,3 +178,4 @@ const JobDetails = () => {
 };
 
 export default JobDetails;
+

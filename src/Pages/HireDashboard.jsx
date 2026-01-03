@@ -14,44 +14,65 @@ function HireDashboard() {
 
     if (loader) {
         return (
-            <div className='w-full min-h-screen flex flex-col justify-center items-center bg-gray-50 font-["Outfit"]'>
+            <div className='w-full min-h-screen flex flex-col justify-center items-center bg-gray-50/50 backdrop-blur-sm font-["Outfit"]'>
                 <div className="mb-4">
-                    <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
-                        <MdWork className="text-2xl text-green-600" />
+                    <div className="w-16 h-16 rounded-full bg-cyan-100 flex items-center justify-center animate-pulse">
+                        <MdWork className="text-2xl text-cyan-600" />
                     </div>
                 </div>
-                <PropagateLoader color='#166534' cssOverride={overrideStyle} />
-                <p className="mt-4 text-gray-600">Loading your hiring dashboard...</p>
+                <PropagateLoader color='#06b6d4' cssOverride={overrideStyle} />
+                <p className="mt-4 text-slate-600 font-medium tracking-wide">Loading your dashboard...</p>
             </div>
         );
     }
 
     return (
-        <div className="px-4 md:px-6 lg:px-8 py-6 bg-gray-50 min-h-screen font-['Outfit']">
-            <div className="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                    <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Welcome back, {userInfo?.name || 'User'}! 👋</h1>
-                    <p className="text-gray-600 mt-2">Here's your hiring overview for today</p>
+        <div className="w-full">
+            {/* Header Section - Same row on mobile */}
+            <div className="flex flex-row justify-between items-center mb-6 gap-4 w-full">
+                <div className="text-left">
+                    <h1 className="text-xl sm:text-3xl lg:text-xl font-black text-slate-900 uppercase tracking-tighter">
+                        Hi, {userInfo?.name?.split(' ')[0] || 'User'}!
+                    </h1>
                 </div>
-                <div className="flex items-center gap-3">
-                    <div className="px-4 py-2 bg-white border border-gray-300 rounded-lg flex items-center gap-2 text-sm font-medium text-gray-700 shadow-sm">
-                        <MdAccountBalanceWallet className="text-xl text-green-600" />
-                        <span>Credits: {userInfo?.creditBalance || 0}</span>
+
+                {/* Right Side: Credits */}
+                <div className="flex items-center shrink-0">
+                    <div className="flex items-center bg-gradient-to-r from-blue-500 to-emerald-500 px-3 py-1.5 rounded-full shadow-lg shadow-blue-500/30 gap-1.5 transition transform hover:scale-105">
+                        <div className="w-4 h-4 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
+                            <MdAccountBalanceWallet className="text-white text-[9px]" />
+                        </div>
+                        <span className="text-white font-bold text-[9px] uppercase tracking-wide whitespace-nowrap">{userInfo?.creditBalance || 0} Credits</span>
                     </div>
                 </div>
             </div>
 
-            <DashboardStats analytics={analytics} />
-            <div className="mb-6"><AnalyticsSection /></div>
-            <DashboardJobsTable recentJobs={recentJobs} searchTerm={searchTerm} setSearchTerm={setSearchTerm} totalJobs={totalJobs} />
-            <DashboardInterviews scheduledInterviews={analytics.scheduledInterviews} />
+            {/* Main Content Section - Matches Profile.jsx wrapper */}
+            <div className="w-full pb-8 lg:pb-12 pt-0 min-h-[calc(100vh-200px)]">
+                {/* Stats Grid */}
+                <DashboardStats analytics={analytics} />
 
-            <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
-                body { font-family: 'Outfit', sans-serif; }
-            `}</style>
+                {/* Analytics Chart */}
+                <div className="mt-8">
+                    <AnalyticsSection />
+                </div>
+
+                {/* Tables Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+                    {/* Jobs Table takes up 2 columns */}
+                    <div className="lg:col-span-2">
+                        <DashboardJobsTable recentJobs={recentJobs} searchTerm={searchTerm} setSearchTerm={setSearchTerm} totalJobs={totalJobs} />
+                    </div>
+                    {/* Interviews takes up 1 column */}
+                    <div className="lg:col-span-1">
+                        <DashboardInterviews scheduledInterviews={analytics.scheduledInterviews} />
+                    </div>
+                </div>
+            </div>
         </div>
     );
+
 }
 
 export default HireDashboard;
+

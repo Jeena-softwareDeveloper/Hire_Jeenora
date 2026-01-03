@@ -43,3 +43,4 @@ const JobSelectionFilters = ({ searchTerm, setSearchTerm, filters, setFilters, c
 };
 
 export default JobSelectionFilters;
+

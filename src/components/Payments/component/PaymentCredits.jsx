@@ -39,12 +39,12 @@ const PaymentCredits = ({ creditSettings, credits, setCredits, handlePurchaseCre
                                 <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Unit Price</p>
                                 <p className="text-lg font-black text-indigo-950">₹{creditSettings?.perCreditCostINR}<span className="text-[10px] text-slate-400 ml-1">/ CR</span></p>
                             </div>
-                            <div className="p-5 bg-indigo-600 rounded-2xl shadow-xl shadow-indigo-200">
+                            <div className="p-5 bg-gradient-to-br from-blue-600 to-emerald-600 rounded-2xl shadow-xl shadow-blue-500/20">
                                 <p className="text-[9px] font-black text-white/60 uppercase tracking-widest mb-1">Total Payable</p>
                                 <p className="text-lg font-black text-white">₹{credits * (creditSettings?.perCreditCostINR || 0)}</p>
                             </div>
                         </div>
-                        <button onClick={handlePurchaseCredits} disabled={credPending} className="w-full bg-[#1E1B4B] text-white py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-3 hover:bg-slate-900 transition-all shadow-xl shadow-indigo-200">Initialize Transaction</button>
+                        <button onClick={handlePurchaseCredits} disabled={credPending} className="w-full bg-gradient-to-r from-blue-600 to-emerald-600 text-white py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-3 hover:shadow-blue-500/20 transition-all shadow-xl shadow-blue-500/10">Initialize Transaction</button>
                     </div>
                 </div>
             </div>
@@ -70,3 +70,4 @@ const PaymentCredits = ({ creditSettings, credits, setCredits, handlePurchaseCre
 };
 
 export default PaymentCredits;
+

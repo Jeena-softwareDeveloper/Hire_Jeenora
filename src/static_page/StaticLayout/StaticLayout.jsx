@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { FaBars, FaTimes, FaChevronRight, FaLinkedinIn, FaTwitter, FaInstagram } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-import logo from '../../assets/jeenora_z.png';
+import logo from '../../assets/logo.png';
 
 const StaticLayout = () => {
     const navigate = useNavigate();
@@ -216,3 +216,4 @@ const StaticLayout = () => {
 };
 
 export default StaticLayout;
+

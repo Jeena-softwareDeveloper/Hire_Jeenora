@@ -90,7 +90,7 @@ const CreditSettings = () => {
                     <button
                         type="submit"
                         disabled={isUpdating}
-                        className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold shadow-lg shadow-indigo-100 flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-70"
+                        className="btn-premium w-full py-3"
                     >
                         {isUpdating ? <FaSpinner className="animate-spin" /> : <FaSave />}
                         Save Configuration
@@ -102,3 +102,4 @@ const CreditSettings = () => {
 };
 
 export default CreditSettings;
+

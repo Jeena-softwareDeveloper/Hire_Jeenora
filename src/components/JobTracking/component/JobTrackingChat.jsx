@@ -68,3 +68,4 @@ const JobTrackingChat = ({ application, messages, userInfo, messageInput, setMes
 };
 
 export default JobTrackingChat;
+

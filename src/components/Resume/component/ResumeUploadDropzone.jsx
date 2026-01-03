@@ -22,3 +22,4 @@ const ResumeUploadDropzone = ({ dragActive, handleDrag, handleDrop, handleChange
 };
 
 export default ResumeUploadDropzone;
+

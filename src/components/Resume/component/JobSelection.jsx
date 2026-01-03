@@ -16,7 +16,7 @@ const JobSelection = ({ selectedJob, onJobSelect, initialSingleView = false, job
   const jobCategories = ['All Categories', 'Software Development', 'Data Science', 'Product Management', 'Design', 'Sales', 'Marketing'];
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 font-['Outfit']">
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 ">
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">{!isExpanded ? 'Target Job' : 'Select Target Job'}</h2>

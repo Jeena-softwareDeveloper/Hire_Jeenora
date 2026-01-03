@@ -9,6 +9,7 @@ import {
 } from "./useProfile";
 import { useGetAllLocations, useGetDistrictsByState, useGetAllSkills } from "./useMetadata";
 import { useGetMyResumes, useUploadNewResume, useDeleteMyResume, useSetPrimaryResume } from "./useResumes";
+import toast from "react-hot-toast";
 
 export const useProfileLogic = () => {
     const userInfo = useAuthStore((state) => state.userInfo);
@@ -44,6 +45,19 @@ export const useProfileLogic = () => {
         const state = e.target.value;
         setSelectedState(state);
         setForm(prev => ({ ...prev, location: "" }));
+    };
+
+    const handleDistrictChange = (e) => {
+        const districtName = e.target.value;
+        setForm(prev => ({ ...prev, location: districtName }));
+
+        // If no state is selected, try to find it from the list
+        if (!selectedState && districtName) {
+            const stateObj = locations.find(loc =>
+                loc.districts.some(d => d.name === districtName)
+            );
+            if (stateObj) setSelectedState(stateObj.state);
+        }
     };
 
     const [form, setForm] = useState({
@@ -124,7 +138,19 @@ export const useProfileLogic = () => {
 
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
-        if (!file || !file.type.startsWith('image/') || file.size > 3 * 1024 * 1024) return;
+        if (!file) return;
+
+        // Validation with feedback
+        if (!file.type.startsWith('image/')) {
+            toast.error("Please select a valid image file (JPG, PNG, etc.)");
+            return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            toast.error("Image size should be less than 5MB");
+            return;
+        }
+
         const formData = new FormData();
         formData.append("image", file);
         uploadProfileImage(formData);
@@ -142,7 +168,7 @@ export const useProfileLogic = () => {
 
     return {
         userInfo, profileData, locations, allSkills, resumes: resumesData || [],
-        selectedState, handleStateChange, activeTab, setActiveTab, isEditing, setIsEditing,
+        selectedState, handleStateChange, handleDistrictChange, activeTab, setActiveTab, isEditing, setIsEditing,
         newSkill, setNewSkill, showConfirmModal, setShowConfirmModal, districtsData,
         form, setForm, handleUpdate, addSkill, removeSkill, handleSaveSkills,
         handleImageUpload, handleResumeUpload, loading, reqProfEdit,

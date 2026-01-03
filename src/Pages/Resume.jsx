@@ -34,14 +34,15 @@ function Resume() {
     if (orderPlaced) return <ResumeSuccess selectedEditor={selectedEditor} deliveryDate={getDeliveryDate()} resetOrder={resetOrder} />;
 
     return (
-        <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8 font-['Outfit']">
-            <div className="mx-auto">
-                <div className="text-center mb-8">
-                    <div className="flex items-center justify-center gap-3 mb-4">
-                        <div className="w-12 h-12 bg-gradient-to-r from-green-800 to-emerald-800 rounded-full flex items-center justify-center text-white"><FaRocket className="text-xl" /></div>
-                        <h1 className="text-4xl font-bold text-gray-900">Professional Resume Editing</h1>
-                    </div>
+        <div className="bg-transparent">
+            {/* Header - Same row on mobile */}
+            <div className="flex flex-row justify-between items-center mb-6 gap-4 w-full">
+                <div className="text-left shrink-0">
+                    <h1 className="text-xl sm:text-3xl lg:text-xl font-black text-slate-900 uppercase tracking-tighter">Professional Resume Editing</h1>
                 </div>
+            </div>
+
+            <div className="w-full pb-8 lg:pb-12 pt-0">
 
                 <ResumeSteps currentStep={currentStep} steps={steps} />
 
@@ -90,3 +91,4 @@ function Resume() {
 }
 
 export default Resume;
+

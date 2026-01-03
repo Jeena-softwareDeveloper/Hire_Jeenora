@@ -63,3 +63,4 @@ const JobTrackingDetails = ({ application }) => {
 };
 
 export default JobTrackingDetails;
+

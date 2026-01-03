@@ -83,7 +83,7 @@ const JobCard = ({ job, isApplied, isSaved }) => {
                     ) : (
                         <button
                             onClick={handleViewDetails}
-                            className="px-4 py-1.5 bg-blue-50 text-blue-600 rounded text-sm font-medium hover:bg-blue-100 transition-colors"
+                            className="px-4 py-1.5 rounded-xl border-2 border-slate-100 text-blue-600 text-[11px] font-black uppercase tracking-wider hover:border-blue-100 hover:bg-blue-50/30 transition-all duration-200 active:scale-95 shadow-sm"
                         >
                             View Details →
                         </button>
@@ -95,3 +95,4 @@ const JobCard = ({ job, isApplied, isSaved }) => {
 };
 
 export default JobCard;
+

@@ -119,3 +119,4 @@ const EditorProfile = ({ editor, onBack, onSelect }) => {
 };
 
 export default EditorProfile;
+

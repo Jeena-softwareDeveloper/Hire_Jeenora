@@ -22,23 +22,21 @@ const AnalyticsSection = () => {
         options: {
             chart: {
                 background: 'transparent',
-                foreColor: '#fff',
-                toolbar: {
-                    show: true,
-                    tools: {
-                        download: true,
-                        selection: true,
-                        zoom: true,
-                        zoomin: true,
-                        zoomout: true,
-                        pan: true,
-                        reset: true
-                    }
-                },
-                zoom: { enabled: true },
+                foreColor: '#64748b', // Slate-500
+                toolbar: { show: false },
+                zoom: { enabled: false },
                 animations: { enabled: true, speed: 800 }
             },
-            colors: ['#22c55e', '#3b82f6', '#f59e0b'],
+            colors: ['#06b6d4'], // Cyan-500 (Blue-Green)
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shadeIntensity: 1,
+                    opacityFrom: 0.7,
+                    opacityTo: 0.2,
+                    stops: [0, 90, 100]
+                }
+            },
             dataLabels: { enabled: false },
             stroke: {
                 curve: 'smooth',
@@ -49,41 +47,44 @@ const AnalyticsSection = () => {
                 categories: analyticsData?.chartData?.categories || ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 axisBorder: { show: false },
                 axisTicks: { show: false },
-                labels: { style: { colors: '#fff' } }
-            },
-            yaxis: {
-                labels: { style: { colors: '#fff' } },
-                title: {
-                    text: 'Number of Applications',
-                    style: { color: '#fff' }
+                labels: {
+                    style: { colors: '#94a3b8', fontSize: '12px', fontFamily: 'Outfit' }
                 }
             },
+            yaxis: {
+                labels: {
+                    style: { colors: '#94a3b8', fontSize: '12px', fontFamily: 'Outfit' }
+                },
+            },
             grid: {
-                borderColor: '#ffffff20',
-                strokeDashArray: 5,
+                borderColor: '#e2e8f0', // Slate-200
+                strokeDashArray: 4,
                 xaxis: { lines: { show: true } },
-                yaxis: { lines: { show: true } }
+                yaxis: { lines: { show: true } },
+                padding: { top: 0, right: 0, bottom: 0, left: 10 }
             },
             legend: {
-                position: 'top',
-                labels: { colors: '#fff' },
-                itemMargin: { horizontal: 20 }
+                show: false
             },
             tooltip: {
-                theme: 'dark',
+                theme: 'light',
+                style: {
+                    fontSize: '12px',
+                    fontFamily: 'Outfit',
+                },
                 x: { show: true },
                 y: {
                     formatter: function (val) {
                         return val + ' applications'
                     }
-                }
+                },
+                marker: { show: true },
             },
             responsive: [
                 {
                     breakpoint: 768,
                     options: {
-                        chart: { height: 300 },
-                        legend: { position: 'bottom' }
+                        chart: { height: 300 }
                     }
                 }
             ]
@@ -91,26 +92,26 @@ const AnalyticsSection = () => {
     };
 
     return (
-        <div className="bg-gradient-to-r from-green-800 to-emerald-900 rounded-2xl p-6 shadow-lg relative min-h-[450px]">
+        <div className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-white/50 relative min-h-[400px]">
             {isFetching && !isLoading && (
-                <div className="absolute inset-0 bg-black/10 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-2xl">
-                    <PropagateLoader color='#fff' size={10} />
+                <div className="absolute inset-0 bg-white/50 backdrop-blur-[1px] z-10 flex items-center justify-center rounded-2xl">
+                    <PropagateLoader color='#06b6d4' size={10} />
                 </div>
             )}
 
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
                 <div>
-                    <h3 className="text-xl font-bold text-white">Application Analytics</h3>
-                    <p className="text-emerald-200 text-sm">Track application activity over time</p>
+                    <h3 className="text-xl font-bold text-slate-800">Application Analytics</h3>
+                    <p className="text-slate-500 text-sm mt-1">Track application activity over time</p>
                 </div>
                 <div className="flex items-center gap-2 mt-4 sm:mt-0">
                     {timeFrames.map((frame) => (
                         <button
                             key={frame.id}
                             onClick={() => setActiveTimeFrame(frame.id)}
-                            className={`px-3 py-1.5 text-sm rounded-lg transition-colors ${activeTimeFrame === frame.id
-                                ? 'bg-white text-green-900 font-medium'
-                                : 'text-emerald-200 hover:bg-emerald-700'
+                            className={`px-4 py-2 text-sm rounded-lg transition-all shadow-sm border ${activeTimeFrame === frame.id
+                                ? 'bg-white text-slate-800 font-semibold border-slate-200 ring-1 ring-slate-100'
+                                : 'bg-transparent text-slate-500 border-transparent hover:bg-slate-50'
                                 }`}
                         >
                             {frame.label}
@@ -120,16 +121,16 @@ const AnalyticsSection = () => {
             </div>
 
             {isLoading ? (
-                <div className="h-[400px] flex items-center justify-center">
-                    <PropagateLoader color='#fff' />
+                <div className="h-[350px] flex items-center justify-center">
+                    <PropagateLoader color='#06b6d4' />
                 </div>
             ) : (
                 <Chart
                     options={chartData.options}
                     series={chartData.series}
                     type="area"
-                    height={400}
-                    className="apex-chart"
+                    height={350}
+                    className="w-full"
                 />
             )}
         </div>
@@ -137,3 +138,4 @@ const AnalyticsSection = () => {
 };
 
 export default AnalyticsSection;
+

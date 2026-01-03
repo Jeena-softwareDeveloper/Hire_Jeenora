@@ -36,3 +36,4 @@ const ResumeSteps = ({ currentStep, steps }) => {
 };
 
 export default ResumeSteps;
+

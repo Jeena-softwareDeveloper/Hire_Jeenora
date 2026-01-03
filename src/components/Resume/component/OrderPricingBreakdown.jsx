@@ -28,3 +28,4 @@ const OrderPricingBreakdown = ({ currentPlan, serviceFee, tax, totalAmount }) =>
 };
 
 export default OrderPricingBreakdown;
+

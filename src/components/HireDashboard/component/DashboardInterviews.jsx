@@ -30,3 +30,4 @@ const DashboardInterviews = ({ scheduledInterviews }) => {
 };
 
 export default DashboardInterviews;
+

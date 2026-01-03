@@ -17,7 +17,7 @@ const SupportChat = ({
     if (!selectedTicket) {
         return (
             <div className={`flex-1 flex flex-col items-center justify-center p-20 text-center ${viewMode === 'list' ? 'hidden lg:flex' : 'flex'}`}>
-                <div className="w-24 h-24 bg-indigo-50 rounded-[2.5rem] flex items-center justify-center text-indigo-600 mb-8 border border-white shadow-xl relative animate-bounce-slow">
+                <div className="w-24 h-24 bg-gradient-to-br from-blue-600 to-emerald-600 rounded-lg flex items-center justify-center text-white mb-8 border border-white shadow-xl shadow-blue-500/20 relative animate-bounce-slow">
                     <RiMessage3Fill size={40} />
                 </div>
                 <h2 className="text-2xl font-bold text-slate-800 tracking-tight mb-4">Welcome to SupportHub</h2>
@@ -56,7 +56,7 @@ const SupportChat = ({
                         <div key={i} className={`flex gap-3 ${isMe ? 'justify-end' : 'justify-start'}`}>
                             {!isMe && <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-[10px] text-white font-bold shrink-0 self-start mt-1">JH</div>}
                             <div className="max-w-[75%] lg:max-w-[65%]">
-                                <div className={`px-5 py-3.5 rounded-2xl shadow-sm text-[13px] font-medium leading-relaxed ${isMe ? 'bg-[#4F46E5] text-white rounded-tr-none' : 'bg-white border border-slate-100 text-slate-700 rounded-tl-none'}`}>
+                                <div className={`px-5 py-3.5 rounded-lg shadow-sm text-[13px] font-medium leading-relaxed ${isMe ? 'bg-gradient-to-br from-blue-600 to-emerald-600 text-white rounded-tr-none shadow-blue-500/10' : 'bg-white border border-slate-100 text-slate-700 rounded-tl-none'}`}>
                                     {msg.message}
                                 </div>
                                 <span className={`text-[10px] font-bold text-slate-400 mt-2 block ${isMe ? 'text-right' : 'text-left'}`}>{moment(msg.timestamp).format('HH:mm')}</span>
@@ -69,11 +69,11 @@ const SupportChat = ({
 
             <div className="p-6 bg-white border-t border-slate-100 shrink-0">
                 {selectedTicket.status === 'closed' ? (
-                    <div className="text-center bg-slate-50 py-4 rounded-2xl text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em]">This conversation has ended</div>
+                    <div className="text-center bg-slate-50 py-4 rounded-lg text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em]">This conversation has ended</div>
                 ) : (
                     <form onSubmit={handleSendMessage} className="relative flex items-center gap-4">
-                        <input type="text" className="flex-1 pl-6 pr-6 py-4 rounded-2xl bg-slate-50 border-none text-[14px] font-medium text-slate-700 focus:ring-2 focus:ring-indigo-500/10 placeholder:text-slate-400" placeholder="Write a message..." value={messageInput} onChange={(e) => setMessageInput(e.target.value)} />
-                        <button disabled={!messageInput.trim()} className="bg-[#4F46E5] w-12 h-12 rounded-2xl text-white shadow-lg flex items-center justify-center hover:bg-indigo-700 disabled:opacity-50"><FaPaperPlane size={16} /></button>
+                        <input type="text" className="flex-1 pl-6 pr-6 py-4 rounded-lg bg-slate-50 border-none text-[14px] font-medium text-slate-700 focus:ring-2 focus:ring-indigo-500/10 placeholder:text-slate-400" placeholder="Write a message..." value={messageInput} onChange={(e) => setMessageInput(e.target.value)} />
+                        <button disabled={!messageInput.trim()} className="bg-gradient-to-r from-blue-600 to-emerald-600 w-12 h-12 rounded-lg text-white shadow-lg shadow-blue-500/20 flex items-center justify-center hover:shadow-blue-500/40 transition-all active:scale-95 disabled:opacity-50"><FaPaperPlane size={16} /></button>
                     </form>
                 )}
             </div>
@@ -82,3 +82,4 @@ const SupportChat = ({
 };
 
 export default SupportChat;
+

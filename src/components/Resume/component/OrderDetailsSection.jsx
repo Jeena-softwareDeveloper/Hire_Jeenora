@@ -32,3 +32,4 @@ const OrderDetailsSection = ({ selectedEditor, selectedJob, uploadedFile, analys
 };
 
 export default OrderDetailsSection;
+

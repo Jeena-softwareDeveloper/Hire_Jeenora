@@ -35,3 +35,4 @@ const JobSelectionCard = ({ job, isSelected, onClick, toggleFavorite, isFavorite
 };
 
 export default JobSelectionCard;
+

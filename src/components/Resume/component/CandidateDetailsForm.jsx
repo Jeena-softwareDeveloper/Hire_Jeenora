@@ -42,3 +42,4 @@ const CandidateDetailsForm = ({ resumeDetails, onDetailsChange, readOnly }) => {
 };
 
 export default CandidateDetailsForm;
+

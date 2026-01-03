@@ -39,30 +39,29 @@ const Jobs = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            {/* Header */}
-            <div className="bg-white shadow-sm border-b border-gray-200">
-                <div className="px-4 sm:px-6 lg:px-8 py-6">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div>
-                            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Find Your Dream Job</h1>
-                            <p className="text-gray-600 text-sm mt-1">Browse thousands of job opportunities</p>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <select
-                                onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
-                                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm bg-white"
-                            >
-                                <option value="recent">Most Recent</option>
-                                <option value="salary_high">Highest Salary</option>
-                                <option value="salary_low">Lowest Salary</option>
-                            </select>
-                        </div>
+        <div>
+            {/* Header - Same row on mobile */}
+            <div className="flex flex-row justify-between items-center mb-6 gap-4 w-full">
+                <div className="text-left shrink-0">
+                    <h1 className="text-xl sm:text-3xl lg:text-xl font-black text-slate-900 uppercase tracking-tighter">Find Your Dream Job</h1>
+                </div>
+
+                <div className="flex items-center justify-end shrink-0">
+                    <div className="flex items-center gap-2 md:gap-3">
+                        <span className="hidden sm:inline text-[10px] font-black text-slate-500 uppercase tracking-widest">Sort</span>
+                        <select
+                            onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
+                            className="px-2 py-1.5 md:px-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-[9px] md:text-[10px] font-bold uppercase tracking-wide bg-white shadow-sm text-slate-600 outline-none"
+                        >
+                            <option value="recent">Recent</option>
+                            <option value="salary_high">High Salary</option>
+                            <option value="salary_low">Low Salary</option>
+                        </select>
                     </div>
                 </div>
             </div>
 
-            <div className="px-4 sm:px-6 lg:px-8 py-6">
+            <div className="w-full pb-8 lg:pb-12 pt-0">
                 <div className="flex flex-col gap-6">
                     {/* Main Content */}
                     <div className="w-full">

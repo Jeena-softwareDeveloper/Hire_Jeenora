@@ -143,7 +143,7 @@ const MyApplications = () => {
                         <div className="mt-8"> {/* Spacer container */}
                             <a
                                 href={`/hire/tracking/${app._id}`}
-                                className="bg-green-600 text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-green-700 transition shadow-sm flex items-center gap-2"
+                                className="btn-premium px-6 py-2.5 text-[11px] rounded-lg"
                             >
                                 Job Tracking →
                             </a>
@@ -154,13 +154,19 @@ const MyApplications = () => {
         );
     };
 
-    if (loading) return <div className="flex justify-center items-center min-h-screen bg-slate-50"><PropagateLoader color='#2563EB' /></div>;
 
     return (
-        <div className="bg-slate-50 min-h-screen pb-10">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <h1 className="text-2xl font-bold text-slate-900 mb-6">My Applications</h1>
+        <div className="bg-transparent pb-10">
+            {/* Header - Matches Profile.jsx */}
+            <div className="mx-auto grid grid-cols-1 lg:grid-cols-3 mb-6 flex items-center">
+                <div className="text-left">
+                    <h1 className="text-xl sm:text-3xl lg:text-xl font-black text-slate-900 uppercase tracking-tighter">My Applications</h1>
+                </div>
+                {/* Right Side Empty/Spacer */}
+                <div className="lg:col-span-2 bg-transparent"></div>
+            </div>
 
+            <div className="w-full pb-8 lg:pb-12 pt-0">
                 {/* Stats Cards */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                     <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
@@ -181,63 +187,76 @@ const MyApplications = () => {
                     </div>
                 </div>
 
-                {/* Filter & Search Bar */}
-                <div className="bg-white rounded-xl border border-slate-200 p-2 mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                    {/* Tabs */}
-                    <div className="flex overflow-x-auto no-scrollbar w-full md:w-auto">
-                        {['All', 'Active', 'Under Review', 'Interview', 'Rejected'].map(t => (
-                            <button
-                                key={t}
-                                onClick={() => setFilters({ ...filters, status: t })}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${filters.status === t
-                                    ? 'bg-blue-50 text-blue-600'
-                                    : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700'
-                                    }`}
-                            >
-                                {t}
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* Search & Filter Button */}
-                    <div className="flex gap-3 w-full md:w-auto items-center">
-                        <div className="relative flex-1 md:w-72">
-                            <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm" />
-                            <input
-                                type="text"
-                                placeholder="Search applications..."
-                                className="w-full pl-9 pr-4 py-2 bg-slate-50 border-none rounded-lg text-sm focus:ring-2 focus:ring-blue-100 outline-none text-slate-700 placeholder-slate-400 transition"
-                                value={filters.search}
-                                onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                            />
+                {/* Unified Container */}
+                <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm">
+                    {/* Filter & Search Bar - Top Section */}
+                    <div className="p-3 border-b border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4 bg-slate-50/30">
+                        {/* Tabs */}
+                        <div className="flex overflow-x-auto no-scrollbar w-full md:w-auto p-1 bg-slate-100/50 rounded-lg border border-slate-100">
+                            {['All', 'Active', 'Under Review', 'Interview', 'Rejected'].map(t => (
+                                <button
+                                    key={t}
+                                    onClick={() => setFilters({ ...filters, status: t })}
+                                    className={`px-5 py-2 rounded-md text-[11px] font-black uppercase tracking-wider whitespace-nowrap transition-all duration-300 ${filters.status === t
+                                        ? 'bg-gradient-to-r from-blue-600 to-emerald-600 text-white shadow-lg shadow-blue-500/20'
+                                        : 'text-slate-500 hover:text-slate-800'
+                                        }`}
+                                >
+                                    {t}
+                                </button>
+                            ))}
                         </div>
-                        <button className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition shadow-sm">
-                            <FaFilter size={12} className="text-slate-500" /> Filter
-                        </button>
-                    </div>
-                </div>
 
-                {/* Applications List */}
-                <div className="space-y-4">
-                    {myApplications.length === 0 ? (
-                        <div className="text-center py-20 bg-white rounded-xl border border-slate-200 border-dashed">
-                            <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
-                                <FaBriefcase size={24} />
+                        {/* Search & Filter Button */}
+                        <div className="flex gap-3 w-full md:w-auto items-center">
+                            <div className="relative flex-1 md:w-72">
+                                <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs" />
+                                <input
+                                    type="text"
+                                    placeholder="Search applications..."
+                                    className="w-full pl-9 pr-4 py-2 bg-white border border-slate-100 rounded-lg text-xs font-bold uppercase tracking-widest text-slate-600 focus:ring-2 focus:ring-blue-500/10 placeholder:text-slate-300 outline-none transition shadow-sm"
+                                    value={filters.search}
+                                    onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                                />
                             </div>
-                            <h3 className="text-lg font-medium text-slate-900">No applications found</h3>
-                            <p className="text-slate-500 mb-6 max-w-sm mx-auto">We couldn't find any applications matching your current filters.</p>
-                            <button
-                                onClick={() => setFilters({ ...filters, status: 'All', search: '' })}
-                                className="text-blue-600 font-medium hover:underline"
-                            >
-                                Clear Filters
+                            <button className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-100 rounded-lg text-[10px] font-black uppercase tracking-widest text-slate-600 hover:bg-slate-50 transition shadow-sm">
+                                <FaFilter size={10} className="text-slate-400" /> Filter
                             </button>
                         </div>
-                    ) : (
-                        myApplications.map(app => (
-                            <ApplicationCard key={app._id} app={app} />
-                        ))
-                    )}
+                    </div>
+
+                    {/* Applications List - Content Section */}
+                    <div className="p-4 bg-[#FDFDFF] relative min-h-[400px]">
+                        {/* Internal Loader Overlay */}
+                        {appsLoading && (
+                            <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] z-10 flex flex-col items-center justify-center gap-4 animate-fadeIn">
+                                <PropagateLoader color='#2563EB' size={10} />
+                                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600/60 mt-4">Updating List...</span>
+                            </div>
+                        )}
+
+                        <div className="space-y-4">
+                            {myApplications.length === 0 && !appsLoading ? (
+                                <div className="text-center py-24">
+                                    <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-200 border border-slate-100">
+                                        <FaBriefcase size={32} />
+                                    </div>
+                                    <h3 className="text-xl font-bold text-slate-800 mb-2">No applications found</h3>
+                                    <p className="text-slate-500 mb-8 max-w-xs mx-auto text-sm font-medium">We couldn't find any applications matching your current filters.</p>
+                                    <button
+                                        onClick={() => setFilters({ ...filters, status: 'All', search: '' })}
+                                        className="text-blue-600 font-bold uppercase text-[11px] tracking-widest hover:underline"
+                                    >
+                                        Clear All Filters
+                                    </button>
+                                </div>
+                            ) : (
+                                myApplications.map(app => (
+                                    <ApplicationCard key={app._id} app={app} />
+                                ))
+                            )}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -245,3 +264,4 @@ const MyApplications = () => {
 };
 
 export default MyApplications;
+

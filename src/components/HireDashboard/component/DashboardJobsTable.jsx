@@ -84,3 +84,4 @@ const DashboardJobsTable = ({ recentJobs, searchTerm, setSearchTerm, totalJobs }
 };
 
 export default DashboardJobsTable;
+

@@ -24,7 +24,7 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 || error.response?.status === 409) {
+    if (error.response?.status === 401) {
       // Clear invalid token and redirect to login
       localStorage.removeItem('authToken');
       sessionStorage.removeItem('authToken');

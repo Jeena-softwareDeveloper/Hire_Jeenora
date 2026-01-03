@@ -6,6 +6,7 @@ import {
     FaArrowRight,
     FaEye,
     FaEyeSlash,
+    FaShieldAlt
 } from "react-icons/fa";
 import { PropagateLoader } from 'react-spinners';
 import { overrideStyle } from "../../../utils/utils";
@@ -14,6 +15,7 @@ import { useMutation } from '@tanstack/react-query';
 import api from '../../../api/api';
 import toast from 'react-hot-toast';
 import logo from '@/assets/logo.png';
+import loginBg from '@/assets/login_bg_green.png';
 import Notification from '../../../utils/Notification';
 import OTPInput from '../../common/OTPInput';
 import '../css/HireLogin.css';
@@ -139,158 +141,159 @@ const HireLogin = () => {
     }, [state.email, state.password, localError]);
 
     return (
-        <div className='min-w-screen min-h-screen bg-green-50 flex justify-center items-center py-4 px-3 sm:px-4 lg:py-8 font-["Outfit"]'>
-            <div className='w-full max-w-md mx-auto relative'>
+        <div
+            className='min-w-screen min-h-screen relative overflow-hidden flex justify-center items-center py-4 px-3 sm:px-4 lg:py-8 font-["Outfit"] bg-cover bg-center bg-no-repeat'
+            style={{ backgroundImage: `url(${loginBg})` }}
+        >
+
+            {/* Optional Overlay to ensure text readability if image is too bright */}
+            <div className="absolute inset-0 bg-white/10 backdrop-blur-[2px]" />
+
+            <div className='w-full max-w-[480px] mx-auto relative z-10'>
 
                 {/* Notification */}
                 {localError && (
-                    <Notification
-                        message={localError}
-                        type="error"
-                        onClose={() => setLocalError(null)}
-                    />
+                    <div className="mb-4">
+                        <Notification
+                            message={localError}
+                            type="error"
+                            onClose={() => setLocalError(null)}
+                        />
+                    </div>
                 )}
 
                 {!showOTP ? (
-                    /* Login Form */
-                    <div className='bg-white rounded-xl sm:rounded-2xl shadow-lg border border-green-500 overflow-hidden'>
+                    /* Login Form Card */
+                    <div className='bg-white/70 backdrop-blur-2xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white p-5 sm:p-6 lg:p-8'>
 
-                        {/* Header */}
-                        <div className='bg-green-900 py-4 sm:py-5 px-4 sm:px-8'>
-                            <div className='flex items-center justify-center gap-3 sm:gap-4'>
+                        {/* Header Section - Reduced spacing */}
+                        <div className="text-center mb-6">
+                            <div className="flex justify-center items-center gap-2 mb-3">
                                 <img
                                     src={logo}
                                     alt="Jeenora Logo"
-                                    className='h-12 sm:h-14 lg:h-16 object-contain'
-                                    style={{
-                                        transform: 'scale(1.6)',
-                                        transformOrigin: 'center',
-                                    }}
+                                    className="h-8 object-contain"
                                 />
-                                <h2 className='text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-wide'>
-                                    Jeenora <span className='text-green-300'>Hire</span>
-                                </h2>
+                                <span className="text-lg font-bold text-slate-800 tracking-tight">
+                                    JEENORA <span className="text-emerald-500">Hire</span>
+                                </span>
                             </div>
-                        </div>
-
-                        {/* Form */}
-                        <div className='p-4 sm:p-6 lg:p-8'>
-                            <h1 className='text-xl text-center mb-4 sm:text-2xl lg:text-3xl font-extrabold text-green-800 tracking-wide'>
-                                Welcome Back
+                            <h1 className="text-2xl font-bold text-slate-800 mb-1">
+                                Welcome back <span className="inline-block animate-wave origin-[70%_70%]">👋</span>
                             </h1>
-                            <p className='text-center text-green-600 mb-6 font-medium'>
-                                Please log in to your employer account
+                            <p className="text-slate-500 text-xs">
+                                Log in to continue your career journey
                             </p>
-
-                            <form onSubmit={submit}>
-                                {/* Email */}
-                                <div className='mb-5'>
-                                    <label htmlFor="email" className='block text-sm font-semibold text-green-900 mb-2'>
-                                        Email Address
-                                    </label>
-                                    <div className='relative'>
-                                        <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-                                            <FaEnvelope className='h-5 w-5 text-green-800' />
-                                        </div>
-                                        <input
-                                            onChange={inputHandle}
-                                            value={state.email}
-                                            className='pl-10 w-full px-3 py-3 border border-green-700 rounded-lg bg-green-50 text-green-900 placeholder-green-700 text-sm sm:text-base focus:border-green-700 focus:ring-0 focus:outline-none'
-                                            type="email"
-                                            name='email'
-                                            placeholder='your@gmail.com'
-                                            id='email'
-                                            required
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Password */}
-                                <div className='mb-6'>
-                                    <label htmlFor="password" className='block text-sm font-semibold text-green-900 mb-2'>
-                                        Password
-                                    </label>
-                                    <div className='relative'>
-                                        <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-                                            <FaLock className='h-5 w-5 text-green-800' />
-                                        </div>
-                                        <input
-                                            onChange={inputHandle}
-                                            value={state.password}
-                                            className='pl-10 w-full px-3 py-3 border border-green-700 rounded-lg bg-green-50 text-green-900 placeholder-green-700 text-sm sm:text-base focus:border-green-700 focus:ring-0 focus:outline-none'
-                                            type={passwordVisible ? "text" : "password"}
-                                            name='password'
-                                            placeholder='Enter your password'
-                                            id='password'
-                                            required
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={() => setPasswordVisible(!passwordVisible)}
-                                            className='absolute inset-y-0 right-0 pr-3 flex items-center'>
-                                            {passwordVisible ? (
-                                                <FaEyeSlash className='h-5 w-5 text-green-800' />
-                                            ) : (
-                                                <FaEye className='h-5 w-5 text-green-800' />
-                                            )}
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Forgot Password Link */}
-                                <div className='flex justify-end mb-6'>
-                                    <Link
-                                        to="/hire/forgot-password"
-                                        className='text-sm text-green-700 hover:text-green-900 font-semibold'
-                                    >
-                                        Forgot Password?
-                                    </Link>
-                                </div>
-
-                                {/* Button */}
-                                <button
-                                    disabled={sendingOTP}
-                                    className='w-full bg-green-900 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 flex items-center justify-center gap-2'
-                                >
-                                    {sendingOTP ? (
-                                        <PropagateLoader color='#fff' cssOverride={overrideStyle} size={10} />
-                                    ) : (
-                                        <>
-                                            Log In
-                                            <FaArrowRight className='w-3 h-3 sm:w-4 sm:h-4' />
-                                        </>
-                                    )}
-                                </button>
-                            </form>
-
-                            {/* Divider */}
-                            <div className='w-full flex justify-center items-center my-5'>
-                                <div className='w-[45%] bg-green-900 h-[1px]'></div>
-                                <div className='w-[10%] flex justify-center items-center'>
-                                    <span className='text-green-900 font-semibold'>Or</span>
-                                </div>
-                                <div className='w-[45%] bg-green-900 h-[1px]'></div>
-                            </div>
-
-                            {/* Signup Link */}
-                            <div className='flex items-center justify-center'>
-                                <p className='text-green-900'>
-                                    Don't have an account?{" "}
-                                    <Link className='font-bold text-green-700 hover:text-green-900' to="/hire/register">
-                                        Sign Up
-                                    </Link>
-                                </p>
-                            </div>
                         </div>
+
+                        <form onSubmit={submit} className="space-y-4">
+                            {/* Email */}
+                            <div className="space-y-1">
+                                <label className="block text-xs font-semibold text-slate-700">Email Address</label>
+                                <div className="relative group">
+                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <FaEnvelope className="h-4 w-4 text-teal-600 group-focus-within:text-teal-700 transition-colors" />
+                                    </div>
+                                    <input
+                                        onChange={inputHandle}
+                                        value={state.email}
+                                        className="pl-9 w-full px-4 py-2.5 bg-slate-50/50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all duration-200 outline-none text-sm"
+                                        type="email"
+                                        name="email"
+                                        placeholder="your@gmail.com"
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Password */}
+                            <div className="space-y-1">
+                                <label className="block text-xs font-semibold text-slate-700">Password</label>
+                                <div className="relative group">
+                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <FaLock className="h-4 w-4 text-teal-600 group-focus-within:text-teal-700 transition-colors" />
+                                    </div>
+                                    <input
+                                        onChange={inputHandle}
+                                        value={state.password}
+                                        className="pl-9 w-full px-4 py-2.5 bg-slate-50/50 border border-slate-200 rounded-lg text-slate-900 placeholder-slate-400 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all duration-200 outline-none text-sm"
+                                        type={passwordVisible ? "text" : "password"}
+                                        name="password"
+                                        placeholder="Enter your password"
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setPasswordVisible(!passwordVisible)}
+                                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                                    >
+                                        {passwordVisible ? <FaEyeSlash size={16} /> : <FaEye size={16} />}
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Security Note */}
+                            <div className="flex justify-center items-center gap-1.5 text-[10px] text-slate-400 py-0.5">
+                                <FaLock size={8} />
+                                <span>Your data is securely encrypted</span>
+                            </div>
+
+                            {/* Submit Button */}
+                            <button
+                                disabled={sendingOTP}
+                                className="w-full bg-gradient-to-r from-[#2FA8E5] to-[#27CFA6] hover:from-[#2697d0] hover:to-[#22bc96] text-white font-bold py-3 rounded-lg shadow-[0_10px_20px_-10px_rgba(39,207,166,0.5)] transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 group text-sm"
+                            >
+                                {sendingOTP ? (
+                                    <PropagateLoader color='#fff' cssOverride={overrideStyle} size={8} />
+                                ) : (
+                                    <>
+                                        <div className="bg-white/20 p-1 rounded-full">
+                                            <FaShieldAlt className="text-white text-xs" />
+                                        </div>
+                                        <span>Secure Login</span>
+                                        <FaArrowRight className="group-hover:translate-x-1 transition-transform w-3 h-3" />
+                                    </>
+                                )}
+                            </button>
+
+                            {/* Footer Link 1: Forgot Password */}
+                            <div className="text-center pt-1">
+                                <Link
+                                    to="/hire/forgot-password"
+                                    className="text-xs font-medium text-slate-500 hover:text-teal-600 transition-colors"
+                                >
+                                    Forgot password?
+                                </Link>
+                            </div>
+
+                        </form>
+
+                        {/* Divider */}
+                        <div className="my-5 border-t border-slate-100"></div>
+
+                        {/* Footer Link 2: Sign Up */}
+                        <div className="text-center">
+                            <Link
+                                to="/hire/register"
+                                className="inline-flex items-center gap-1 text-xs text-slate-600 hover:text-teal-700 font-medium transition-colors group"
+                            >
+                                New to Jeenora?
+                                <span className="font-bold">Join Jeenora, land your dream job</span>
+                                <FaArrowRight className="text-[10px] transform group-hover:translate-x-1 transition-transform" />
+                            </Link>
+                        </div>
+
                     </div>
                 ) : (
-                    /* OTP Verification */
-                    <OTPInput
-                        email={state.email}
-                        purpose="login"
-                        onVerified={handleOTPVerified}
-                        onCancel={handleCancelOTP}
-                    />
+                    /* OTP Verification - Wrapper to maintain style if needed, or specific component */
+                    <div className='bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-6 sm:p-8 lg:p-10'>
+                        <OTPInput
+                            email={state.email}
+                            purpose="login"
+                            onVerified={handleOTPVerified}
+                            onCancel={handleCancelOTP}
+                        />
+                    </div>
                 )}
             </div>
         </div>
@@ -298,3 +301,4 @@ const HireLogin = () => {
 };
 
 export default HireLogin;
+

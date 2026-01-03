@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useGetSavedJobs, useGetMyApplications } from '../../../hooks/useJobs';
 import JobCard from '../../../components/hire/JobCard';
 import { PropagateLoader } from 'react-spinners';
@@ -51,35 +52,29 @@ const SavedJobs = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            {/* Header */}
-            <div className="bg-white shadow-sm border-b border-gray-200">
-                <div className="px-4 sm:px-6 lg:px-8 py-6">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div>
-                            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center gap-2">
-                                <FaBookmark className="text-green-600" />
-                                Saved Jobs
-                            </h1>
-                            <p className="text-gray-600 text-sm mt-1">
-                                {savedJobs.length} {savedJobs.length === 1 ? 'job' : 'jobs'} saved
-                            </p>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <select
-                                value={filters.sortBy}
-                                onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
-                                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm bg-white"
-                            >
-                                <option value="recent">Most Recent</option>
-                                <option value="salary_high">Highest Salary</option>
-                            </select>
-                        </div>
+        <div>
+            {/* Header - Same row on mobile */}
+            <div className="flex flex-row justify-between items-center mb-6 gap-4 w-full">
+                <div className="text-left shrink-0">
+                    <h1 className="text-xl sm:text-3xl lg:text-xl font-black text-slate-900 uppercase tracking-tighter">Saved Jobs</h1>
+                </div>
+
+                <div className="flex items-center justify-end shrink-0">
+                    <div className="flex items-center gap-2 md:gap-3">
+                        <span className="hidden sm:inline text-[10px] font-black text-slate-500 uppercase tracking-widest">Sort</span>
+                        <select
+                            value={filters.sortBy}
+                            onChange={(e) => setFilters({ ...filters, sortBy: e.target.value })}
+                            className="px-2 py-1.5 md:px-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-[9px] md:text-[10px] font-bold uppercase tracking-wide bg-white shadow-sm text-slate-600 outline-none"
+                        >
+                            <option value="recent">Recent</option>
+                            <option value="salary_high">Salary</option>
+                        </select>
                     </div>
                 </div>
             </div>
 
-            <div className="px-4 sm:px-6 lg:px-8 py-6">
+            <div className="w-full pb-8 lg:pb-12 pt-0">
                 <div className="flex flex-col gap-6">
                     {/* Main Content */}
                     <div className="w-full">
@@ -93,12 +88,12 @@ const SavedJobs = () => {
                                 <p className="text-gray-600 mb-6">
                                     Save jobs you're interested in by clicking the bookmark icon
                                 </p>
-                                <a
-                                    href="/hire/jobs"
-                                    className="inline-block px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
+                                <Link
+                                    to="/hire/jobs"
+                                    className="btn-premium inline-flex max-w-max mx-auto"
                                 >
                                     Browse Jobs
-                                </a>
+                                </Link>
                             </div>
                         ) : filteredJobs.length === 0 ? (
                             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
@@ -116,7 +111,7 @@ const SavedJobs = () => {
                                         jobType: [],
                                         sortBy: 'recent'
                                     })}
-                                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
+                                    className="btn-premium"
                                 >
                                     Reset Filters
                                 </button>

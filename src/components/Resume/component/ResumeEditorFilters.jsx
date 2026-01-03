@@ -24,3 +24,4 @@ const ResumeEditorFilters = ({ filters, setFilters, clearFilters, specialization
 };
 
 export default ResumeEditorFilters;
+

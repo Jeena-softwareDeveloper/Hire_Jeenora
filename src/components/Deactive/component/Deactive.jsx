@@ -10,3 +10,4 @@ const Deactive = () => {
 };
 
 export default Deactive;
+

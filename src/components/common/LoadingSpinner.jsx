@@ -11,3 +11,4 @@ const LoadingSpinner = ({ color = '#2563EB', size = 15, message = 'Loading...' }
 };
 
 export default LoadingSpinner;
+

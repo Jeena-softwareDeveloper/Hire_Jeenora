@@ -15,7 +15,7 @@ const ResumeEditorList = ({ onSelectEditor, selectedEditor, onViewProfile }) => 
   } = useResumeEditorListLogic(editors);
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 font-['Outfit']">
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 ">
       <h2 className="text-2xl font-bold text-gray-900 mb-6">Professional Resume Editors</h2>
 
       <div className="flex flex-col lg:flex-row gap-4 mb-6">

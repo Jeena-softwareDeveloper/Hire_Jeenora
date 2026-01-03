@@ -40,7 +40,7 @@ export const useGetDistrictsByState = (stateName) => {
     return useQuery({
         queryKey: ['districts', stateName],
         queryFn: async () => {
-            const { data } = await api.get(`/hire/location/state/${stateName}`);
+            const { data } = await api.get(`/hire/location/state/${encodeURIComponent(stateName)}`);
             return data.districts;
         },
         enabled: !!stateName

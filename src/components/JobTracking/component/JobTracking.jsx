@@ -24,7 +24,7 @@ const JobTracking = () => {
     if (messagesLoading || !application) return <div className="flex justify-center items-center min-h-[60vh]"><PropagateLoader color='#2563EB' /></div>;
 
     return (
-        <div className="bg-slate-50 min-h-screen py-8 px-4 text-slate-900 font-['Outfit']">
+        <div className="min-h-screen py-8 px-4 text-slate-900 ">
             <div className="max-w-[1400px] mx-auto">
                 <div className="flex items-center justify-between mb-8">
                     <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-slate-500 hover:text-slate-800 transition text-sm font-bold"><FaArrowLeft size={14} /> Back to Applications</button>
@@ -68,3 +68,4 @@ const JobTracking = () => {
 };
 
 export default JobTracking;
+

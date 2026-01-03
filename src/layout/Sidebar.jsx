@@ -2,18 +2,14 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { BiLogOutCircle, BiChevronRight } from 'react-icons/bi';
 import { IoIosArrowDown } from 'react-icons/io';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { logout } from '../../store/Reducers/authReducer'; // REMOVED
 import { getNav } from '../navigation';
 import useAuthStore from '@/store/useAuthStore';
 import { useGetProfile } from '@/hooks/useProfile';
 
 const Sidebar = ({ showSidebar, setShowSidebar, collapsed, setCollapsed, isMobile }) => {
-  // const dispatch = useDispatch(); // Removed
   const role = useAuthStore((state) => state.role);
   const logout = useAuthStore((state) => state.logout);
 
-  // Use React Query hook for profile data
   const { data: profileData } = useGetProfile();
 
   const { pathname } = useLocation();
@@ -23,8 +19,6 @@ const Sidebar = ({ showSidebar, setShowSidebar, collapsed, setCollapsed, isMobil
   const [allNav, setAllNav] = useState([]);
   const [openDropdown, setOpenDropdown] = useState(null);
 
-
-  // Load role-based navigation and filter by feature flags
   useEffect(() => {
     let navs = getNav(role);
     if (profileData) {
@@ -35,23 +29,11 @@ const Sidebar = ({ showSidebar, setShowSidebar, collapsed, setCollapsed, isMobil
         return true;
       });
     } else {
-      // If profile not loaded yet, hide feature flagged items
       navs = navs.filter(nav => !nav.featureFlag);
     }
     setAllNav(navs);
   }, [role, profileData]);
 
-  // useEffect(() => {
-  //   dispatch(getProfile());
-  // }, [dispatch]);
-
-  // Create preview
-  // Create preview
-  // const reader = new FileReader();
-  // reader.onload = (e) => setImagePreview(e.target.result);
-  // reader.readAsDataURL(file);
-
-  // Hide sidebar if clicked outside (mobile only)
   useEffect(() => {
     if (!isMobile) return;
 
@@ -74,19 +56,18 @@ const Sidebar = ({ showSidebar, setShowSidebar, collapsed, setCollapsed, isMobil
 
   const handleLogout = async () => {
     await logout();
-    // localStorage.removeItem("authToken"); // Handled by store
-    // sessionStorage.removeItem("authToken"); // Handled by store
     setShowSidebar(false);
     navigate("/hire/login");
   };
 
-  const sidebarWidth = collapsed ? "w-16" : "w-64";
+  const sidebarWidth = collapsed ? "w-20" : "w-48";
 
   return (
     <div
       ref={sidebarRef}
       className={`
-        fixed lg:fixed top-0 left-0 h-full bg-white shadow-xl border-r border-green-200
+        fixed lg:fixed top-0 left-0 h-full 
+        bg-slate-50 border-r border-slate-200
         z-40 flex flex-col transition-all duration-300
         ${sidebarWidth}
         ${showSidebar ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
@@ -97,76 +78,67 @@ const Sidebar = ({ showSidebar, setShowSidebar, collapsed, setCollapsed, isMobil
       {!isMobile && (
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="absolute top-3 -right-3 p-1 bg-green-800 text-white rounded-full shadow-md hover:bg-green-700 transition"
+          className="absolute top-24 -right-3 p-1.5 bg-white border border-slate-100 text-emerald-600 rounded-full shadow-md hover:bg-slate-50 transition z-50"
         >
-          <BiChevronRight className={`w-5 h-5 transition-transform ${collapsed ? "rotate-180" : ""}`} />
+          <BiChevronRight className={`w-4 h-4 transition-transform duration-300 ${collapsed ? "rotate-180" : ""}`} />
         </button>
       )}
 
-
-
       {/* NAVIGATION */}
-      <div className="flex-1 lg:mt-24 mt-18  overflow-y-auto p-3 space-y-1">
+      <div className="flex-1 lg:mt-[85px] mt-[75px] overflow-y-auto px-4 py-6 space-y-1.5 no-scrollbar">
         {allNav.map(nav => (
           <div key={nav.id}>
-
-            {/* SINGLE LINK */}
             {!nav.children ? (
               <Link
                 to={nav.path}
-                onClick={(e) => {
-                  if (isMobile) setShowSidebar(false);
-                  if (isActiveLink(nav.path)) {
-                    e.preventDefault();
-                    window.location.href = nav.path; // Force reload
-                  }
-                }}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all
+                onClick={() => isMobile && setShowSidebar(false)}
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group relative overflow-hidden
                   ${isActiveLink(nav.path)
-                    ? "bg-green-700 text-white shadow-md"
-                    : "text-gray-700 hover:bg-green-100"}
-                  ${collapsed ? "justify-center" : ""}
+                    ? "bg-gradient-to-r from-blue-500 to-emerald-500 text-white shadow-lg shadow-blue-500/20 scale-[1.02]"
+                    : "text-slate-500 hover:bg-slate-50 hover:text-emerald-600 hover:translate-x-1"}
+                  ${collapsed ? "justify-center px-2" : ""}
+                  active:scale-95
                 `}
               >
-                <span className="text-xl">{nav.icon}</span>
-                {!collapsed && <span>{nav.title}</span>}
+                <span className={`text-xl transition-transform duration-300 ${isActiveLink(nav.path) ? "text-white scale-110" : "text-slate-400 group-hover:text-emerald-500 group-hover:scale-110"}`}>{nav.icon}</span>
+                {!collapsed && <span className="font-medium text-sm tracking-wide">{nav.title}</span>}
               </Link>
             ) : (
               <>
-                {/* DROPDOWN BUTTON */}
                 <button
                   onClick={() => toggleDropdown(nav.id)}
-                  className={`flex items-center justify-between w-full px-4 py-3 rounded-lg transition-all
+                  className={`flex items-center justify-between w-full px-4 py-3 rounded-lg transition-all duration-200 group
                     ${isActiveLink(nav.path)
-                      ? "bg-green-700 text-white shadow-md"
-                      : "text-gray-700 hover:bg-green-100"}
-                    ${collapsed ? "justify-center" : ""}
+                      ? "bg-slate-50 text-emerald-700 font-semibold"
+                      : "text-slate-500 hover:bg-slate-50 hover:text-slate-800 hover:translate-x-1"}
+                    ${collapsed ? "justify-center px-2" : ""}
+                    active:scale-95
                   `}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-xl">{nav.icon}</span>
-                    {!collapsed && <span>{nav.title}</span>}
+                    <span className={`text-xl transition-transform duration-300 ${isActiveLink(nav.path) ? "text-emerald-600 scale-110" : "text-slate-400 group-hover:text-emerald-500 group-hover:scale-110"}`}>{nav.icon}</span>
+                    {!collapsed && <span className="font-medium text-sm tracking-wide">{nav.title}</span>}
                   </div>
 
                   {!collapsed && (
                     <IoIosArrowDown
-                      className={`transition-transform ${openDropdown === nav.id ? "rotate-180" : ""}`}
+                      className={`transition-transform duration-200 ${openDropdown === nav.id ? "rotate-180" : ""}`}
                     />
                   )}
                 </button>
 
-                {/* DROPDOWN CHILDREN */}
                 {!collapsed && openDropdown === nav.id && (
-                  <div className="ml-6 mt-2 pl-3 border-l border-green-300 space-y-2">
+                  <div className="ml-4 mt-1 pl-4 border-l-2 border-slate-100 space-y-1">
                     {nav.children.map(child => (
                       <Link
                         key={child.id}
                         to={child.path}
                         onClick={() => isMobile && setShowSidebar(false)}
-                        className={`block text-sm py-2 rounded-md
+                        className={`block text-sm py-2 px-3 rounded-md transition-all duration-200
                           ${isActiveLink(child.path)
-                            ? "text-green-700 font-semibold"
-                            : "text-gray-600 hover:text-green-700"}
+                            ? "text-emerald-600 font-semibold bg-emerald-50 translate-x-1"
+                            : "text-slate-500 hover:text-slate-700 hover:bg-slate-50 hover:translate-x-1"}
+                          active:scale-95
                         `}
                       >
                         {child.title}
@@ -178,20 +150,23 @@ const Sidebar = ({ showSidebar, setShowSidebar, collapsed, setCollapsed, isMobil
             )}
           </div>
         ))}
-      </div>
 
-      {/* LOGOUT BUTTON */}
-      <div className="p-4 border-t border-green-200">
+        {/* Explicit Logout Button at end of list */}
         <button
           onClick={handleLogout}
-          className="flex items-center p-3 gap-3 w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg transition"
+          className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 text-slate-500 hover:bg-red-50 hover:text-red-600 w-full mt-8 group
+              ${collapsed ? "justify-center px-2" : ""}
+              hover:translate-x-1 active:scale-95
+            `}
         >
-          <BiLogOutCircle className="text-xl" />
-          {!collapsed && <span>Logout</span>}
+          <span className="text-xl text-slate-400 group-hover:text-red-500"><BiLogOutCircle /></span>
+          {!collapsed && <span className="font-medium text-sm tracking-wide">Log Out</span>}
         </button>
+
       </div>
     </div>
   );
 };
 
 export default Sidebar;
+

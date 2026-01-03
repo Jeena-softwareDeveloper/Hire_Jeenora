@@ -1,16 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import { socket } from '../utils/utils';
 import useAuthStore from '../store/useAuthStore';
 
 const MainLayout = () => {
-  const { userInfo } = useAuthStore(state => state);
+  const { userInfo, refreshUser } = useAuthStore(state => state);
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
   const [showSidebar, setShowSidebar] = useState(!isMobile);
   const [collapsed, setCollapsed] = useState(false); // Only for desktop
+
+  const mainRef = useRef(null);
+  const { pathname } = useLocation();
+
+  // Scroll to top on route change
+  useEffect(() => {
+    if (mainRef.current) {
+      mainRef.current.scrollTo(0, 0);
+    }
+  }, [pathname]);
+
+  // Refresh user data on mount to ensure name/profile is up to date
+  useEffect(() => {
+    refreshUser();
+  }, [refreshUser]);
 
   // Resize handler
   useEffect(() => {
@@ -42,14 +57,13 @@ const MainLayout = () => {
   }, [userInfo]);
 
   return (
-    <div className="flex flex-col w-full min-h-screen bg-gray-50">
-
+    <div className="flex flex-col w-full h-screen bg-[#F0F4F8] overflow-hidden">
       <Header
         showSidebar={showSidebar}
         setShowSidebar={setShowSidebar}
       />
 
-      <div className="flex flex-1 relative">
+      <div className="flex flex-1 relative overflow-hidden lg:pt-[80px] pt-[70px]">
 
         <Sidebar
           showSidebar={showSidebar}
@@ -59,11 +73,15 @@ const MainLayout = () => {
           isMobile={isMobile}
         />
         <main
-          className={`flex-1 overflow-y-auto bg-green-50 lg:pt-[80px] pt-[68px]
-            ${collapsed ? "lg:ml-16" : "lg:ml-64"}
+          ref={mainRef}
+          className={`flex-1 flex flex-col overflow-y-auto transition-all duration-300
+            ${collapsed ? "lg:ml-20" : "lg:ml-48"}
           `}
         >
-          <Outlet />
+          <div className="p-3 md:p-5 lg:p-7">
+            <Outlet />
+            {/* Footer could go here */}
+          </div>
         </main>
 
       </div>
@@ -72,3 +90,4 @@ const MainLayout = () => {
 };
 
 export default MainLayout;
+

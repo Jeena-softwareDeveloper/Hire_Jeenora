@@ -6,3 +6,4 @@ const PaymentVerify = () => {
 };
 
 export default PaymentVerify;
+

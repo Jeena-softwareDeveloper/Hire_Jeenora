@@ -35,7 +35,7 @@ const PaymentVerify = () => {
     }, [transactionId, verify, navigate, refreshUser]);
 
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 font-['Outfit']">
+        <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 ">
             <div className="bg-white p-12 rounded-[2.5rem] shadow-2xl border border-slate-100 max-w-sm w-full text-center">
                 {status === 'verifying' && (
                     <>
@@ -76,3 +76,4 @@ const PaymentVerify = () => {
 };
 
 export default PaymentVerify;
+

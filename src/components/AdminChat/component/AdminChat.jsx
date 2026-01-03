@@ -19,7 +19,7 @@ const AdminChat = () => {
     }, [selectedTicket?.messages]);
 
     return (
-        <div className="h-[calc(100vh-100px)] flex flex-col gap-6 bg-[#f0f2f5] p-6 antialiased overflow-hidden font-['Outfit']">
+        <div className="h-[calc(100vh-100px)] flex flex-col gap-6 bg-[#f0f2f5] p-6 antialiased overflow-hidden ">
             <AdminChatStats open={stats.open} total={stats.total} />
 
             <div className="flex-1 flex gap-6 overflow-hidden relative">
@@ -90,3 +90,4 @@ const AdminChat = () => {
 };
 
 export default AdminChat;
+

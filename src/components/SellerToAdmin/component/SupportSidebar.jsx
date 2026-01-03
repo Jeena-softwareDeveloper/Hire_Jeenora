@@ -20,41 +20,7 @@ const SupportSidebar = ({
 
     return (
         <div className={`w-full lg:w-[350px] border-r border-slate-100 flex flex-col bg-white transition-all duration-300 ${viewMode === 'chat' ? 'hidden lg:flex' : 'flex'}`}>
-            <div className="p-6 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-[#4F46E5] rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-100">
-                        <RiMessage3Fill size={20} />
-                    </div>
-                    <h2 className="text-xl font-bold text-slate-800 tracking-tight">SupportHub</h2>
-                </div>
-                <button
-                    onClick={() => {
-                        if (tickets.length >= 3) {
-                            toast.error("Maximum 3 conversations allowed. Delete old ones to start new.");
-                            return;
-                        }
-                        setShowNewTicketForm(true);
-                    }}
-                    className="w-10 h-10 bg-[#4F46E5] text-white rounded-xl flex items-center justify-center hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100"
-                >
-                    <FaPlus size={14} />
-                </button>
-            </div>
-
-            <div className="px-6 mb-6">
-                <div className="relative group">
-                    <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-indigo-500 transition-colors" />
-                    <input
-                        type="text"
-                        placeholder="Search conversations..."
-                        className="w-full pl-11 pr-4 py-3 bg-slate-50 border-none rounded-xl text-sm font-medium text-slate-600 focus:ring-2 focus:ring-indigo-500/10 placeholder:text-slate-400 transition-all"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                </div>
-            </div>
-
-            <div className="flex-1 overflow-y-auto no-scrollbar pb-6 px-2">
+            <div className="flex-1 overflow-y-auto no-scrollbar py-6 px-2">
                 {loading ? (
                     Array(4).fill(0).map((_, i) => (
                         <div key={i} className="p-4 mx-4 animate-pulse flex gap-4 items-center">
@@ -77,13 +43,13 @@ const SupportSidebar = ({
                         <div
                             key={ticket._id}
                             onClick={() => { setSelectedTicket(ticket); setViewMode('chat'); }}
-                            className={`group p-4 mx-2 rounded-2xl cursor-pointer transition-all flex gap-4 items-center relative
-                                ${isSelected ? 'bg-indigo-50' : 'hover:bg-slate-50'}
+                            className={`group p-4 mx-2 rounded-lg cursor-pointer transition-all flex gap-4 items-center relative
+                                ${isSelected ? 'bg-blue-50/50' : 'hover:bg-slate-50'}
                             `}
                         >
                             <div className="relative shrink-0">
                                 <div className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold shadow-sm border-2 border-white
-                                    ${isSelected ? 'bg-indigo-600 text-white' : 'bg-[#E0E7FF] text-indigo-700'}
+                                    ${isSelected ? 'bg-gradient-to-br from-blue-600 to-emerald-600 text-white' : 'bg-[#E0E7FF] text-indigo-700'}
                                 `}>
                                     {ticket.subject?.charAt(0).toUpperCase() || 'S'}
                                 </div>
@@ -96,7 +62,7 @@ const SupportSidebar = ({
                                 </div>
                                 <p className="text-xs text-slate-500 truncate font-medium">{lastMsg}</p>
                             </div>
-                            {isSelected && <div className="absolute left-[-8px] top-1/2 -translate-y-1/2 w-1.5 h-8 bg-indigo-600 rounded-r-full shadow-lg"></div>}
+                            {isSelected && <div className="absolute left-[-8px] top-1/2 -translate-y-1/2 w-1.5 h-8 bg-gradient-to-b from-blue-600 to-emerald-600 rounded-r-full shadow-lg shadow-blue-500/20"></div>}
                         </div>
                     );
                 })}
@@ -106,3 +72,4 @@ const SupportSidebar = ({
 };
 
 export default SupportSidebar;
+

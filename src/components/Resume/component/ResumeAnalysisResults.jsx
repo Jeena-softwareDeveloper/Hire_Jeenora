@@ -45,3 +45,4 @@ const ResumeAnalysisResults = ({ result }) => {
 };
 
 export default ResumeAnalysisResults;
+

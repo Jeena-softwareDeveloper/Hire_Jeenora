@@ -28,7 +28,7 @@ const PaymentPlans = ({ planData, handleSelectPlan, isPlanMaintenance, planPendi
                 return (
                     <motion.div key={p.key} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }} className={`relative bg-white p-8 rounded-[2.5rem] border ${p.highlight ? 'border-emerald-500 shadow-2xl shadow-emerald-500/10' : 'border-slate-100'} flex flex-col`}>
                         {p.highlight && <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-emerald-500 text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">Most Popular</div>}
-                        <div className={`w-12 h-12 ${p.highlight ? 'bg-emerald-500 text-white' : 'bg-indigo-50 text-indigo-600'} rounded-2xl flex items-center justify-center mb-6`}>{p.icon}</div>
+                        <div className={`w-12 h-12 bg-gradient-to-br from-blue-600 to-emerald-600 text-white rounded-2xl flex items-center justify-center mb-6`}>{p.icon}</div>
                         <h3 className="text-lg font-black text-slate-900 uppercase tracking-tighter mb-1">{p.key}</h3>
                         <div className="flex items-baseline gap-1 mb-6">
                             <span className="text-3xl font-black text-slate-900">₹{data.price}</span>
@@ -42,7 +42,7 @@ const PaymentPlans = ({ planData, handleSelectPlan, isPlanMaintenance, planPendi
                                 </div>
                             ))}
                         </div>
-                        <button onClick={() => handleSelectPlan(p.key)} disabled={planPending} className={`w-full py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${p.highlight ? 'bg-emerald-500 text-white hover:bg-emerald-600 shadow-xl shadow-emerald-200' : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-xl shadow-indigo-200'}`}>Initialize Order</button>
+                        <button onClick={() => handleSelectPlan(p.key)} disabled={planPending} className={`w-full py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all bg-gradient-to-r from-blue-600 to-emerald-600 text-white hover:shadow-xl hover:shadow-blue-500/20 active:scale-95 shadow-xl shadow-blue-500/10`}>Initialize Order</button>
                     </motion.div>
                 );
             })}
@@ -51,3 +51,4 @@ const PaymentPlans = ({ planData, handleSelectPlan, isPlanMaintenance, planPendi
 };
 
 export default PaymentPlans;
+

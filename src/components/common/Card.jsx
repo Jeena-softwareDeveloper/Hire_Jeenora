@@ -24,3 +24,4 @@ const Card = ({ children, className = '', padding = 'md', hover = false, onClick
 };
 
 export default Card;
+

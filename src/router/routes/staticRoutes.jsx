@@ -47,3 +47,4 @@ const staticRoutes = [
 ];
 
 export default staticRoutes;
+

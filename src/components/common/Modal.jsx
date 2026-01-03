@@ -50,3 +50,4 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md', showCloseButton 
 };
 
 export default Modal;
+

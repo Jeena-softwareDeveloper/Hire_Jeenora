@@ -45,113 +45,125 @@ const Notifications = () => {
         }
     };
 
-    if (loading && notifications.length === 0) {
-        return <div className="flex justify-center items-center min-h-[60vh]"><PropagateLoader color='#2563EB' /></div>;
-    }
-
     return (
-        <div className="bg-slate-50 min-h-screen py-8 px-4">
-            <div className="max-w-4xl mx-auto">
-                <div className="flex justify-between items-center mb-8">
-                    <div>
-                        <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-                            My Notifications
-                            {unreadCount > 0 && <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">{unreadCount}</span>}
-                        </h1>
-                        <p className="text-slate-500 text-sm mt-1">Stay updated with your job applications and alerts</p>
+        <div className="bg-transparent">
+            {/* Header - Unified Single Row */}
+            <div className="flex flex-row items-center justify-between gap-4 mb-8 w-full">
+                {/* Title */}
+                <div className="flex-shrink-0">
+                    <h1 className="text-xl sm:text-2xl lg:text-xl font-black text-slate-900 uppercase tracking-tighter flex items-center gap-2">
+                        Inbox
+                        {unreadCount > 0 && <span className="bg-red-500 text-white text-[9px] px-1.5 py-0.5 rounded-full shadow-md shrink-0">{unreadCount}</span>}
+                    </h1>
+                </div>
+
+                {/* Actions & Filters Container */}
+                <div className="flex items-center gap-3 overflow-x-auto no-scrollbar shrink-0">
+                    <div className="hidden md:flex items-center bg-white p-1 rounded-lg border border-slate-100 shadow-sm">
+                        {['all', 'unread', 'Job', 'Interview'].map(f => (
+                            <button
+                                key={f}
+                                onClick={() => setFilter(f.toLowerCase())}
+                                className={`px-3 py-1 rounded-md text-[9px] font-black uppercase tracking-widest transition whitespace-nowrap ${filter === f.toLowerCase() ? 'bg-gradient-to-r from-blue-600 to-emerald-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                            >
+                                {f}
+                            </button>
+                        ))}
                     </div>
-                    <div className="flex items-center gap-2">
+
+                    <div className="flex items-center gap-3 ml-2">
                         <button
                             onClick={handleMarkAllRead}
-                            className="text-blue-600 text-sm font-medium hover:bg-blue-50 px-3 py-1.5 rounded transition"
+                            className="text-blue-600 text-[10px] font-black uppercase tracking-widest hover:text-blue-700 transition whitespace-nowrap disabled:opacity-30"
                             disabled={unreadCount === 0}
                         >
-                            Mark all as read
+                            Mark All
                         </button>
-                        <span className="text-slate-300">|</span>
                         <button
                             onClick={handleClearAll}
-                            className="text-red-600 text-sm font-medium hover:bg-red-50 px-3 py-1.5 rounded transition"
+                            className="text-red-500 text-[10px] font-black uppercase tracking-widest hover:text-red-600 transition whitespace-nowrap disabled:opacity-30"
                             disabled={notifications.length === 0}
                         >
-                            Clear all
+                            Clear
                         </button>
                     </div>
                 </div>
+            </div>
 
-                {/* Filters */}
-                <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-                    {['all', 'unread', 'Job', 'Interview', 'System'].map(f => (
-                        <button
-                            key={f}
-                            onClick={() => setFilter(f)}
-                            className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition ${filter === f ? 'bg-slate-900 text-white' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'}`}
-                        >
-                            {f === 'all' ? 'All Notifications' : f.charAt(0).toUpperCase() + f.slice(1)}
-                        </button>
-                    ))}
-                </div>
-
-                {/* List */}
-                <div className="space-y-4">
-                    {notifications.length === 0 ? (
-                        <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-12 text-center">
-                            <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
-                                <FaBell size={24} />
-                            </div>
-                            <h3 className="text-lg font-medium text-slate-900">No notifications</h3>
-                            <p className="text-slate-500">You're all caught up! Check back later for updates.</p>
+            <div className="w-full pb-8 lg:pb-12 pt-0">
+                <div className="max-w-[1400px] mx-auto">
+                    {loading && notifications.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-20 gap-4">
+                            <PropagateLoader color='#2563EB' size={10} />
+                            <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Updating Feed...</p>
                         </div>
                     ) : (
-                        notifications.map(notif => (
-                            <div
-                                key={notif._id}
-                                className={`bg-white rounded-xl border p-5 flex gap-4 transition group ${notif.isRead ? 'border-slate-200' : 'border-blue-200 shadow-sm bg-blue-50/10'}`}
-                            >
-                                <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${notif.isRead ? 'bg-slate-100' : 'bg-white border border-blue-100'}`}>
-                                    {getIcon(notif.type)}
+                        <div className="space-y-4">
+                            {notifications.length === 0 ? (
+                                <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-12 text-center animate-fadeIn">
+                                    <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <FaBell className="text-slate-300 text-2xl" />
+                                    </div>
+                                    <h3 className="text-lg font-bold text-slate-800 mb-2">You're All Caught Up!</h3>
+                                    <p className="text-slate-500 text-sm max-w-sm mx-auto">New notifications about your applications and account will appear here.</p>
                                 </div>
+                            ) : (
+                                notifications.map((notif, index) => (
+                                    <div
+                                        key={notif._id}
+                                        className={`group relative bg-white rounded-2xl p-5 border transition-all duration-300 hover:shadow-xl hover:shadow-indigo-500/5 hover:-translate-y-0.5 animate-fadeIn ${!notif.isRead ? 'border-indigo-100 bg-gradient-to-r from-white to-indigo-50/10' : 'border-slate-100'}`}
+                                        style={{ animationDelay: `${index * 50}ms` }}
+                                    >
+                                        <div className="flex gap-4">
+                                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0 transition-transform group-hover:scale-110 ${!notif.isRead ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-400'}`}>
+                                                {getIcon(notif.type)}
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex justify-between items-start mb-1">
+                                                    <h3 className={`text-sm tracking-tight truncate pr-4 ${!notif.isRead ? 'font-black text-slate-900' : 'font-bold text-slate-600'}`}>{notif.title}</h3>
+                                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest whitespace-nowrap">{moment(notif.createdAt).fromNow()}</span>
+                                                </div>
+                                                <p className="text-slate-500 text-sm leading-relaxed line-clamp-2 pr-6">{notif.message}</p>
 
-                                <div className="flex-1">
-                                    <div className="flex justify-between items-start mb-1">
-                                        <h4 className={`text-base font-semibold ${notif.isRead ? 'text-slate-800' : 'text-slate-900'}`}>{notif.title}</h4>
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-xs text-slate-400">{new Date(notif.createdAt).toLocaleString()}</span>
-                                            {!notif.isRead && <FaCircle size={8} className="text-blue-500" />}
+                                                <div className="flex items-center gap-6 mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    {!notif.isRead && (
+                                                        <button
+                                                            onClick={() => handleMarkRead(notif._id)}
+                                                            className="text-indigo-600 text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 hover:gap-3 transition-all"
+                                                        >
+                                                            Mark Read <FaCheck />
+                                                        </button>
+                                                    )}
+                                                    <button
+                                                        onClick={() => handleDelete(notif._id)}
+                                                        className="text-red-500 text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 hover:gap-3 transition-all"
+                                                    >
+                                                        Delete <FaTrash />
+                                                    </button>
+                                                    {notif.link && (
+                                                        <Link
+                                                            to={notif.link}
+                                                            className="text-slate-900 text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 hover:gap-3 transition-all"
+                                                        >
+                                                            View Details →
+                                                        </Link>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            {!notif.isRead && (
+                                                <div className="absolute top-5 right-5 w-2 h-2 bg-indigo-600 rounded-full shadow-[0_0_10px_#4F46E5] group-hover:animate-pulse"></div>
+                                            )}
                                         </div>
                                     </div>
-                                    <p className={`text-sm mb-3 ${notif.isRead ? 'text-slate-500' : 'text-slate-700'}`}>{notif.message}</p>
-
-                                    {notif.link && (
-                                        <a href={notif.link} className="text-blue-600 text-sm font-medium hover:underline inline-block mb-3">
-                                            View Details
-                                        </a>
-                                    )}
-
-                                    <div className="flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                                        {!notif.isRead && (
-                                            <button
-                                                onClick={() => handleMarkRead(notif._id)}
-                                                className="flex items-center gap-1 text-xs text-slate-500 hover:text-blue-600"
-                                            >
-                                                <FaCheck size={10} /> Mark as read
-                                            </button>
-                                        )}
-                                        <button
-                                            onClick={() => handleDelete(notif._id)}
-                                            className="flex items-center gap-1 text-xs text-slate-500 hover:text-red-600"
-                                        >
-                                            <FaTrash size={10} /> Delete
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        ))
+                                ))
+                            )}
+                        </div>
                     )}
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 
 export default Notifications;
+

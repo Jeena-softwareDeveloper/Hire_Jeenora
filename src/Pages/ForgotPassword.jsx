@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaEnvelope, FaArrowLeft, FaCheckCircle } from 'react-icons/fa';
+import { FaEnvelope, FaArrowLeft, FaCheckCircle, FaShieldAlt, FaArrowRight } from 'react-icons/fa';
 import { PropagateLoader } from 'react-spinners';
 import { overrideStyle } from "../utils/utils";
 import api from '../api/api';
 import toast from 'react-hot-toast';
 import logo from '@/assets/logo.png';
+import loginBg from '@/assets/login_bg_green.png';
 import Notification from '../utils/Notification';
 import '../components/HireLogin/css/HireLogin.css';
 
@@ -74,148 +75,146 @@ const ForgotPassword = () => {
     };
 
     return (
-        <div className='min-w-screen min-h-screen bg-green-50 flex justify-center items-center py-4 px-3 sm:px-4 lg:py-8 font-["Outfit"]'>
-            <div className='w-full max-w-md mx-auto relative'>
+        <div
+            className='min-w-screen min-h-screen relative overflow-hidden flex justify-center items-center py-4 px-3 sm:px-4 lg:py-8 font-["Outfit"] bg-cover bg-center bg-no-repeat'
+            style={{ backgroundImage: `url(${loginBg})` }}
+        >
+            {/* Optional Overlay */}
+            <div className="absolute inset-0 bg-white/10 backdrop-blur-[2px]" />
+
+            <div className='w-full max-w-[480px] mx-auto relative z-10'>
 
                 {/* Notification */}
                 {localError && (
-                    <Notification
-                        message={localError}
-                        type="error"
-                        onClose={() => setLocalError(null)}
-                    />
+                    <div className="mb-4">
+                        <Notification
+                            message={localError}
+                            type="error"
+                            onClose={() => setLocalError(null)}
+                        />
+                    </div>
                 )}
 
-                <div className='bg-white rounded-xl sm:rounded-2xl shadow-lg border border-green-500 overflow-hidden'>
+                <div className='bg-white/70 backdrop-blur-2xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white p-6 sm:p-8 lg:p-10'>
 
-                    {/* Header */}
-                    <div className='bg-green-900 py-4 sm:py-5 px-4 sm:px-8'>
-                        <div className='flex items-center justify-center gap-3 sm:gap-4'>
-                            <img
-                                src={logo}
-                                alt="Jeenora Logo"
-                                className='h-12 sm:h-14 lg:h-16 object-contain'
-                                style={{
-                                    transform: 'scale(1.6)',
-                                    transformOrigin: 'center',
-                                }}
-                            />
-                            <h2 className='text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-wide'>
-                                Jeenora <span className='text-green-300'>Hire</span>
-                            </h2>
-                        </div>
-                    </div>
+                    {/* Step 1: Email Input */}
+                    {step === 1 && (
+                        <>
+                            {/* Header Section */}
+                            <div className="text-center mb-8">
+                                <div className="flex justify-center items-center gap-2 mb-6">
+                                    <img
+                                        src={logo}
+                                        alt="Jeenora Logo"
+                                        className="h-8 object-contain"
+                                    />
+                                    <span className="text-lg font-bold text-slate-800 tracking-tight">
+                                        JEENORA <span className="text-emerald-500">Hire</span>
+                                    </span>
+                                </div>
 
-                    {/* Content */}
-                    <div className='p-4 sm:p-6 lg:p-8'>
-                        {/* Step 1: Email Input */}
-                        {step === 1 && (
-                            <>
-                                <h1 className='text-xl text-center mb-4 sm:text-2xl lg:text-3xl font-extrabold text-green-800 tracking-wide'>
-                                    Forgot Password?
-                                </h1>
-                                <p className='text-center text-green-600 mb-6 font-medium text-sm sm:text-base'>
-                                    Enter your email to receive an OTP
-                                </p>
-
-                                <form onSubmit={handleSendOTP}>
-                                    <div className='mb-6'>
-                                        <label htmlFor="email" className='block text-sm font-semibold text-green-900 mb-2'>
-                                            Email Address
-                                        </label>
-                                        <div className='relative'>
-                                            <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-                                                <FaEnvelope className='h-5 w-5 text-green-800' />
-                                            </div>
-                                            <input
-                                                onChange={(e) => setEmail(e.target.value)}
-                                                value={email}
-                                                className='pl-10 w-full px-3 py-3 border border-green-700 rounded-lg bg-green-50 text-green-900 placeholder-green-700 text-sm sm:text-base focus:border-green-700 focus:ring-0 focus:outline-none'
-                                                type="email"
-                                                name='email'
-                                                placeholder='your@gmail.com'
-                                                id='email'
-                                                required
-                                            />
+                                <div className="mb-4 relative inline-block">
+                                    {/* Shield Effect Background */}
+                                    <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-[20px] rotate-45 mx-auto flex items-center justify-center shadow-lg shadow-emerald-100/50">
+                                        <div className="-rotate-45 transform">
+                                            <FaEnvelope className="text-teal-600 text-2xl" />
                                         </div>
                                     </div>
+                                </div>
 
-                                    <button
-                                        disabled={loading}
-                                        className='w-full bg-green-900 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 flex items-center justify-center gap-2'
-                                    >
-                                        {loading ? (
-                                            <PropagateLoader color='#fff' cssOverride={overrideStyle} size={10} />
-                                        ) : (
-                                            <>
-                                                Send OTP
-                                                <FaEnvelope className='w-4 h-4' />
-                                            </>
-                                        )}
-                                    </button>
-                                </form>
-                            </>
-                        )}
-
-                        {/* Step 2: OTP Verification */}
-                        {step === 2 && (
-                            <>
-                                <h1 className='text-xl text-center mb-2 sm:text-2xl lg:text-3xl font-extrabold text-green-800 tracking-wide'>
-                                    Verification
+                                <h1 className="text-2xl font-bold text-slate-800 mb-2">
+                                    Forgot your password? 😉
                                 </h1>
-                                <p className='text-center text-green-600 mb-6 font-medium text-sm sm:text-base'>
-                                    Enter the OTP sent to {email}
+                                <p className="text-slate-500 text-sm">
+                                    No worries! Enter your email to receive an OTP.
                                 </p>
-
-                                <OTPInput
-                                    email={email}
-                                    purpose="password-reset"
-                                    onVerified={handleOtpVerified}
-                                />
-
-                                <div className='mt-4 text-center'>
-                                    <button
-                                        onClick={() => setStep(1)}
-                                        className='text-sm text-green-700 hover:text-green-900 underline'
-                                    >
-                                        Change Email
-                                    </button>
-                                </div>
-                            </>
-                        )}
-
-                        {/* Step 3: Success Message */}
-                        {step === 3 && (
-                            <div className='text-center py-4'>
-                                <div className='w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6'>
-                                    <FaCheckCircle className='text-green-800 text-4xl' />
-                                </div>
-                                <h2 className='text-2xl font-bold text-gray-900 mb-4'>Check Your Email</h2>
-                                <p className='text-gray-600 mb-2'>
-                                    We've sent a password reset link to:
-                                </p>
-                                <p className='text-green-800 font-semibold text-lg mb-6'>
-                                    {email}
-                                </p>
-                                <div className='bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 text-left'>
-                                    <p className='text-blue-800 text-sm'>
-                                        <strong>ℹ️ Next Step:</strong> Click the link in your email to set a new password. The link expires in 10 minutes.
-                                    </p>
-                                </div>
                             </div>
-                        )}
 
-                        {/* Back to Login (Always Visible) */}
-                        <div className='flex items-center justify-center mt-6'>
+                            <form onSubmit={handleSendOTP} className="space-y-6">
+                                <div className="space-y-2">
+                                    <div className="relative group">
+                                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                            <FaEnvelope className="h-5 w-5 text-teal-600 group-focus-within:text-teal-700 transition-colors" />
+                                        </div>
+                                        <input
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            value={email}
+                                            className="pl-12 w-full px-4 py-3 bg-slate-50/50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:bg-white focus:border-teal-500 focus:ring-4 focus:ring-teal-500/10 transition-all duration-200 outline-none text-base shadow-sm"
+                                            type="email"
+                                            name='email'
+                                            placeholder='your@gmail.com'
+                                            autoFocus
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <button
+                                    disabled={loading}
+                                    className='w-full bg-gradient-to-r from-[#2FA8E5] to-[#27CFA6] hover:from-[#2697d0] hover:to-[#22bc96] text-white font-bold py-3.5 rounded-xl shadow-[0_10px_20px_-10px_rgba(39,207,166,0.5)] transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 group'
+                                >
+                                    {loading ? (
+                                        <PropagateLoader color='#fff' cssOverride={overrideStyle} size={10} />
+                                    ) : (
+                                        <>
+                                            <div className="bg-white/20 p-1 rounded-full">
+                                                <FaShieldAlt className="text-white text-xs" />
+                                            </div>
+                                            <span>Send Reset Code</span>
+                                            <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                                        </>
+                                    )}
+                                </button>
+                            </form>
+                        </>
+                    )}
+
+                    {/* Step 2: OTP Verification */}
+                    {step === 2 && (
+                        <div className="animate-fade-in-up">
+                            {/* OTP Component handles UI details, we just wrap it if needed or let it sit in the glass card */}
+                            <OTPInput
+                                email={email}
+                                purpose="password-reset"
+                                onVerified={handleOtpVerified}
+                                onCancel={() => setStep(1)}
+                            />
+                        </div>
+                    )}
+
+                    {/* Step 3: Success Message */}
+                    {step === 3 && (
+                        <div className='text-center py-4 animate-fade-in-up'>
+                            <div className='w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-emerald-100/50 shadow-lg'>
+                                <FaCheckCircle className='text-emerald-500 text-4xl' />
+                            </div>
+                            <h2 className='text-2xl font-bold text-slate-800 mb-2'>Check Your Email 📬</h2>
+                            <p className='text-slate-500 mb-6 text-sm'>
+                                We've sent a password reset link to:<br />
+                                <span className="font-bold text-slate-800 text-base">{email}</span>
+                            </p>
+
+                            <div className='bg-blue-50/80 border border-blue-100 rounded-xl p-4 mb-8 text-left'>
+                                <p className='text-blue-700 text-xs sm:text-sm leading-relaxed'>
+                                    <strong className="block mb-1">ℹ️ Next Step:</strong>
+                                    Click the link in your email to set a new password. The link expires in 10 minutes.
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Back to Login (Only show on Step 1 & 3 to avoid cluttering OTP screen which has its own cancel) */}
+                    {step !== 2 && (
+                        <div className='flex items-center justify-center mt-8'>
                             <Link
                                 to="/hire/login"
-                                className='flex items-center gap-2 text-green-700 hover:text-green-900 font-semibold'
+                                className='flex items-center gap-2 text-slate-500 hover:text-teal-600 font-medium transition-colors text-sm group'
                             >
-                                <FaArrowLeft className='w-3 h-3' />
+                                <FaArrowLeft className='w-3 h-3 group-hover:-translate-x-1 transition-transform' />
                                 Back to Login
                             </Link>
                         </div>
-                    </div>
+                    )}
                 </div>
             </div>
         </div>
@@ -223,3 +222,4 @@ const ForgotPassword = () => {
 };
 
 export default ForgotPassword;
+

@@ -18,7 +18,7 @@ const ResumeUpload = ({ onFileUpload, currentFile, onAnalysisComplete, resumeDet
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 font-['Outfit']">
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 ">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h3 className="text-xl font-bold text-gray-900">Upload Your Resume</h3>

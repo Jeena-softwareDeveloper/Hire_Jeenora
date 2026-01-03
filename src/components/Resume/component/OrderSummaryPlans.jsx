@@ -31,3 +31,4 @@ const OrderSummaryPlans = ({ plans, selectedPlan, setSelectedPlan }) => {
 };
 
 export default OrderSummaryPlans;
+

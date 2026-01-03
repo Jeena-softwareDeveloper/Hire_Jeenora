@@ -81,10 +81,10 @@ const ConfirmServiceModal = ({ onClose, onConfirm, loading }) => {
                         <button
                             onClick={onConfirm}
                             disabled={!hasEnoughCredits || loading}
-                            className={`flex-1 py-3.5 rounded-xl text-white font-bold text-sm shadow-xl shadow-indigo-100 flex items-center justify-center gap-2 transition-all
+                            className={`flex-1 py-3.5 rounded-xl text-white font-bold text-sm shadow-xl shadow-blue-100 flex items-center justify-center gap-2 transition-all
                                 ${!hasEnoughCredits || loading
-                                    ? 'bg-gray-300 cursor-not-allowed shadow-none'
-                                    : 'bg-indigo-600 hover:bg-indigo-700 active:scale-95'
+                                    ? 'bg-gradient-to-r from-blue-50 to-emerald-50 text-blue-300 cursor-not-allowed shadow-none border border-blue-100'
+                                    : 'bg-gradient-to-r from-blue-600 to-emerald-600 hover:shadow-blue-500/20 active:scale-95'
                                 }
                             `}
                         >
@@ -104,3 +104,4 @@ const ConfirmServiceModal = ({ onClose, onConfirm, loading }) => {
 };
 
 export default ConfirmServiceModal;
+

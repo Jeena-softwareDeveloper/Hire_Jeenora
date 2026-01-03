@@ -1,13 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FaEnvelope, FaClock, FaCheckCircle } from 'react-icons/fa';
-import Button from '../common/Button';
+import { FaEnvelope, FaClock, FaCheckCircle, FaShieldAlt, FaArrowRight, FaLifeRing } from 'react-icons/fa';
 import api from '../../api/api';
+import { PropagateLoader } from 'react-spinners';
+import { overrideStyle } from "../../utils/utils";
+import logo from '@/assets/logo.png';
 
 const OTPInput = ({ email, purpose, onVerified, onCancel }) => {
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
+    const [timeLeft, setTimeLeft] = useState(120); // 2 minutes
     const [attemptsLeft, setAttemptsLeft] = useState(5); // 5 attempts allowed
     const inputRefs = useRef([]);
 
@@ -111,7 +113,7 @@ const OTPInput = ({ email, purpose, onVerified, onCancel }) => {
 
             if (response.data) {
                 setOtp(['', '', '', '', '', '']);
-                setTimeLeft(600); // Reset timer to 10 mins
+                setTimeLeft(120); // Reset timer to 2 mins
                 setAttemptsLeft(5); // Reset attempts to 5
                 inputRefs.current[0]?.focus();
             }
@@ -130,21 +132,28 @@ const OTPInput = ({ email, purpose, onVerified, onCancel }) => {
     };
 
     return (
-        <div className="w-full max-w-md mx-auto p-6 bg-white rounded-2xl shadow-lg border border-gray-200 font-['Outfit']">
-            {/* Header */}
+        <div className="w-full ">
+            {/* Header with Logo */}
             <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <FaEnvelope className="text-green-800 text-2xl" />
+                <div className="flex justify-center items-center gap-2 mb-4">
+                    <img
+                        src={logo}
+                        alt="Jeenora Logo"
+                        className="h-7 object-contain"
+                    />
+                    <span className="text-xl font-bold text-slate-800 tracking-tight">
+                        JEENORA <span className="text-emerald-500">Hire</span>
+                    </span>
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Verify Your Email</h2>
-                <p className="text-gray-600 text-sm">
-                    We've sent a 6-digit code to<br />
-                    <span className="font-semibold text-gray-900">{email}</span>
+
+                <h2 className="text-xl font-bold text-slate-800 mb-1">Check your inbox ✉️</h2>
+                <p className="text-slate-500 text-sm">
+                    We sent a 6-digit code to <span className="font-bold text-slate-800">{email}</span>
                 </p>
             </div>
 
             {/* OTP Input */}
-            <div className="flex gap-2 justify-center mb-6">
+            <div className="flex gap-2 sm:gap-3 justify-center mb-5">
                 {otp.map((digit, index) => (
                     <input
                         key={index}
@@ -155,70 +164,76 @@ const OTPInput = ({ email, purpose, onVerified, onCancel }) => {
                         onChange={(e) => handleChange(index, e.target.value)}
                         onKeyDown={(e) => handleKeyDown(index, e)}
                         onPaste={index === 0 ? handlePaste : undefined}
-                        className="w-12 h-14 text-center text-2xl font-bold border-2 border-gray-300 rounded-lg focus:border-green-800 focus:ring-2 focus:ring-green-100 transition-all"
+                        className={`w-10 h-10 sm:w-12 sm:h-12 text-center text-lg sm:text-xl font-bold border-2 rounded-lg transition-all outline-none 
+                            ${digit ? 'border-teal-500 bg-white shadow-lg shadow-teal-100/50' : 'border-slate-200 bg-slate-50/50 hover:border-slate-300'}
+                            focus:border-teal-500 focus:bg-white focus:ring-4 focus:ring-teal-500/10 text-slate-800`}
                         disabled={loading || timeLeft === 0}
                     />
                 ))}
             </div>
 
             {/* Timer */}
-            <div className="flex items-center justify-center gap-2 mb-4">
-                <FaClock className={`${timeLeft < 60 ? 'text-red-500' : 'text-gray-400'}`} />
-                <span className={`text-sm font-semibold ${timeLeft < 60 ? 'text-red-500' : 'text-gray-600'}`}>
+            <div className="flex items-center justify-center gap-2 mb-6 text-sm">
+                <FaClock className={`${timeLeft < 60 ? 'text-red-500' : 'text-slate-400'}`} />
+                <span className="text-slate-500">Expires in</span>
+                <span className={`font-bold ${timeLeft < 60 ? 'text-red-500' : 'text-slate-800'}`}>
                     {formatTime(timeLeft)}
                 </span>
             </div>
 
             {/* Error Message */}
             {error && (
-                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-                    <p className="text-red-600 text-sm text-center font-medium">{error}</p>
+                <div className="mb-6 p-3 bg-red-50 border border-red-200 rounded-xl text-center animate-shake">
+                    <p className="text-red-600 text-xs font-semibold">{error}</p>
                     {attemptsLeft > 0 && attemptsLeft < 5 && (
-                        <p className="text-red-500 text-xs text-center mt-1">
+                        <p className="text-red-500 text-[10px] mt-1">
                             {attemptsLeft} attempt{attemptsLeft !== 1 ? 's' : ''} remaining
                         </p>
                     )}
                 </div>
             )}
 
-            {/* Buttons */}
-            <div className="space-y-3">
-                <Button
-                    fullWidth
-                    onClick={handleVerify}
-                    loading={loading}
-                    disabled={otp.join('').length !== 6 || timeLeft === 0 || attemptsLeft === 0}
-                    icon={FaCheckCircle}
-                >
-                    Verify OTP
-                </Button>
+            {/* Verify Button */}
+            <button
+                onClick={handleVerify}
+                disabled={loading || otp.join('').length !== 6 || timeLeft === 0 || attemptsLeft === 0}
+                className="w-full bg-gradient-to-r from-[#2FA8E5] to-[#27CFA6] hover:from-[#2697d0] hover:to-[#22bc96] text-white font-bold py-3 rounded-lg shadow-[0_10px_20px_-10px_rgba(39,207,166,0.5)] transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 group mb-5"
+            >
+                {loading ? (
+                    <PropagateLoader color='#fff' cssOverride={overrideStyle} size={8} />
+                ) : (
+                    <>
+                        <div className="bg-white/20 p-1 rounded-full">
+                            <FaShieldAlt className="text-white text-xs" />
+                        </div>
+                        <span>Verify & Continue</span>
+                        <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                    </>
+                )}
+            </button>
 
-                <div className="flex gap-3">
-                    <Button
-                        fullWidth
-                        variant="secondary"
-                        onClick={handleResend}
-                        disabled={loading || (attemptsLeft > 0 && timeLeft > 0)}
-                    >
-                        {loading ? 'Sending...' : 'Resend OTP'}
-                    </Button>
-                    <Button
-                        fullWidth
-                        variant="ghost"
-                        onClick={onCancel}
-                        disabled={loading}
-                    >
-                        Cancel
-                    </Button>
-                </div>
+            {/* Resend / Cancel Links */}
+            <div className="flex items-center justify-center gap-4 text-sm mb-6">
+                <button
+                    onClick={handleResend}
+                    disabled={loading || (attemptsLeft > 0 && timeLeft > 0)}
+                    className="font-medium text-slate-500 hover:text-teal-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                    Resend OTP
+                </button>
+                <span className="text-slate-300">|</span>
+                <button
+                    onClick={onCancel}
+                    disabled={loading}
+                    className="font-medium text-slate-500 hover:text-red-500 disabled:opacity-50 transition-colors"
+                >
+                    Cancel
+                </button>
             </div>
 
-            {/* Help Text */}
-            <p className="text-xs text-gray-500 text-center mt-4">
-                Didn't receive the code? Check your spam folder or click Resend OTP
-            </p>
+
         </div>
     );
 };
-
 export default OTPInput;
+
