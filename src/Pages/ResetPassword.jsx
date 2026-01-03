@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { FaLock, FaArrowLeft, FaEye, FaEyeSlash, FaArrowRight } from 'react-icons/fa';
+import { Lock, ArrowLeft, Eye, EyeOff, ArrowRight, X, Hourglass } from 'lucide-react';
 import { PropagateLoader } from 'react-spinners';
 import { overrideStyle } from "../utils/utils";
 import api from '../api/api';
@@ -110,9 +110,12 @@ const ResetPassword = () => {
                 <div className="absolute inset-0 bg-white/5 backdrop-blur-[6px]" />
                 <div className='relative z-10 w-full max-w-[480px] text-center bg-white/70 backdrop-blur-3xl p-12 rounded-[32px] shadow-xl border border-red-100/50'>
                     <div className='w-20 h-20 bg-rose-100 rounded-2xl flex items-center justify-center mx-auto mb-6 rotate-12 shadow-lg'>
-                        <span className='text-rose-600 text-4xl font-black -rotate-12'>✕</span>
+                        <X className='text-rose-600 w-10 h-10 -rotate-12' />
                     </div>
-                    <h2 className='text-2xl font-black text-slate-800 mb-3'>Link Expired ⏳</h2>
+                    <div className="flex items-center justify-center gap-2 mb-3">
+                        <h2 className='text-2xl font-black text-slate-800'>Link Expired</h2>
+                        <Hourglass className='w-6 h-6 text-slate-800' />
+                    </div>
                     <p className='text-slate-500 mb-8 font-medium'>This password reset link is invalid or has expired for security reasons.</p>
                     <Link
                         to="/hire/forgot-password"
@@ -165,9 +168,12 @@ const ResetPassword = () => {
                             </div>
                         </div>
 
-                        <h1 className="text-2xl sm:text-3xl font-black text-slate-800 mb-2">
-                            Secure New Password 🔐
-                        </h1>
+                        <div className="flex items-center justify-center gap-2 mb-2">
+                            <h1 className="text-2xl sm:text-3xl font-black text-slate-800">
+                                Secure New Password
+                            </h1>
+                            <Lock className="w-8 h-8 text-slate-800" />
+                        </div>
                         <p className="text-slate-500 font-medium text-[15px]">
                             Enter your robust new credentials below
                         </p>
@@ -179,7 +185,7 @@ const ResetPassword = () => {
                             <label className="text-sm font-bold text-slate-700 ml-1">New Password</label>
                             <div className='relative group'>
                                 <div className='absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none'>
-                                    <FaLock className='h-5 w-5 text-blue-500 group-focus-within:text-blue-600 transition-colors' />
+                                    <Lock className='h-5 w-5 text-blue-500 group-focus-within:text-blue-600 transition-colors' />
                                 </div>
                                 <input
                                     onChange={(e) => setNewPassword(e.target.value)}
@@ -193,7 +199,7 @@ const ResetPassword = () => {
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
                                     className='absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600'>
-                                    {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                 </button>
                             </div>
                         </div>
@@ -203,7 +209,7 @@ const ResetPassword = () => {
                             <label className="text-sm font-bold text-slate-700 ml-1">Confirm Password</label>
                             <div className='relative group'>
                                 <div className='absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none'>
-                                    <FaLock className='h-5 w-5 text-emerald-500 group-focus-within:text-emerald-600 transition-colors' />
+                                    <Lock className='h-5 w-5 text-emerald-500 group-focus-within:text-emerald-600 transition-colors' />
                                 </div>
                                 <input
                                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -217,7 +223,7 @@ const ResetPassword = () => {
                                     type="button"
                                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                     className='absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600'>
-                                    {showConfirmPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
+                                    {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                                 </button>
                             </div>
                         </div>
@@ -228,7 +234,7 @@ const ResetPassword = () => {
                             className='w-full h-[60px] bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black py-3 rounded-2xl shadow-[0_12px_24px_-8px_rgba(37,99,235,0.4)] transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-3 group'
                         >
                             <span className="text-lg tracking-wide">Update Password</span>
-                            <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                            <ArrowRight className="group-hover:translate-x-1 transition-transform" />
                         </button>
                     </form>
 
@@ -238,7 +244,7 @@ const ResetPassword = () => {
                             to="/hire/login"
                             className='flex items-center gap-2 text-slate-500 hover:text-blue-600 font-bold transition-colors text-sm group'
                         >
-                            <FaArrowLeft className='w-3 h-3 group-hover:-translate-x-1 transition-transform' />
+                            <ArrowLeft className='w-4 h-4 group-hover:-translate-x-1 transition-transform' />
                             Back to Secure Login
                         </Link>
                     </div>

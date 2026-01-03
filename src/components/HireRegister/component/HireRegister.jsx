@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-    FaUserTie,
-    FaEnvelope,
-    FaPhone,
-    FaLock,
-    FaArrowRight,
-    FaShieldAlt
-} from "react-icons/fa";
+    User,
+    Mail,
+    Phone,
+    Lock,
+    ArrowRight,
+    Shield,
+    Rocket
+} from "lucide-react";
 import { PropagateLoader } from 'react-spinners';
 import { overrideStyle } from "../../../utils/utils";
 import useAuthStore from '@/store/useAuthStore';
@@ -181,8 +182,8 @@ const HireRegister = () => {
                                     JEENORA <span className="bg-gradient-to-r from-blue-600 to-emerald-600 bg-clip-text text-transparent">Hire</span>
                                 </span>
                             </div>
-                            <h1 className="text-xl font-bold text-slate-800 mb-1">
-                                Create Account 🚀
+                            <h1 className="text-xl font-bold text-slate-800 mb-1 flex items-center justify-center gap-2">
+                                Create Account <Rocket className="w-5 h-5 text-indigo-500" />
                             </h1>
                             <p className="text-slate-500 text-[10px]">
                                 Join us to find the perfect candidates
@@ -196,7 +197,7 @@ const HireRegister = () => {
                                 <label className="block text-[10px] font-semibold text-slate-700">Full Name</label>
                                 <div className="relative group">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <FaUserTie className="h-3.5 w-3.5 text-blue-500 group-focus-within:text-blue-600 transition-colors" />
+                                        <User className="h-3.5 w-3.5 text-blue-500 group-focus-within:text-blue-600 transition-colors" />
                                     </div>
                                     <input
                                         onChange={inputHandle}
@@ -215,7 +216,7 @@ const HireRegister = () => {
                                 <label className="block text-[10px] font-semibold text-slate-700">Email Address</label>
                                 <div className="relative group">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <FaEnvelope className="h-3.5 w-3.5 text-blue-500 group-focus-within:text-blue-600 transition-colors" />
+                                        <Mail className="h-3.5 w-3.5 text-blue-500 group-focus-within:text-blue-600 transition-colors" />
                                     </div>
                                     <input
                                         onChange={inputHandle}
@@ -234,7 +235,7 @@ const HireRegister = () => {
                                 <label className="block text-[10px] font-semibold text-slate-700">Phone Number</label>
                                 <div className="relative group">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <FaPhone className="h-3.5 w-3.5 text-blue-500 group-focus-within:text-blue-600 transition-colors" />
+                                        <Phone className="h-3.5 w-3.5 text-blue-500 group-focus-within:text-blue-600 transition-colors" />
                                     </div>
                                     <input
                                         onChange={inputHandle}
@@ -253,7 +254,7 @@ const HireRegister = () => {
                                 <label className="block text-[10px] font-semibold text-slate-700">Password</label>
                                 <div className="relative group">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <FaLock className="h-3.5 w-3.5 text-blue-500 group-focus-within:text-blue-600 transition-colors" />
+                                        <Lock className="h-3.5 w-3.5 text-blue-500 group-focus-within:text-blue-600 transition-colors" />
                                     </div>
                                     <input
                                         onChange={inputHandle}
@@ -291,10 +292,10 @@ const HireRegister = () => {
                                 ) : (
                                     <>
                                         <div className="bg-white/20 p-1 rounded-full">
-                                            <FaShieldAlt className="text-white text-xs" />
+                                            <Shield className="text-white text-xs" />
                                         </div>
                                         <span>Create Account</span>
-                                        <FaArrowRight className="group-hover:translate-x-1 transition-transform w-3 h-3" />
+                                        <ArrowRight className="group-hover:translate-x-1 transition-transform w-3 h-3" />
                                     </>
                                 )}
                             </button>

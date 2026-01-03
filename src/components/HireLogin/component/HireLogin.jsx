@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-    FaEnvelope,
-    FaLock,
-    FaArrowRight,
-    FaEye,
-    FaEyeSlash,
-    FaShieldAlt
-} from "react-icons/fa";
+    Mail,
+    Lock,
+    ArrowRight,
+    Eye,
+    EyeOff,
+    Shield,
+    Hand
+} from "lucide-react";
 import { PropagateLoader } from 'react-spinners';
 import { overrideStyle } from "../../../utils/utils";
 import useAuthStore from '@/store/useAuthStore';
@@ -182,8 +183,8 @@ const HireLogin = () => {
                                     JEENORA <span className="text-emerald-500">Hire</span>
                                 </span>
                             </div>
-                            <h1 className="text-2xl font-bold text-slate-800 mb-1">
-                                Welcome back <span className="inline-block animate-wave origin-[70%_70%]">👋</span>
+                            <h1 className="text-2xl font-bold text-slate-800 mb-1 flex items-center justify-center gap-2">
+                                Welcome back <Hand className="w-6 h-6 text-yellow-500 animate-wave origin-[70%_70%]" />
                             </h1>
                             <p className="text-slate-500 text-xs">
                                 Log in to continue your career journey
@@ -196,7 +197,7 @@ const HireLogin = () => {
                                 <label className="block text-xs font-semibold text-slate-700">Email Address</label>
                                 <div className="relative group">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <FaEnvelope className="h-4 w-4 text-teal-600 group-focus-within:text-teal-700 transition-colors" />
+                                        <Mail className="h-4 w-4 text-teal-600 group-focus-within:text-teal-700 transition-colors" />
                                     </div>
                                     <input
                                         onChange={inputHandle}
@@ -215,7 +216,7 @@ const HireLogin = () => {
                                 <label className="block text-xs font-semibold text-slate-700">Password</label>
                                 <div className="relative group">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <FaLock className="h-4 w-4 text-teal-600 group-focus-within:text-teal-700 transition-colors" />
+                                        <Lock className="h-4 w-4 text-teal-600 group-focus-within:text-teal-700 transition-colors" />
                                     </div>
                                     <input
                                         onChange={inputHandle}
@@ -231,14 +232,14 @@ const HireLogin = () => {
                                         onClick={() => setPasswordVisible(!passwordVisible)}
                                         className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
                                     >
-                                        {passwordVisible ? <FaEyeSlash size={16} /> : <FaEye size={16} />}
+                                        {passwordVisible ? <EyeOff size={16} /> : <Eye size={16} />}
                                     </button>
                                 </div>
                             </div>
 
                             {/* Security Note */}
                             <div className="flex justify-center items-center gap-1.5 text-[10px] text-slate-400 py-0.5">
-                                <FaLock size={8} />
+                                <Lock size={8} />
                                 <span>Your data is securely encrypted</span>
                             </div>
 
@@ -248,10 +249,10 @@ const HireLogin = () => {
                                 className="w-full bg-gradient-to-r from-[#2FA8E5] to-[#27CFA6] hover:from-[#2697d0] hover:to-[#22bc96] text-white font-bold py-3 rounded-lg shadow-[0_10px_20px_-10px_rgba(39,207,166,0.5)] transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 group text-sm"
                             >
                                 <div className="bg-white/20 p-1 rounded-full">
-                                    <FaShieldAlt className="text-white text-xs" />
+                                    <Shield className="text-white text-xs" />
                                 </div>
                                 <span>Secure Login</span>
-                                <FaArrowRight className="group-hover:translate-x-1 transition-transform w-3 h-3" />
+                                <ArrowRight className="group-hover:translate-x-1 transition-transform w-3 h-3" />
                             </button>
 
                             {/* Footer Link 1: Forgot Password */}
@@ -277,7 +278,7 @@ const HireLogin = () => {
                             >
                                 New to Jeenora?
                                 <span className="font-bold">Join Jeenora, land your dream job</span>
-                                <FaArrowRight className="text-[10px] transform group-hover:translate-x-1 transition-transform" />
+                                <ArrowRight className="text-[10px] transform group-hover:translate-x-1 transition-transform" />
                             </Link>
                         </div>
 

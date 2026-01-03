@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FaEnvelope, FaArrowLeft, FaCheckCircle, FaShieldAlt, FaArrowRight } from 'react-icons/fa';
+import { Mail, ArrowLeft, CheckCircle, Shield, ArrowRight, Smile, Info } from 'lucide-react';
 import { PropagateLoader } from 'react-spinners';
 import { overrideStyle } from "../utils/utils";
 import api from '../api/api';
@@ -122,14 +122,17 @@ const ForgotPassword = () => {
                                     {/* Shield Effect Background */}
                                     <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-[20px] rotate-45 mx-auto flex items-center justify-center shadow-lg shadow-emerald-100/50">
                                         <div className="-rotate-45 transform">
-                                            <FaEnvelope className="text-teal-600 text-2xl" />
+                                            <Mail className="text-teal-600 w-6 h-6" />
                                         </div>
                                     </div>
                                 </div>
 
-                                <h1 className="text-2xl font-bold text-slate-800 mb-2">
-                                    Forgot your password? 😉
-                                </h1>
+                                <div className="flex items-center justify-center gap-2 mb-2">
+                                    <h1 className="text-2xl font-bold text-slate-800">
+                                        Forgot your password?
+                                    </h1>
+                                    <Smile className="w-6 h-6 text-slate-800" />
+                                </div>
                                 <p className="text-slate-500 text-sm">
                                     No worries! Enter your email to receive an OTP.
                                 </p>
@@ -139,7 +142,7 @@ const ForgotPassword = () => {
                                 <div className="space-y-2">
                                     <div className="relative group">
                                         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                            <FaEnvelope className="h-5 w-5 text-teal-600 group-focus-within:text-teal-700 transition-colors" />
+                                            <Mail className="h-5 w-5 text-teal-600 group-focus-within:text-teal-700 transition-colors" />
                                         </div>
                                         <input
                                             onChange={(e) => setEmail(e.target.value)}
@@ -159,10 +162,10 @@ const ForgotPassword = () => {
                                     className='w-full bg-gradient-to-r from-[#2FA8E5] to-[#27CFA6] hover:from-[#2697d0] hover:to-[#22bc96] text-white font-bold py-3.5 rounded-xl shadow-[0_10px_20px_-10px_rgba(39,207,166,0.5)] transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2 group'
                                 >
                                     <div className="bg-white/20 p-1 rounded-full">
-                                        <FaShieldAlt className="text-white text-xs" />
+                                        <Shield className="text-white w-3 h-3" />
                                     </div>
                                     <span>Send Reset Code</span>
-                                    <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                                    <ArrowRight className="group-hover:translate-x-1 transition-transform" />
                                 </button>
                             </form>
                         </>
@@ -185,18 +188,24 @@ const ForgotPassword = () => {
                     {step === 3 && (
                         <div className='text-center py-4 animate-fade-in-up'>
                             <div className='w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-emerald-100/50 shadow-lg'>
-                                <FaCheckCircle className='text-emerald-500 text-4xl' />
+                                <CheckCircle className='text-emerald-500 w-10 h-10' />
                             </div>
-                            <h2 className='text-2xl font-bold text-slate-800 mb-2'>Check Your Email 📬</h2>
+                            <div className="flex items-center justify-center gap-2 mb-2">
+                                <h2 className='text-2xl font-bold text-slate-800'>Check Your Email</h2>
+                                <Mail className='text-slate-800 w-6 h-6' />
+                            </div>
                             <p className='text-slate-500 mb-6 text-sm'>
                                 We've sent a password reset link to:<br />
                                 <span className="font-bold text-slate-800 text-base">{email}</span>
                             </p>
 
                             <div className='bg-blue-50/80 border border-blue-100 rounded-xl p-4 mb-8 text-left'>
-                                <p className='text-blue-700 text-xs sm:text-sm leading-relaxed'>
-                                    <strong className="block mb-1">ℹ️ Next Step:</strong>
-                                    Click the link in your email to set a new password. The link expires in 2 minutes.
+                                <p className='text-blue-700 text-xs sm:text-sm leading-relaxed flex items-start gap-2'>
+                                    <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                                    <span>
+                                        <strong className="block mb-1">Next Step:</strong>
+                                        Click the link in your email to set a new password. The link expires in 2 minutes.
+                                    </span>
                                 </p>
                             </div>
                         </div>
@@ -209,7 +218,7 @@ const ForgotPassword = () => {
                                 to="/hire/login"
                                 className='flex items-center gap-2 text-slate-500 hover:text-teal-600 font-medium transition-colors text-sm group'
                             >
-                                <FaArrowLeft className='w-3 h-3 group-hover:-translate-x-1 transition-transform' />
+                                <ArrowLeft className='w-3 h-3 group-hover:-translate-x-1 transition-transform' />
                                 Back to Login
                             </Link>
                         </div>
