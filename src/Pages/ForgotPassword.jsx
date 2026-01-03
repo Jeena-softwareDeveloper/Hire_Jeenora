@@ -76,17 +76,17 @@ const ForgotPassword = () => {
 
     return (
         <div
-            className='min-w-screen min-h-screen relative overflow-hidden flex justify-center items-center py-4 px-3 sm:px-4 lg:py-8 font-["Outfit"] bg-cover bg-center bg-no-repeat'
+            className='min-w-screen min-h-screen relative overflow-hidden flex justify-center items-center py-6 px-4 font-["Outfit"] bg-cover bg-center bg-no-repeat'
             style={{ backgroundImage: `url(${loginBg})` }}
         >
-            {/* Optional Overlay */}
-            <div className="absolute inset-0 bg-white/10 backdrop-blur-[2px]" />
+            {/* Glossy Overlay */}
+            <div className="absolute inset-0 bg-white/5 backdrop-blur-[6px]" />
 
-            <div className='w-full max-w-[480px] mx-auto relative z-10'>
+            <div className='w-full max-w-[500px] mx-auto relative z-10'>
 
-                {/* Notification */}
+                {/* Error Notification */}
                 {localError && (
-                    <div className="mb-4">
+                    <div className="mb-6 animate-fade-in">
                         <Notification
                             message={localError}
                             type="error"
@@ -95,7 +95,10 @@ const ForgotPassword = () => {
                     </div>
                 )}
 
-                <div className='bg-white/70 backdrop-blur-2xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white p-6 sm:p-8 lg:p-10'>
+                <div className='bg-white/70 backdrop-blur-3xl rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.08)] border border-white/60 p-8 sm:p-10 lg:p-12 relative overflow-hidden'>
+                    {/* Decorative radial gradient for glass effect */}
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-teal-200/20 blur-3xl rounded-full -mr-10 -mt-10" />
+                    <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-200/20 blur-3xl rounded-full -ml-10 -mb-10" />
 
                     {/* Step 1: Email Input */}
                     {step === 1 && (
@@ -197,7 +200,7 @@ const ForgotPassword = () => {
                             <div className='bg-blue-50/80 border border-blue-100 rounded-xl p-4 mb-8 text-left'>
                                 <p className='text-blue-700 text-xs sm:text-sm leading-relaxed'>
                                     <strong className="block mb-1">ℹ️ Next Step:</strong>
-                                    Click the link in your email to set a new password. The link expires in 10 minutes.
+                                    Click the link in your email to set a new password. The link expires in 2 minutes.
                                 </p>
                             </div>
                         </div>
