@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { FaLock, FaArrowLeft, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaLock, FaArrowLeft, FaEye, FaEyeSlash, FaArrowRight } from 'react-icons/fa';
 import { PropagateLoader } from 'react-spinners';
 import { overrideStyle } from "../utils/utils";
 import api from '../api/api';
